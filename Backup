@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-05T05:27:31.126Z",
-  "updatedAt": "2025-11-03T10:24:52.696Z",
+  "updatedAt": "2025-11-03T10:29:41.794Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
   "active": true,
@@ -612,7 +612,8 @@
           "mappingMode": "defineBelow",
           "value": {
             "Title": "={{ $('Code1').item.json.name }}",
-            "Last modified": "={{ $('Code1').item.json.updatedAt }}"
+            "Last modified": "={{ $('Code1').item.json.updatedAt }}",
+            "Shared Url": "=https://drive.google.com/file/d/{{ $json.id }}"
           },
           "matchingColumns": [
             "Title"
@@ -1218,7 +1219,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "d60d4326-11f9-468b-b667-94430a58fdae",
+  "versionId": "289ea7ed-02a3-40df-a9d3-ab69d312d988",
   "triggerCount": 1,
   "shared": [
     {
