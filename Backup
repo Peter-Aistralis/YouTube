@@ -1,6 +1,6 @@
 {
   "createdAt": "2025-07-05T05:27:31.126Z",
-  "updatedAt": "2025-11-04T02:09:33.257Z",
+  "updatedAt": "2025-11-04T02:16:59.083Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
   "active": true,
@@ -834,34 +834,6 @@
     },
     {
       "parameters": {
-        "operation": "toJson",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.convertToFile",
-      "typeVersion": 1.1,
-      "position": [
-        -1520,
-        624
-      ],
-      "id": "e767c399-4421-4979-8d87-33129a19fa8d",
-      "name": "Convert to File2"
-    },
-    {
-      "parameters": {
-        "operation": "toJson",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.convertToFile",
-      "typeVersion": 1.1,
-      "position": [
-        -1504,
-        896
-      ],
-      "id": "37f9c65d-c5dd-46b4-a68b-cc4e00097e85",
-      "name": "Convert to File3"
-    },
-    {
-      "parameters": {
         "jsCode": "return items.map(item => {\n  const jsonData = JSON.stringify(item.json);\n  const binaryData = Buffer.from(jsonData).toString('base64');\n  item.binary = {\n    data: {\n      data: binaryData,\n      mimeType: 'application/json',\n      fileName: 'data.json'\n    }\n  };\n  return item;\n});"
       },
       "id": "b49f7804-a6c8-4283-bdda-62e0a5892b42",
@@ -883,6 +855,32 @@
       "position": [
         -1072,
         528
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "const jsonString = JSON.stringify(items[0].json, null, 2); // keeps indentation\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [\n  {\n    binary: {\n      data: {\n        data: dataBuffer.toString('base64'),\n        fileName: 'workflow.json',\n        mimeType: 'application/json',\n      },\n    },\n    json: {}, // optional, can include metadata\n  },\n];\n"
+      },
+      "id": "5eb23f12-e688-4525-8da6-118177cc5a14",
+      "name": "Code7",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -1504,
+        624
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const jsonData = JSON.stringify(item.json);\n  const binaryData = Buffer.from(jsonData).toString('base64');\n  item.binary = {\n    data: {\n      data: binaryData,\n      mimeType: 'application/json',\n      fileName: 'data.json'\n    }\n  };\n  return item;\n});"
+      },
+      "id": "d17d6345-4e9d-450d-82cb-e789e212252d",
+      "name": "Code1",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -1504,
+        896
       ],
       "typeVersion": 2
     }
@@ -961,12 +959,12 @@
       "main": [
         [
           {
-            "node": "Convert to File2",
+            "node": "Code7",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Convert to File3",
+            "node": "Code1",
             "type": "main",
             "index": 0
           }
@@ -1177,28 +1175,6 @@
         ]
       ]
     },
-    "Convert to File2": {
-      "main": [
-        [
-          {
-            "node": "Create a file",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Convert to File3": {
-      "main": [
-        [
-          {
-            "node": "Upload file",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code": {
       "main": [
         [
@@ -1220,6 +1196,28 @@
           }
         ]
       ]
+    },
+    "Code7": {
+      "main": [
+        [
+          {
+            "node": "Create a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1234,7 +1232,7 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "dff20571-bb66-4be5-92e1-73ca2142244e",
+  "versionId": "497b5c5c-20fa-451d-9473-b9a45e662cee",
   "triggerCount": 1,
   "shared": [
     {
