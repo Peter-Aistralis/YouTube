@@ -1,6 +1,6 @@
 {
+  "updatedAt": "2025-11-22T04:49:17.005Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
-  "updatedAt": "2025-11-04T02:33:50.284Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
   "active": true,
@@ -1218,19 +1218,38 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "33ccfb49-1739-419b-bb21-af0512d2ab7c",
+  "pinData": {
+    "Schedule Trigger": [
+      {
+        "json": {
+          "timestamp": "2025-11-12T01:00:57.009+01:00",
+          "Readable date": "November 12th 2025, 1:00:57 am",
+          "Readable time": "1:00:57 am",
+          "Day of week": "Wednesday",
+          "Year": "2025",
+          "Month": "November",
+          "Day of month": "12",
+          "Hour": "01",
+          "Minute": "00",
+          "Second": "57",
+          "Timezone": "Europe/Berlin (UTC+01:00)"
+        }
+      }
+    ]
+  },
+  "versionId": "aa4edc6d-a299-4440-8b60-115e85ce6b3b",
+  "versionCounter": 11,
   "triggerCount": 1,
   "shared": [
     {
-      "createdAt": "2025-07-05T05:27:31.126Z",
       "updatedAt": "2025-07-05T05:27:31.126Z",
+      "createdAt": "2025-07-05T05:27:31.126Z",
       "role": "workflow:owner",
       "workflowId": "2wGj4UwRo2mb42YJ",
       "projectId": "2KiFcKNLK1JyaklJ",
       "project": {
-        "createdAt": "2025-07-05T04:34:00.267Z",
         "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
         "id": "2KiFcKNLK1JyaklJ",
         "name": "peter aistralis <peterjawel@gmail.com>",
         "type": "personal",
@@ -1238,14 +1257,13 @@
         "description": null,
         "projectRelations": [
           {
-            "createdAt": "2025-07-05T04:34:00.267Z",
             "updatedAt": "2025-07-05T04:34:00.267Z",
-            "role": "project:personalOwner",
+            "createdAt": "2025-07-05T04:34:00.267Z",
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
+              "updatedAt": "2025-11-22T00:00:12.035Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
-              "updatedAt": "2025-11-04T08:39:17.258Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
               "firstName": "peter",
@@ -1269,10 +1287,9 @@
                   "lastShownAt": 1753381963375
                 }
               },
-              "role": "global:owner",
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-03",
+              "lastActiveAt": "2025-11-21",
               "isPending": false
             }
           }
@@ -1282,8 +1299,8 @@
   ],
   "tags": [
     {
-      "createdAt": "2025-07-05T05:27:25.021Z",
       "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
       "id": "94UYKbs3nzwYCJqO",
       "name": "YouTube"
     }
