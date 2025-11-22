@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-22T04:49:17.005Z",
+  "updatedAt": "2025-11-22T04:59:06.538Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
@@ -732,7 +732,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
       "position": [
-        -272,
+        -208,
         752
       ],
       "id": "ea2ad5ce-3f57-469f-8611-410d2dcf2ab6",
@@ -870,6 +870,20 @@
       ],
       "id": "aefbe939-f587-4592-af7f-3bd04890bf42",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "amount": 0.5
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -336,
+        976
+      ],
+      "id": "877c7fbc-9bb1-4caf-8e1c-fef095240091",
+      "name": "Wait2",
+      "webhookId": "801c9260-f7a8-4b73-afba-6a8c61e280a1"
     }
   ],
   "connections": {
@@ -1022,7 +1036,7 @@
       "main": [
         [
           {
-            "node": "Append row in sheet",
+            "node": "Wait2",
             "type": "main",
             "index": 0
           }
@@ -1205,6 +1219,17 @@
           }
         ]
       ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1237,8 +1262,8 @@
       }
     ]
   },
-  "versionId": "aa4edc6d-a299-4440-8b60-115e85ce6b3b",
-  "versionCounter": 11,
+  "versionId": "65c48ed7-9f2d-4ddf-98d6-a0d1d793eecb",
+  "versionCounter": 13,
   "triggerCount": 1,
   "shared": [
     {
