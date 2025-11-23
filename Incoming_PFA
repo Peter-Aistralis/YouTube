@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-22T04:28:58.784Z",
+  "updatedAt": "2025-11-22T06:02:37.782Z",
   "createdAt": "2025-11-14T10:13:44.431Z",
   "id": "IgPl6godZmp2eO6t",
   "name": "Incoming_PFA",
@@ -86,7 +86,7 @@
             {
               "keyName": "item_name",
               "condition": "eq",
-              "keyValue": "={{ $json.item_name }}"
+              "keyValue": "={{ $json.item_name.toLowerCase() }}"
             }
           ]
         }
@@ -163,6 +163,7 @@
       ],
       "id": "cd18cada-de24-45ea-a213-109f620c7907",
       "name": "Get many rows1",
+      "alwaysOutputData": true,
       "credentials": {
         "supabaseApi": {
           "id": "KZ6ufBeRCXc7olwi",
@@ -428,13 +429,13 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "drunk now. Played padel and  I did drink 12 beers at bali social club"
+          "query": "I did drink 4 beers at Padel Pererenan and then I went to Bali Social Club and played padel over there"
         }
       }
     ]
   },
-  "versionId": "1ea57187-b3e8-468a-a74d-b3ccddcc6bad",
-  "versionCounter": 51,
+  "versionId": "8a9200a5-97f1-408a-86b9-451581af202e",
+  "versionCounter": 54,
   "triggerCount": 0,
   "shared": [
     {
@@ -458,7 +459,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-22T00:00:12.035Z",
+              "updatedAt": "2025-11-23T00:00:25.254Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -485,7 +486,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-21",
+              "lastActiveAt": "2025-11-22",
               "isPending": false
             }
           }
