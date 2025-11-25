@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-14T13:45:00.473Z",
+  "updatedAt": "2025-11-24T16:35:13.270Z",
   "createdAt": "2025-11-14T10:10:30.304Z",
   "id": "szUDREfsQyI0SRBC",
   "name": "Private Financial Assistant",
@@ -24,7 +24,7 @@
             {
               "id": "9eb8a7cb-d37b-47e7-a230-77708cc7cd57",
               "name": "question",
-              "value": "I did drink 4 beers at  Padel in Pererenan and then I went to Bali Social Club and played padel over there",
+              "value": "={{ $json.message.text }}",
               "type": "string"
             }
           ]
@@ -101,23 +101,88 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        64,
-        128
+        288,
+        144
       ],
       "id": "fd66f054-1851-4ff3-91ba-212fd7dd94e7",
       "name": "Call 'Incoming_PFA'"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -592,
+        128
+      ],
+      "id": "1901e772-930c-484e-9655-0a45f4fe49df",
+      "name": "Telegram Trigger",
+      "webhookId": "d1511059-2d4e-4d7c-b20c-b08852c21b0a",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": "=5"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        80,
+        160
+      ],
+      "id": "597221c3-50b4-4043-94f0-04e3fa762360",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        304,
+        -96
+      ],
+      "id": "349632c2-d8d3-43ea-af20-0194e2676e31",
+      "name": "Send a text message",
+      "webhookId": "393a447e-f1da-4fdf-a9f2-e1b3756cd997",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        256
+      ],
+      "id": "f5141b86-760b-4359-85cf-0e9a0302ff0f",
+      "name": "Think"
     }
   ],
   "connections": {
     "When clicking ‘Execute workflow’": {
       "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Edit Fields": {
@@ -152,6 +217,55 @@
           }
         ]
       ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        []
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -161,10 +275,38 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "99e6f444-9b02-48f8-be91-cc693da3dfba",
-  "versionCounter": 21,
-  "triggerCount": 0,
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 181780392,
+          "message": {
+            "message_id": 2328,
+            "from": {
+              "id": 2034253630,
+              "is_bot": false,
+              "first_name": "Pisto",
+              "last_name": "Pisto",
+              "username": "peter_aurelius",
+              "language_code": "en"
+            },
+            "chat": {
+              "id": 2034253630,
+              "first_name": "Pisto",
+              "last_name": "Pisto",
+              "username": "peter_aurelius",
+              "type": "private"
+            },
+            "date": 1763979377,
+            "text": "4 beers in Pererenan"
+          }
+        }
+      }
+    ]
+  },
+  "versionId": "a3ed9d60-94b3-43db-be14-c2e768647733",
+  "versionCounter": 37,
+  "triggerCount": 1,
   "shared": [
     {
       "updatedAt": "2025-11-14T10:10:30.304Z",
@@ -187,7 +329,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-22T00:00:12.035Z",
+              "updatedAt": "2025-11-25T00:00:55.332Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -214,7 +356,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-21",
+              "lastActiveAt": "2025-11-24",
               "isPending": false
             }
           }
