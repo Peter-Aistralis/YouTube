@@ -329,7 +329,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-25T00:00:55.332Z",
+              "updatedAt": "2025-11-26T00:00:58.347Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -356,7 +356,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-24",
+              "lastActiveAt": "2025-11-25",
               "isPending": false
             }
           }
