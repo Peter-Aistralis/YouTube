@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-18T02:48:47.981Z",
+  "updatedAt": "2025-11-25T12:58:41.597Z",
   "createdAt": "2025-11-11T04:41:06.215Z",
   "id": "ZHJDHmqyUQAIBd97",
   "name": "X Text + Image",
@@ -16,33 +16,6 @@
       ],
       "id": "3cd33c33-e99e-412f-acb4-ef8ddb7f44ef",
       "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "operation": "download",
-        "fileId": {
-          "__rl": true,
-          "value": "1Oa3TMOfN5BrUnOSNgsBcJMGAyjT1kRNb",
-          "mode": "list",
-          "cachedResultName": "fruitvlieg_as_a_surfer_holding_his_surfboard_at_the_beach._hype_bb78ef34-8517-447f-9364-2901b0e0bb6c.webp",
-          "cachedResultUrl": "https://drive.google.com/file/d/1Oa3TMOfN5BrUnOSNgsBcJMGAyjT1kRNb/view?usp=drivesdk"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.googleDrive",
-      "typeVersion": 3,
-      "position": [
-        -160,
-        -176
-      ],
-      "id": "b7ceea65-f6c7-4bf0-a2ff-9bbaeed77831",
-      "name": "Download file",
-      "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "VcFFZkWlXOO43tdB",
-          "name": "Google Drive account"
-        }
-      }
     },
     {
       "parameters": {
@@ -99,7 +72,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n    \"text\": \"{{ $('Edit Fields').item.json.input_text }}\",\n     \"media\": {\n       \"media_ids\": [\n            \"{{ $json.data.id }}\"\n        ]\n    }\n}",
+        "jsonBody": "={\n    \"text\": \"Does this work?\",\n     \"media\": {\n       \"media_ids\": [\n            \"{{ $json.data.id }}\"\n        ]\n    }\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -114,6 +87,33 @@
         "oAuth2Api": {
           "id": "JIPBgpl6Bxf76g3k",
           "name": "X Credentials"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-image",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash-image (Nano Banana)"
+        },
+        "prompt": "a photorealistic picture of a person working on a laptop, trying to create the ultimate AI Agent",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        -320,
+        -176
+      ],
+      "id": "f288d9c4-b174-4eae-ac08-86cca2bdb8e1",
+      "name": "Generate an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "hxuUpUy1J8QhbA96",
+          "name": "Google Gemini(PaLM) Api account"
         }
       }
     },
@@ -134,11 +134,38 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -448,
-        -176
+        -400,
+        -352
       ],
       "id": "2dda0720-79a7-4c11-aec0-3917febb05be",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1Oa3TMOfN5BrUnOSNgsBcJMGAyjT1kRNb",
+          "mode": "list",
+          "cachedResultName": "fruitvlieg_as_a_surfer_holding_his_surfboard_at_the_beach._hype_bb78ef34-8517-447f-9364-2901b0e0bb6c.webp",
+          "cachedResultUrl": "https://drive.google.com/file/d/1Oa3TMOfN5BrUnOSNgsBcJMGAyjT1kRNb/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -176,
+        -352
+      ],
+      "id": "b7ceea65-f6c7-4bf0-a2ff-9bbaeed77831",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
     }
   ],
   "connections": {
@@ -146,18 +173,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Download file": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
+            "node": "Generate an image",
             "type": "main",
             "index": 0
           }
@@ -169,6 +185,17 @@
         [
           {
             "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate an image": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -191,10 +218,12 @@
     "executionOrder": "v1"
   },
   "staticData": null,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "pinData": {},
-  "versionId": "328f7dc0-580d-47fc-ba6b-df72958661e0",
-  "versionCounter": 3,
+  "versionId": "05d0edda-40fd-4b69-93b0-54d759b8e37b",
+  "versionCounter": 4,
   "triggerCount": 0,
   "shared": [
     {
@@ -218,7 +247,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-22T00:00:12.035Z",
+              "updatedAt": "2025-11-26T00:00:58.347Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -245,7 +274,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-21",
+              "lastActiveAt": "2025-11-25",
               "isPending": false
             }
           }
