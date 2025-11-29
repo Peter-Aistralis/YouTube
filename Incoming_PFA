@@ -1,8 +1,9 @@
 {
-  "updatedAt": "2025-11-26T16:49:02.025Z",
+  "updatedAt": "2025-11-28T18:11:12.743Z",
   "createdAt": "2025-11-14T10:13:44.431Z",
   "id": "IgPl6godZmp2eO6t",
   "name": "Incoming_PFA",
+  "description": null,
   "active": false,
   "isArchived": false,
   "nodes": [
@@ -13,37 +14,37 @@
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
       "position": [
-        -624,
-        -368
+        -944,
+        -304
       ],
-      "id": "9ff434c6-c179-4802-a21f-55f1df2fd9e9",
+      "id": "1a9d52c8-8fe8-4cd8-bfff-b1dd118d24c6",
       "name": "When Executed by Another Workflow"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('When Executed by Another Workflow').item.json.query }}",
+        "text": "={{ $json.query }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are a strict accountant AI. You receive either:\n- a natural-language description of expenses, or\n- a receipt text.\n\nYour ONLY task is to produce a JSON object that exactly matches this schema:\n\n{\n  \"date\": \"string\",\n  \"description\": \"string\",\n  \"has_receipt\": \"boolean\",\n  \"payment_method\": \"string\",\n  \"items\": [\n    {\n      \"item_name\": \"string or null\",\n      \"quantity\": \"number or null\",\n      \"unit_price\": \"string or null\",\n      \"total_price\": \"string or null\",\n      \"location\": \"string or null\"\n    }\n  ]\n}\n\nCRITICAL RULES (follow exactly):\n\n1. Output **only** a JSON object. No explanations. No markdown. No commentary.\n2. All keys must exist. Never omit a required field.\n3. Use **double quotes** for all strings.\n4. For missing values, use **null** (not \"null\").\n5. For \"quantity\", output a **number**, never a string.\n6. \"date\":\n   - If the text contains a date → extract it as \"YYYY-MM-DD\".\n   - Otherwise → use {{$now}}.\n7. \"description\": a short human description of the expense.\n8. \"has_receipt\": true only if the text explicitly mentions a receipt.\n9. \"payment_method\":\n   - If mentioned (cash/card/debit/credit/etc), use it.\n   - Otherwise: \"cash\".\n10. \"items\": always output an array.\n11. Extract every item mentioned in the text:\n    - Drinks, food, services, activities.\n12. If an item has no price → unit_price = null, total_price = null.\n13. If the place is mentioned (e.g., Bali Social Club) → set \"location\" to that string.\n14. If the text describes an activity (e.g., “played padel”) → create a service item:\n    {\n      \"item_name\": \"Padel Session Fee\",\n      \"quantity\": 1,\n      \"unit_price\": null,\n      \"total_price\": null,\n      \"location\": \"<place or null>\"\n    }\n\nYour output must start with `{` and end with `}`. No text before or after.\n"
+          "systemMessage": "=You are a strict accountant AI. You receive either:\n- a natural-language description of expenses, or\n- a receipt text.\n\nYour ONLY task is to produce a JSON object that exactly matches this schema:\n\n{\n  \"date\": \"string\",\n  \"description\": \"string\",\n  \"has_receipt\": \"boolean\",\n  \"payment_method\": \"string\",\n  \"items\": [\n    {\n      \"item_name\": \"string or null\",\n      \"quantity\": \"number or null\",\n      \"unit_price\": \"string or null\",\n      \"total_price\": \"string or null\",\n      \"location\": \"string or null\"\n    }\n  ]\n}\n\nCRITICAL RULES (follow exactly):\n\nNormalization rules (VERY IMPORTANT):\nAlways convert item names to their base canonical form.\nUse these equivalence rules:\n\nAny phrase that includes “marlboro”, “pack of marlboro”, “cigarettes”, “cigs” → item_name = \"marlboro\"\n\nAny phrase that includes “beer”, “glass of beer”, “bintang”, “draught beer” → item_name = \"beer\"\n\nAny phrase that includes “martini”, “glass of martini”, “a martini” → item_name = \"martini\"\n\nIf a quantity is expressed indirectly (e.g., “a beer”, “1 glass of beer”), treat it as quantity = 1, unless stated otherwise.\n\n1. Output **only** a JSON object. No explanations. No markdown. No commentary.\n2. All keys must exist. Never omit a required field.\n3. Use **double quotes** for all strings.\n4. For missing values, use **null** (not \"null\").\n5. For \"quantity\", output a **number**, never a string.\n6. \"date\":\n   - If the text contains a date → extract it as \"YYYY-MM-DD\".\n   - Otherwise → use {{$now}}.\n7. \"description\": a short human description of the expense.\n8. \"has_receipt\": true only if the text explicitly mentions a receipt.\n9. \"payment_method\":\n   - If mentioned (cash/card/debit/credit/etc), use it.\n   - Otherwise: \"cash\".\n10. \"items\": always output an array.\n11. Extract every item mentioned in the text:\n    - Drinks, food, services, activities.\n12. If an item has no price → unit_price = null, total_price = null.\n13. If the place is mentioned (e.g., Bali Social Club) → set \"location\" to that string.\n14. If the text describes an activity (e.g., “played padel”) → create a service item:\n    {\n      \"item_name\": \"Padel Session Fee\",\n      \"quantity\": 1,\n      \"unit_price\": null,\n      \"total_price\": null,\n      \"location\": \"<place or null>\"\n    }\n\nYour output must start with `{` and end with `}`. No text before or after.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        -416,
-        -144
+        -528,
+        -80
       ],
-      "id": "c5fa1fbc-d983-4d30-8f46-b77ca5953715",
+      "id": "25cf4a7c-4e2e-4095-9526-c8bf6e8ef221",
       "name": "AI Agent"
     },
     {
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1-nano",
+          "value": "gpt-4.1-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4.1-nano"
+          "cachedResultName": "gpt-4.1-mini"
         },
         "builtInTools": {},
         "options": {}
@@ -51,10 +52,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -528,
-        80
+        -640,
+        144
       ],
-      "id": "00d41223-39c7-4a92-8097-35c3ea700c75",
+      "id": "55075ab6-fc95-4dd0-b7fa-729f15867d08",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -71,10 +72,10 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -208,
-        32
+        -320,
+        96
       ],
-      "id": "ac92a82a-5607-48ef-969f-706ebb149dff",
+      "id": "4e0e7e26-4f80-4f8b-92e3-649e2029e679",
       "name": "Structured Output Parser"
     },
     {
@@ -94,10 +95,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        960,
-        -128
+        848,
+        -64
       ],
-      "id": "cfe30351-a0ca-4331-a6bc-96ace0b482d7",
+      "id": "924acc9e-fad7-4c50-91ce-d5dd08e893cd",
       "name": "Get many rows",
       "credentials": {
         "supabaseApi": {
@@ -114,10 +115,10 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -96,
-        -144
+        -208,
+        -80
       ],
-      "id": "7385aee8-1976-4e93-924f-9c41184f03c2",
+      "id": "a65d7f9a-e25f-4ea8-a32d-590f404f7eea",
       "name": "Split Out"
     },
     {
@@ -129,10 +130,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        112,
-        -144
+        0,
+        -80
       ],
-      "id": "ed288b74-49f9-4bca-89ca-1834ac735573",
+      "id": "273e3031-be79-4fbc-aec9-93beb8c9a3f1",
       "name": "Loop Over Items"
     },
     {
@@ -158,10 +159,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        336,
-        -80
+        224,
+        -16
       ],
-      "id": "cd18cada-de24-45ea-a213-109f620c7907",
+      "id": "40bfc82d-e257-45df-b7ec-41cccfe6ee40",
       "name": "Get many rows1",
       "alwaysOutputData": true,
       "credentials": {
@@ -232,10 +233,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1184,
-        -128
+        1072,
+        -64
       ],
-      "id": "1ba34314-8597-41c9-995d-5651cc8c9c18",
+      "id": "a391d2a8-0ca1-4551-964d-d7be16e447e7",
       "name": "Edit Fields1"
     },
     {
@@ -246,10 +247,10 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        336,
-        -400
+        224,
+        -336
       ],
-      "id": "6e8d56cd-1c00-42a7-8ac5-2192709dbc3a",
+      "id": "0c674186-6c4d-4932-a9a6-29348526c4f5",
       "name": "Aggregate1"
     },
     {
@@ -260,10 +261,10 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        544,
-        -400
+        432,
+        -336
       ],
-      "id": "f65a050a-5c91-4baa-a018-aa80623b5a18",
+      "id": "ef006519-1ee2-47da-8636-3d9b30e8fe44",
       "name": "Split Out1"
     },
     {
@@ -281,10 +282,10 @@
       "type": "n8n-nodes-base.summarize",
       "typeVersion": 1.1,
       "position": [
-        800,
-        -400
+        688,
+        -336
       ],
-      "id": "583f9b02-bd23-453f-abce-4e260fea9adb",
+      "id": "74b1b087-57da-4d44-a285-e7921839b639",
       "name": "Summarize"
     },
     {
@@ -315,10 +316,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        544,
-        -80
+        432,
+        -16
       ],
-      "id": "8e65a400-eba8-49a9-aa24-6e844948a402",
+      "id": "24b51f59-139e-4ef8-84af-8144f3c7d05c",
       "name": "If"
     },
     {
@@ -338,10 +339,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        880,
-        304
+        768,
+        496
       ],
-      "id": "ba5c1dfb-109f-420c-bfa0-1b30e407ef6f",
+      "id": "a2e16409-5ca5-4267-b2c1-a2bb80413647",
       "name": "Edit Fields"
     },
     {
@@ -356,11 +357,11 @@
           "conditions": [
             {
               "id": "da7a7b83-698c-46c3-a45e-cf929d3316b2",
-              "leftValue": "={{ $('Loop Over Items').item.json.unit_price }}",
+              "leftValue": "={{ $('Loop Over Items').item.json.unit_price || $('Loop Over Items').item.json.total_price}}",
               "rightValue": "",
               "operator": {
                 "type": "string",
-                "operation": "notEmpty",
+                "operation": "exists",
                 "singleValue": true
               }
             }
@@ -372,10 +373,10 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        672,
-        176
+        560,
+        240
       ],
-      "id": "48e3910d-9a8f-413c-b4a2-4e60c13dcad8",
+      "id": "f66b2266-a7cf-40e7-8948-7df80d8d7384",
       "name": "If1"
     },
     {
@@ -393,7 +394,7 @@
             },
             {
               "fieldId": "unit_price",
-              "fieldValue": "={{ $('Loop Over Items').item.json.unit_price || $('Loop Over Items').item.json.total_price }}"
+              "fieldValue": "={{ $('Loop Over Items').item.json.unit_price || $('Loop Over Items').item.json.total_price / $('Loop Over Items').item.json.quantity }}"
             },
             {
               "fieldId": "type",
@@ -405,10 +406,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1488,
-        -224
+        1344,
+        192
       ],
-      "id": "67ac37e2-55cd-4f35-9ea8-1962c5c37e52",
+      "id": "4298e1eb-e990-408c-b668-d3a435e2f17e",
       "name": "Create a row",
       "credentials": {
         "supabaseApi": {
@@ -428,10 +429,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        800,
-        80
+        768,
+        160
       ],
-      "id": "148a3575-3f17-4741-8034-f81234bf3b2e",
+      "id": "bca5c94f-76e0-43f1-8f82-88bddad7f243",
       "name": "AI Agent1"
     },
     {
@@ -448,10 +449,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        1104,
-        256
+        752,
+        336
       ],
-      "id": "dacfe5e5-874d-4aec-9557-eb8398badae9",
+      "id": "9e81366d-241a-4f60-af70-cce3bdf9b7cb",
       "name": "OpenAI Chat Model1",
       "credentials": {
         "openAiApi": {
@@ -483,10 +484,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1632,
-        80
+        1136,
+        560
       ],
-      "id": "c291a9c0-e9a3-4758-a467-abced591bf99",
+      "id": "b6319621-59c7-47e3-956e-1b2989f1ebb4",
       "name": "Create a row1",
       "credentials": {
         "supabaseApi": {
@@ -511,10 +512,10 @@
       "type": "n8n-nodes-base.supabase",
       "typeVersion": 1,
       "position": [
-        1440,
-        80
+        1328,
+        368
       ],
-      "id": "08e35bd4-17df-45c5-88e2-5ac2f8dc169d",
+      "id": "6df503ce-a4ea-4800-b036-ba32e0af0dd2",
       "name": "Get a row",
       "credentials": {
         "supabaseApi": {
@@ -530,7 +531,7 @@
             {
               "id": "2feeff6d-adc8-4529-bab4-078a39d18875",
               "name": "total_price",
-              "value": "={{ parseFloat($('Loop Over Items').item.json.unit_price || 0) * (parseFloat($('Loop Over Items').item.json.quantity) || 0) }}\n",
+              "value": "={{ parseFloat($('Create a row').item.json.unit_price || 0) * (parseFloat($('Loop Over Items').item.json.quantity) || 0) }}\n",
               "type": "number"
             },
             {
@@ -584,22 +585,11 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1328,
-        448
+        1408,
+        592
       ],
-      "id": "f77b9e52-f271-4b29-927b-837cdf1c9873",
+      "id": "6584b987-06b2-45e2-9acb-67731235f484",
       "name": "Edit Fields2"
-    },
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.2,
-      "position": [
-        32,
-        -560
-      ],
-      "id": "8646e0fb-cdf2-4975-87d0-6bf684d6648e",
-      "name": "Merge"
     },
     {
       "parameters": {
@@ -609,10 +599,10 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        -432,
-        64
+        -544,
+        128
       ],
-      "id": "dcafdb60-8846-47b7-9332-ec780e5fa8f0",
+      "id": "df238599-328c-49d3-88a7-1f7fdb25d6db",
       "name": "Simple Memory"
     },
     {
@@ -632,11 +622,24 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1008,
-        -400
+        896,
+        -336
       ],
-      "id": "7ad7ddfd-3f52-4d58-a68f-5a7ae115d57e",
+      "id": "fc60fa51-d507-449a-9288-990c441c7fb2",
       "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of items) {\n  // 1. Safely check for query existence\n  if (item.json.query && typeof item.json.query === 'string') {\n    let query = item.json.query.toLowerCase();\n\n    // 2. REFINED CHECK: Look for the specific corrupted pattern: \n    // [1 beer] [and] [1 milkshake] [for price]\n    // The expression looks for: (quantity + word) + (and/comma) + (quantity + word) + (price at end)\n    const corruption_regex = /(\\d+\\s+\\w+)\\s+(and|,)\\s+(\\d+\\s+\\w+).*(\\d+|,|\\.)+$/i;\n\n    if (query.match(corruption_regex)) {\n      \n      // Split the string by the conjunction to isolate the corrected item\n      const parts = query.split(/and|,/);\n      \n      // Keep only the last part (the one containing the price correction)\n      const correctedItem = parts.pop().trim();\n      \n      // Set the item's query to the clean input\n      item.json.query = correctedItem;\n    }\n  }\n}\nreturn items;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -464,
+        -352
+      ],
+      "id": "50c2adb6-d544-4d84-9c18-be866c5f60d5",
+      "name": "Code in JavaScript"
     }
   ],
   "connections": {
@@ -644,7 +647,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Code in JavaScript",
             "type": "main",
             "index": 0
           }
@@ -662,6 +665,17 @@
         ]
       ]
     },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "AI Agent": {
       "main": [
         [
@@ -673,12 +687,12 @@
         ]
       ]
     },
-    "Structured Output Parser": {
-      "ai_outputParser": [
+    "Get many rows": {
+      "main": [
         [
           {
-            "node": "AI Agent",
-            "type": "ai_outputParser",
+            "node": "Edit Fields1",
+            "type": "main",
             "index": 0
           }
         ]
@@ -707,17 +721,6 @@
         [
           {
             "node": "Get many rows1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many rows": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -815,6 +818,17 @@
         ]
       ]
     },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "OpenAI Chat Model1": {
       "ai_languageModel": [
         [
@@ -826,11 +840,11 @@
         ]
       ]
     },
-    "AI Agent1": {
+    "Create a row1": {
       "main": [
         [
           {
-            "node": "Create a row",
+            "node": "Edit Fields2",
             "type": "main",
             "index": 0
           }
@@ -848,25 +862,15 @@
         ]
       ]
     },
-    "Create a row1": {
+    "Edit Fields2": {
       "main": [
         [
           {
-            "node": "Edit Fields2",
+            "node": "Loop Over Items",
             "type": "main",
             "index": 0
           }
         ]
-      ]
-    },
-    "Edit Fields2": {
-      "main": [
-        []
-      ]
-    },
-    "Merge": {
-      "main": [
-        []
       ]
     },
     "Simple Memory": {
@@ -890,6 +894,17 @@
           }
         ]
       ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -903,13 +918,13 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "I did buy tennis shoes in Beachwalk for 11111111"
+          "query": "I did buy 2 packs of marlboro in bali social club and I paid 110000"
         }
       }
     ]
   },
-  "versionId": "3c9ae0b8-d2f3-48ad-bb79-b7a6b182c1d3",
-  "versionCounter": 114,
+  "versionId": "ac4331e1-5910-4346-bdae-5044d3f212d0",
+  "versionCounter": 160,
   "triggerCount": 0,
   "shared": [
     {
@@ -933,7 +948,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-27T00:00:39.309Z",
+              "updatedAt": "2025-11-29T00:00:32.558Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -960,7 +975,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-26",
+              "lastActiveAt": "2025-11-28",
               "isPending": false
             }
           }
