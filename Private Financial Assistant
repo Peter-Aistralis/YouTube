@@ -1,8 +1,9 @@
 {
-  "updatedAt": "2025-11-26T13:30:00.938Z",
+  "updatedAt": "2025-11-28T16:37:51.900Z",
   "createdAt": "2025-11-14T10:10:30.304Z",
   "id": "szUDREfsQyI0SRBC",
   "name": "Private Financial Assistant",
+  "description": null,
   "active": true,
   "isArchived": false,
   "nodes": [
@@ -45,7 +46,7 @@
         "promptType": "define",
         "text": "={{ $json.question }}",
         "options": {
-          "systemMessage": "You are a helpful assistant and you analyze the incoming message.\n2 options: a request to update/delete/write to the database\nor a request to get information from the database.\nAnd you call the right tool\n\nIMPORTANT RULES:\n1. You MUST NOT split user input into multiple tool calls.\n2. Always call exactly ONE tool per user message.\n3. Forward the raw user message exactly as received.\n4. Do not interpret or break it into multiple events.\n5. Only the tool's workflow will perform any analysis.\n\n"
+          "systemMessage": "You are a helpful assistant and you analyze the incoming message.\n2 options: a request to update/delete/write to the database\nor a request to get information from the database.\nAnd you call the right tool\n\nIMPORTANT RULES:\n1. You MUST NOT split user input into multiple tool calls.\n2. Always call exactly ONE tool per user message.\n3. Forward the raw user message exactly as received.\n4. Do not interpret or break it into multiple events.\n5. Only the tool's workflow will perform any analysis.\n6. if you get \n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -282,8 +283,8 @@
       }
     ]
   },
-  "versionId": "c00e1937-9049-4e1a-b8d4-40b3c132f399",
-  "versionCounter": 54,
+  "versionId": "c059455f-9026-4a5b-828c-f508102e12d1",
+  "versionCounter": 58,
   "triggerCount": 1,
   "shared": [
     {
@@ -307,7 +308,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-27T00:00:39.309Z",
+              "updatedAt": "2025-11-29T00:00:32.558Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -334,7 +335,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-26",
+              "lastActiveAt": "2025-11-28",
               "isPending": false
             }
           }
