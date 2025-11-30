@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-28T16:37:51.900Z",
+  "updatedAt": "2025-11-29T12:24:18.572Z",
   "createdAt": "2025-11-14T10:10:30.304Z",
   "id": "szUDREfsQyI0SRBC",
   "name": "Private Financial Assistant",
@@ -7,17 +7,6 @@
   "active": true,
   "isArchived": false,
   "nodes": [
-    {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
-      "position": [
-        -512,
-        -96
-      ],
-      "id": "dc21d8b0-d3fb-43d7-a843-979f585d065a",
-      "name": "When clicking ‘Execute workflow’"
-    },
     {
       "parameters": {
         "assignments": {
@@ -35,7 +24,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -288,
+        -80,
         -96
       ],
       "id": "7ba2f828-4a9b-4683-9ce5-a479d2696c4b",
@@ -46,13 +35,13 @@
         "promptType": "define",
         "text": "={{ $json.question }}",
         "options": {
-          "systemMessage": "You are a helpful assistant and you analyze the incoming message.\n2 options: a request to update/delete/write to the database\nor a request to get information from the database.\nAnd you call the right tool\n\nIMPORTANT RULES:\n1. You MUST NOT split user input into multiple tool calls.\n2. Always call exactly ONE tool per user message.\n3. Forward the raw user message exactly as received.\n4. Do not interpret or break it into multiple events.\n5. Only the tool's workflow will perform any analysis.\n6. if you get \n\n"
+          "systemMessage": "You are a routing classifier. Your ONLY job is to choose between two tools:\n1) incoming_write_tool  → for CREATE/UPDATE/DELETE\n2) retrieval_tool       → for reading/querying data\n\nRULES:\n- Output EXACTLY one tool call.\n- Forward the user message EXACTLY as received.\n- NEVER produce a normal assistant response.\n- NEVER split the message.\n\nDETECTION LOGIC:\n\nA. WRITE REQUESTS (use incoming_write_tool) ONLY IF:\n   - The user’s message is a pure instruction to store or modify data.\n     Examples:\n       “add this transaction”\n       “log that I spent 20 euros”\n       “update my budget to 10000”\n       “delete the transaction from yesterday”\n   - The message does NOT contain any question.\n   - The message’s primary purpose is clearly to store data.\n\nB. READ REQUESTS (use retrieval_tool):\n   - ANY message containing a question mark “?” ALWAYS counts as a read request.\n   - ANY message starting with “how”, “what”, “when”, “where”, “who”, “which”, \n     “how much”, “how many”, “show me”, “tell me”, “give me”, counts as a read request.\n   - If the user mentions facts (numbers, budgets, amounts, context) \n     BUT ALSO asks a question afterward → ALWAYS treat it as a READ.\n\n   Examples (these MUST be retrieval requests):\n     “my budget for today is 10000, how much more can I spend?”\n     “I spent 2000 yesterday, what’s my total for this week?”\n     “I bought beer earlier. How much did I spend on drinks overall?”\n     “2 days ago I spent 15000 at Starbucks. What category is that?”\n\nC. PRIORITY RULE (critical):\n   - If a message contains ANY question, even if the rest looks like data,\n     ALWAYS classify as retrieval_tool.\n\nD. Only classify as WRITE if:\n   - The message has NO question AND\n   - The ONLY possible intention is writing/updating.\n\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        -48,
+        160,
         -96
       ],
       "id": "1c06c774-8452-4eb8-a79a-0459f9acd9d3",
@@ -73,7 +62,7 @@
       "typeVersion": 1.3,
       "position": [
         -80,
-        208
+        176
       ],
       "id": "eafe6a95-91ae-42a5-b718-87c0d7d0a845",
       "name": "OpenAI Chat Model",
@@ -102,7 +91,7 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        288,
+        192,
         144
       ],
       "id": "fd66f054-1851-4ff3-91ba-212fd7dd94e7",
@@ -118,8 +107,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -592,
-        128
+        -448,
+        -96
       ],
       "id": "1901e772-930c-484e-9655-0a45f4fe49df",
       "name": "Telegram Trigger",
@@ -140,7 +129,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        80,
+        48,
         160
       ],
       "id": "597221c3-50b4-4043-94f0-04e3fa762360",
@@ -155,7 +144,7 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        304,
+        512,
         -96
       ],
       "id": "349632c2-d8d3-43ea-af20-0194e2676e31",
@@ -167,14 +156,33 @@
           "name": "Telegram account"
         }
       }
+    },
+    {
+      "parameters": {
+        "description": "Call this tool if the user wants to know data from the database.",
+        "workflowId": {
+          "__rl": true,
+          "value": "XQIdg6eU1ro02cH4",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/XQIdg6eU1ro02cH4",
+          "cachedResultName": "Retrieval_PFA"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {}
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        112
+      ],
+      "id": "58f1083e-a54a-4552-a058-5c5e43070028",
+      "name": "Call 'Retrieval_PFA'"
     }
   ],
   "connections": {
-    "When clicking ‘Execute workflow’": {
-      "main": [
-        []
-      ]
-    },
     "Edit Fields": {
       "main": [
         [
@@ -245,6 +253,17 @@
       "main": [
         []
       ]
+    },
+    "Call 'Retrieval_PFA'": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -258,9 +277,9 @@
     "Telegram Trigger": [
       {
         "json": {
-          "update_id": 181780530,
+          "update_id": 181780744,
           "message": {
-            "message_id": 2587,
+            "message_id": 3016,
             "from": {
               "id": 2034253630,
               "is_bot": false,
@@ -276,15 +295,15 @@
               "username": "peter_aurelius",
               "type": "private"
             },
-            "date": 1764162737,
-            "text": "123"
+            "date": 1764416468,
+            "text": "my budget for today is 10000, how much more can I spend?"
           }
         }
       }
     ]
   },
-  "versionId": "c059455f-9026-4a5b-828c-f508102e12d1",
-  "versionCounter": 58,
+  "versionId": "8503aa5b-f5f8-4781-b13f-0e60b0ef0711",
+  "versionCounter": 69,
   "triggerCount": 1,
   "shared": [
     {
@@ -308,7 +327,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-29T00:00:32.558Z",
+              "updatedAt": "2025-11-30T00:00:15.882Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -335,7 +354,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-28",
+              "lastActiveAt": "2025-11-29",
               "isPending": false
             }
           }
