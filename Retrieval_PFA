@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-11-29T12:30:20.294Z",
+  "updatedAt": "2025-11-30T14:17:55.249Z",
   "createdAt": "2025-11-29T10:39:21.513Z",
   "id": "XQIdg6eU1ro02cH4",
   "name": "Retrieval_PFA",
@@ -22,33 +22,10 @@
     },
     {
       "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "c5400ac1-1530-46d1-a2d5-e825843dd238",
-              "name": "response",
-              "value": "=this is the sql-statement you need: \"{{ $json.output }}\"",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        624,
-        0
-      ],
-      "id": "e0365c56-2b6c-4c8d-adff-f17f154c52f4",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "={{ $json.query }}",
         "options": {
-          "systemMessage": "=You are an expert PostgreSQL Query Generator.\nYour SOLE and ONLY task is to translate the user's question into a single, valid, and fully functional PostgreSQL SELECT statement.\n\n### 1. Database Schema\n### 1. Database Schema\nUse ONLY the following tables and columns. DO NOT reference any tables or columns not listed here.\n\n- transactions (t):\n  id, date, description, total_amount, payment_method, created_at\n\n- transaction_items (ti):\n  id, item_name, location, quantity, item_total, unit_price, transaction_id, category_id\n\n- categories (c):\n  id, name, type, budget_amount, parent_category_id\n\n- item_categories (ic):\n  id, item_keyword, subcategory, category_id\n\n- knowledge_base (kb):\n  id, location, type, item_name, unit_price\n\n### 2. Output and Constraints\n1.  **Output:** Provide **ONLY** the raw SQL query text. NO surrounding markdown (\\`\\`\\`), NO explanations, NO blank lines, NO introductory phrases.\n2.  **Date Handling:** The current date is **'2025-11-29'**. Use `CURRENT_DATE - INTERVAL 'X'` syntax for relative dates.\n3.  **Aggregation:** All sums must be wrapped in `COALESCE(ROUND(SUM(...) ::numeric, 2), 0.00)` to handle zero results and format currency.\n4.  **Amounts:** For general spending queries (like 'how much did I spend'), use `t.total_amount` from the `transactions` table. Amounts are already currency values (no division by 100).\n5.  **Item Search:** When searching for specific items (like 'beers'), use the `transaction_items` table.\n6.  **Error Handling:** If necessary information is missing for an exact numeric answer, \ninfer partial information using the schema. \nDo NOT output an error unless the required table truly does not exist.\n7. General spending queries (e.g., \"how much did I spend\", \"total spent\", \"what did I spend yesterday\") MUST be answered using ONLY the transactions table. These queries NEVER require transaction_items, categories, or item_categories. They are always fulfillable.\n\n### 3. User Question\n{{ $json.query }}"
+          "systemMessage": "=You are an expert PostgreSQL Query Generator.\nYour ONLY task is to convert the user’s question into a single valid PostgreSQL SELECT query.\n\n1. DATABASE SCHEMA\n\nYou may use ONLY these tables + columns:\n\ntransactions (t)\n\nid\n\ndate\n\ndescription\n\ntotal_amount\n\npayment_method\n\ncreated_at\n\ntransaction_items (ti)\n\nid\n\nitem_name\n\nlocation\n\nquantity\n\nitem_total\n\nunit_price\n\ntransaction_id\n\ncategory_id\n\ncategories (c)\n\nid\n\nname\n\ntype\n\nbudget_amount\n\nparent_category_id\n\nitem_categories (ic)\n\nid\n\nitem_keyword\n\nsubcategory\n\ncategory_id\n\nknowledge_base (kb)\n\nid\n\nlocation\n\ntype\n\nitem_name\n\nunit_price\n\n2. GLOBAL RULES\nA. Output format\n\nOutput ONLY the raw SQL query text.\n\nNO markdown, NO backticks, NO comments, NO explanation.\n\nExactly one SELECT statement. No multi-statement queries.\n\nB. Date handling\n\nToday’s date = {{ $now }}\n\nIf user asks for relative dates:\n\nUse CURRENT_DATE (not a literal string)\n\nExample: last 7 days → t.date >= CURRENT_DATE - INTERVAL '7 days'\n\nC. Aggregation\n\nWhen user asks “how much did I spend”, ALWAYS use:\n\nCOALESCE(ROUND(SUM(t.total_amount)::numeric, 2), 0.00)\n\n\nNo other format, no decimals lost.\n\nD. Choosing the correct table\n1) Spending totals (e.g., “how much did I spend today?”)\n\nAlways use ONLY the transactions (t) table.\n\n2) Item queries (e.g., “what did I buy today?”)\n\nMust return all items from all matching transactions.\n\nCorrect join pattern:\n\nSELECT ti.*\nFROM transaction_items ti\nJOIN transactions t ON ti.transaction_id = t.id\nWHERE <date or filter>\n\n3) Category-based queries\n\nJoin through categories or item_categories when needed.\n\n4) Price lookup / unit price\n\nJoin knowledge_base ONLY if the user directly asks for price information of an item.\n\nE. Interpretation rules\n1. If user asks “what did I buy today / yesterday / this week”\n\n→ Return all ti rows associated with transactions in that date range.\nNever return only 1 row.\n\n2. If user asks “show me my transactions”\n\n→ Return rows from transactions table (not items).\n\n3. If user asks “list everything I bought this month”\n\n→ Use transaction_items with date filter on transactions.\n\n4. If user asks a category question:\n\n→ Join transaction_items → categories or item_categories → categories.\n\n3. FALLBACK RULES\n\nIf the question contains spending amounts but ALSO contains a question → always treat as a read query.\n\nDo not refuse queries.\nIf something is unclear, return the broadest reasonable SELECT.\n\n4. USER QUESTION\n{{ $json.query }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -88,44 +65,61 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://ymimorntpqzxaukdnyzi.supabase.co/rest/v1/xxx1",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
+        "operation": "executeQuery",
+        "query": "{{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        560,
+        0
+      ],
+      "id": "ba7c9195-2a9c-4ab2-bc0d-908c6ee8236f",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "aIfCp8XtJWqoAVxb",
+          "name": "Postgres"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        768,
+        0
+      ],
+      "id": "a9529b32-5d45-44e9-999e-95ccaaa52ae4",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
             {
-              "name": "apikey",
-              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltaW1vcm50cHF6eGF1a2RueXppIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NTAwNTE4NCwiZXhwIjoyMDcwNTgxMTg0fQ.vNdVsu_rSGMFcwQbcZdZYiAcJPFRQaKiRPLNocwGwdI"
-            },
-            {
-              "name": "Authorization",
-              "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltaW1vcm50cHF6eGF1a2RueXppIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NTAwNTE4NCwiZXhwIjoyMDcwNTgxMTg0fQ.vNdVsu_rSGMFcwQbcZdZYiAcJPFRQaKiRPLNocwGwdI"
-            }
-          ]
-        },
-        "sendBody": true,
-        "bodyParameters": {
-          "parameters": [
-            {
-              "name": "embedding",
-              "value": "={{ $json.embedding }}"
-            },
-            {
-              "name": "content",
-              "value": "={{ $('Edit Fields').item.json.tekst }}"
+              "id": "900970c4-7e44-43c9-aa37-f4474b60698e",
+              "name": "response",
+              "value": "={{ $json.data }}",
+              "type": "string"
             }
           ]
         },
         "options": {}
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        768,
-        240
+        1024,
+        0
       ],
-      "id": "c41720b3-c6fc-4fe4-9d0b-73e1c5aa380c",
-      "name": "HTTP Request6"
+      "id": "9cf21aae-b094-4a5d-9fca-7f047c98a171",
+      "name": "Edit Fields"
     }
   ],
   "connections": {
@@ -144,7 +138,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Execute a SQL query",
             "type": "main",
             "index": 0
           }
@@ -157,6 +151,28 @@
           {
             "node": "AI Agent",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
             "index": 0
           }
         ]
@@ -174,13 +190,13 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "how much have I spent today?"
+          "query": "What did I spend money on yesterday?"
         }
       }
     ]
   },
-  "versionId": "079982ed-cd07-4594-96e2-331f404f4d72",
-  "versionCounter": 10,
+  "versionId": "5862b44d-4fa3-4a6b-aafa-fb72c06ce2fe",
+  "versionCounter": 17,
   "triggerCount": 0,
   "shared": [
     {
@@ -204,7 +220,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-30T00:00:15.882Z",
+              "updatedAt": "2025-12-01T00:00:15.732Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -231,7 +247,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-29",
+              "lastActiveAt": "2025-11-30",
               "isPending": false
             }
           }
