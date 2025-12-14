@@ -1,8 +1,9 @@
 {
-  "updatedAt": "2025-11-25T08:01:31.289Z",
+  "updatedAt": "2025-12-10T04:55:42.387Z",
   "createdAt": "2025-11-25T06:56:27.980Z",
   "id": "r1hEZ8InOj91e2BD",
   "name": "my error workflow",
+  "description": null,
   "active": false,
   "isArchived": false,
   "nodes": [
@@ -162,11 +163,6 @@
       "main": [
         [
           {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          },
-          {
             "node": "Send a text message",
             "type": "main",
             "index": 0
@@ -192,77 +188,68 @@
       {
         "json": {
           "execution": {
-            "id": "38389",
-            "url": "https://workflows.zeriobox.com/workflow/ob0wQC6ogWLN5iHi/executions/38389",
+            "id": "42802",
+            "url": "https://workflows.zeriobox.com/workflow/2wGj4UwRo2mb42YJ/executions/42802",
             "error": {
               "level": "warning",
               "tags": {},
-              "description": "Not Found",
-              "timestamp": 1764057299477,
-              "context": {
-                "itemIndex": 0,
-                "request": {
-                  "headers": {
-                    "accept": "application/json,text/html,application/xhtml+xml,application/xml,text/*;q=0.9, image/*;q=0.8, */*;q=0.7"
-                  },
-                  "method": "GET",
-                  "uri": "https://catfact.ninja/fact-new",
-                  "gzip": true,
-                  "rejectUnauthorized": true,
-                  "followRedirect": true,
-                  "resolveWithFullResponse": true,
-                  "followAllRedirects": true,
-                  "timeout": 300000,
-                  "encoding": null,
-                  "json": false,
-                  "useStream": true
-                }
-              },
+              "timestamp": 1765324872997,
+              "context": {},
               "functionality": "regular",
               "name": "NodeApiError",
               "node": {
                 "parameters": {
-                  "preBuiltAgentsCalloutHttpRequest": "",
-                  "curlImport": "",
-                  "method": "GET",
-                  "url": "https://catfact.ninja/fact-new",
-                  "authentication": "none",
-                  "provideSslCertificates": false,
-                  "sendQuery": false,
-                  "sendHeaders": false,
-                  "sendBody": false,
-                  "options": {},
-                  "infoMessage": ""
+                  "preBuiltAgentsCalloutGoogleDrive": "",
+                  "authentication": "oAuth2",
+                  "resource": "file",
+                  "operation": "deleteFile",
+                  "fileId": {
+                    "__rl": true,
+                    "value": "={{ $json['Shared Url'] }}",
+                    "mode": "url"
+                  },
+                  "options": {}
                 },
-                "type": "n8n-nodes-base.httpRequest",
-                "typeVersion": 4.3,
+                "type": "n8n-nodes-base.googleDrive",
+                "typeVersion": 3,
                 "position": [
-                  256,
-                  16
+                  -1504,
+                  400
                 ],
-                "id": "b450a9fe-e6b8-473d-b2e7-df46feb9b6ea",
-                "name": "HTTP Request"
+                "id": "5b0ee01f-ee0c-4571-9ec0-053d70bf8270",
+                "name": "Delete a file",
+                "credentials": {
+                  "googleDriveOAuth2Api": {
+                    "id": "VcFFZkWlXOO43tdB",
+                    "name": "Google Drive account"
+                  }
+                }
               },
               "messages": [
-                "404 - \"{\\\"message\\\":\\\"Not Found\\\",\\\"code\\\":404}\""
+                "The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client."
               ],
-              "httpCode": "404",
-              "message": "The resource you are requesting could not be found",
-              "stack": "NodeApiError: The resource you are requesting could not be found\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_afd197edb2c1f848eae21a96a97fab23/node_modules/n8n-nodes-base/nodes/HttpRequest/V3/HttpRequestV3.node.ts:858:16)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1093:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1274:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1708:27\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:2324:11"
+              "httpCode": "EAUTH",
+              "message": "The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.",
+              "stack": "NodeApiError: The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.\n    at ExecuteContext.httpRequestWithAuthentication (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:1391:9)\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at ExecuteContext.httpRequestWithAuthentication (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/node-execution-context/utils/request-helper-functions.ts:1763:11)\n    at ExecuteContext.googleApiRequest (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Google/Drive/v2/transport/index.ts:54:11)\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Google/Drive/v2/actions/file/deleteFile.operation.ts:55:3)\n    at ExecuteContext.router (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Google/Drive/v2/actions/router.ts:29:26)\n    at ExecuteContext.execute (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-nodes-base@file+packages+nodes-base_@aws-sdk+credential-providers@3.808.0_asn1.js@5_8da18263ca0574b0db58d4fefd8173ce/node_modules/n8n-nodes-base/nodes/Google/Drive/v2/GoogleDriveV2.node.ts:25:10)\n    at WorkflowExecute.executeNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1074:8)\n    at WorkflowExecute.runNode (/usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1255:11)\n    at /usr/local/lib/node_modules/n8n/node_modules/.pnpm/n8n-core@file+packages+core_@opentelemetry+api@1.9.0_@opentelemetry+sdk-trace-base@1.30_08b575bec2313d5d8a4cc75358971443/node_modules/n8n-core/src/execution-engine/workflow-execute.ts:1691:27"
             },
-            "lastNodeExecuted": "HTTP Request",
-            "mode": "webhook"
+            "lastNodeExecuted": "Delete a file",
+            "mode": "trigger",
+            "executionContext": {
+              "version": 1,
+              "establishedAt": 1765324857037,
+              "source": "trigger"
+            }
           },
           "workflow": {
-            "id": "ob0wQC6ogWLN5iHi",
-            "name": "My workflow 2"
+            "id": "2wGj4UwRo2mb42YJ",
+            "name": "Backup"
           }
         }
       }
     ]
   },
-  "versionId": "702356f4-71bd-495d-b3b6-b399b60ee09a",
-  "versionCounter": 6,
+  "versionId": "4e9d333f-9f94-4092-9f42-8bda8199d1d6",
+  "versionCounter": 7,
   "triggerCount": 0,
   "shared": [
     {
@@ -286,7 +273,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-11-26T00:00:58.347Z",
+              "updatedAt": "2025-12-14T00:00:41.353Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -313,7 +300,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-11-25",
+              "lastActiveAt": "2025-12-13",
               "isPending": false
             }
           }
