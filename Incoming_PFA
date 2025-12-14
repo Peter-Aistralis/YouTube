@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-01T18:46:44.336Z",
+  "updatedAt": "2025-12-04T04:43:17.326Z",
   "createdAt": "2025-11-14T10:13:44.431Z",
   "id": "IgPl6godZmp2eO6t",
   "name": "Incoming_PFA",
@@ -26,7 +26,7 @@
         "text": "={{ $json.query || $json.message.text }}",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are a strict accountant AI. You receive either:\n- a natural-language description of expenses, or\n- a receipt text.\n\nYour ONLY task is to produce a JSON object that exactly matches this schema:\n\n{\n  \"date\": \"string\",\n  \"description\": \"string\",\n  \"has_receipt\": \"boolean\",\n  \"payment_method\": \"string\",\n  \"items\": [\n    {\n      \"item_name\": \"string or null\",\n      \"quantity\": \"number or null\",\n      \"unit_price\": \"string or null\",\n      \"total_price\": \"string or null\",\n      \"location\": \"string or null\"\n    }\n  ]\n}\n\nCRITICAL RULES (follow exactly):\n\nNormalization rules (VERY IMPORTANT):\nAlways convert item names to their base canonical form.\nUse these equivalence rules:\n\nAny phrase that includes “marlboro”, “pack of marlboro”, “cigarettes”, “cigs” → item_name = \"marlboro\"\n\nAny phrase that includes “beer”, “glass of beer”, “bintang”, “draught beer” → item_name = \"beer\"\n\nAny phrase that includes “martini”, “glass of martini”, “a martini” → item_name = \"martini\"\n\nIf a quantity is expressed indirectly (e.g., “a beer”, “1 glass of beer”), treat it as quantity = 1, unless stated otherwise.\nIf no quantity is given, treat is as quantity = 1\n\n1. Output **only** a JSON object. No explanations. No markdown. No commentary.\n2. All keys must exist. Never omit a required field.\n3. Use **double quotes** for all strings.\n4. For missing values, use **null** (not \"null\").\n5. For \"quantity\", output a **number**, never a string.\n6. Today's date is {{$now}}.\nInterpret dates relative to this value.\n\nRules:\n- \"yesterday\" = today minus exactly 1 day\n- \"the day before yesterday\" = today minus 2 days\n- \"tomorrow\" = today plus 1 day\n- \"last week\" = today minus 7 days\n\n7. \"description\": a short human description of the expense.\n8. \"has_receipt\": true only if the text explicitly mentions a receipt.\n9. \"payment_method\":\n   - If mentioned (cash/card/debit/credit/etc), use it.\n   - Otherwise: \"cash\".\n10. \"items\": always output an array.\n11. Extract every item mentioned in the text:\n    - Drinks, food, services, activities.\n12. If an item has no price → unit_price = null, total_price = null.\n13. If the place is mentioned (e.g., Bali Social Club) → set \"location\" to that string.\n14. Activities:\n   Detect activities only when the text clearly refers to a place or activity that implies spending money.\n15. If the price paid (per unit or in total) contains the currency (like euro, dollar, idr, ...), drop the currency and only output the amount (or number)\n16. If the text clearly indicates spending money but does NOT mention any specific item names:\n\n   - Create ONE fallback item.\n   - Use the following logic:\n\n     If the text mentions \"drinks\", \"drinking\", etc. → item_name = \"various drinks\"\n     If the text mentions a restaurant, fast food place, cafe → item_name = \"various food\"\n     Otherwise → item_name = \"miscellaneous purchase\"\n\n   - quantity = 1\n   - unit_price = null\n   - total_price = \"<the amount mentioned>\"\n   - location = \"<the location if mentioned>\"\n\n   Use the following mapping:\n\n   - If the text contains \"padel\"  → item_name = \"Padel Session Fee\"\n   - If the text contains \"amusement park\", \"theme park\", \"fun park\", \"park ticket\" → item_name = \"Amusement Park Entry Fee\"\n   - If the text contains \"gym\", \"fitness\", \"workout\" → item_name = \"Gym Session Fee\"\n   - If the text contains \"cinema\", \"movie\", \"film\" → item_name = \"Cinema Ticket\"\n   - If the text contains \"bowling\" → item_name = \"Bowling Game Fee\"\n   - If the text contains \"museum\" → item_name = \"Museum Ticket\"\n   - If the text contains \"swimming\", \"pool\" → item_name = \"Swimming Pool Entry Fee\"\n\n   If an activity does NOT match the above list → do NOT infer or create a service item.\n\n   Each activity item should follow this format:\n   {\n     \"item_name\": \"<mapped name>\",\n     \"quantity\": 1,\n     \"unit_price\": \"<price or null>\",\n     \"total_price\": \"<price or null>\",\n     \"location\": \"<place or null>\"\n   }\n\nSTRICT ANTI-HALLUCINATION RULE (MANDATORY):\n\nNever guess, infer, or invent any missing information.\n\nIf the text does not explicitly mention a price, you must set\n\"unit_price\": null and \"total_price\": null.\n\nYou must not estimate or assume typical or likely prices.\n\nIf the user does not provide a number → leave it null."
+          "systemMessage": "=You are a strict accountant AI. You receive either:\n- a natural-language description of expenses, or\n- a receipt text.\n\nYour ONLY task is to produce a JSON object that exactly matches this schema:\n\n{\n  \"date\": \"string\",\n  \"description\": \"string\",\n  \"has_receipt\": \"boolean\",\n  \"payment_method\": \"string\",\n  \"items\": [\n    {\n      \"item_name\": \"string or null\",\n      \"quantity\": \"number or null\",\n      \"unit_price\": \"string or null\",\n      \"total_price\": \"string or null\",\n      \"location\": \"string or null\"\n    }\n  ]\n}\n\nCRITICAL RULES (follow exactly):\n\nNormalization rules (VERY IMPORTANT):\nAlways convert item names to their base canonical form.\nUse these equivalence rules:\n\nAny phrase that includes “marlboro”, “pack of marlboro”, “cigarettes”, “cigs” → item_name = \"marlboro\"\n\nAny phrase that includes “beer”, “glass of beer”, “bintang”, “draught beer” → item_name = \"beer\"\n\nAny phrase that includes “martini”, “glass of martini”, “a martini” → item_name = \"martini\"\n\nIf a quantity is expressed indirectly (e.g., “a beer”, “1 glass of beer”), treat it as quantity = 1, unless stated otherwise.\nIf no quantity is given, treat is as quantity = 1\n\nIf user is using a plural name like 'beers', 'bananas' or 'grapes', the item_name is always the single name like 'beer', 'banana' or 'grape'\n\n1. Output **only** a JSON object. No explanations. No markdown. No commentary.\n2. All keys must exist. Never omit a required field.\n3. Use **double quotes** for all strings.\n4. For missing values, use **null** (not \"null\").\n5. For \"quantity\", output a **number**, never a string.\n6. Today's date is {{$now}}.\nInterpret dates relative to this value.\n\nRules:\n- \"yesterday\" = today minus exactly 1 day\n- \"the day before yesterday\" = today minus 2 days\n- \"tomorrow\" = today plus 1 day\n- \"last week\" = today minus 7 days\n\n7. \"description\": a short human description of the expense.\n8. \"has_receipt\": true only if the text explicitly mentions a receipt.\n9. \"payment_method\":\n   - If mentioned (cash/card/debit/credit/etc), use it.\n   - Otherwise: \"cash\".\n10. \"items\": always output an array.\n11. Extract every item mentioned in the text:\n    - Drinks, food, services, activities.\n12. If an item has no price → unit_price = null, total_price = null.\n13. If the place is mentioned (e.g., Bali Social Club) → set \"location\" to that string.\n14. Activities:\n   Detect activities only when the text clearly refers to a place or activity that implies spending money.\n15. If the price paid (per unit or in total) contains the currency (like euro, dollar, idr, ...), drop the currency and only output the amount (or number)\n16. If the text clearly indicates spending money but does NOT mention any specific item names:\n\n   - Create ONE fallback item.\n   - Use the following logic:\n\n     If the text mentions \"drinks\", \"drinking\", etc. → item_name = \"various drinks\"\n     If the text mentions a restaurant, fast food place, cafe → item_name = \"various food\"\n     Otherwise → item_name = \"miscellaneous purchase\"\n\n   - quantity = 1\n   - unit_price = null\n   - total_price = \"<the amount mentioned>\"\n   - location = \"<the location if mentioned>\"\n\n   Use the following mapping:\n\n   - If the text contains \"padel\"  → item_name = \"Padel Session Fee\"\n   - If the text contains \"amusement park\", \"theme park\", \"fun park\", \"park ticket\" → item_name = \"Amusement Park Entry Fee\"\n   - If the text contains \"gym\", \"fitness\", \"workout\" → item_name = \"Gym Session Fee\"\n   - If the text contains \"cinema\", \"movie\", \"film\" → item_name = \"Cinema Ticket\"\n   - If the text contains \"bowling\" → item_name = \"Bowling Game Fee\"\n   - If the text contains \"museum\" → item_name = \"Museum Ticket\"\n   - If the text contains \"swimming\", \"pool\" → item_name = \"Swimming Pool Entry Fee\"\n\n   If an activity does NOT match the above list → do NOT infer or create a service item.\n\n   Each activity item should follow this format:\n   {\n     \"item_name\": \"<mapped name>\",\n     \"quantity\": 1,\n     \"unit_price\": \"<price or null>\",\n     \"total_price\": \"<price or null>\",\n     \"location\": \"<place or null>\"\n   }\n\nSTRICT ANTI-HALLUCINATION RULE (MANDATORY):\n\nNever guess, infer, or invent any missing information.\n\nIf the text does not explicitly mention a price, you must set\n\"unit_price\": null and \"total_price\": null.\n\nYou must not estimate or assume typical or likely prices.\n\nIf the user does not provide a number → leave it null."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -80,35 +80,6 @@
     },
     {
       "parameters": {
-        "operation": "getAll",
-        "tableId": "item_categories",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "item_keyword",
-              "condition": "eq",
-              "keyValue": "={{ $json.item_name.toLowerCase() }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        688,
-        -80
-      ],
-      "id": "924acc9e-fad7-4c50-91ce-d5dd08e893cd",
-      "name": "Get many rows",
-      "credentials": {
-        "supabaseApi": {
-          "id": "uR11DW6nxElpCIXq",
-          "name": "Supabase Aistralis"
-        }
-      }
-    },
-    {
-      "parameters": {
         "fieldToSplitOut": "output.items",
         "options": {}
       },
@@ -138,48 +109,12 @@
     },
     {
       "parameters": {
-        "operation": "getAll",
-        "tableId": "knowledge_base",
-        "matchType": "allFilters",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "location",
-              "condition": "eq",
-              "keyValue": "={{ $('Loop Over Items').item.json.location.toLowerCase() }}"
-            },
-            {
-              "keyName": "item_name",
-              "condition": "eq",
-              "keyValue": "={{ $json.item_name.toLowerCase() }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        208,
-        -64
-      ],
-      "id": "40bfc82d-e257-45df-b7ec-41cccfe6ee40",
-      "name": "Get many rows1",
-      "alwaysOutputData": true,
-      "credentials": {
-        "supabaseApi": {
-          "id": "uR11DW6nxElpCIXq",
-          "name": "Supabase Aistralis"
-        }
-      }
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
               "id": "2feeff6d-adc8-4529-bab4-078a39d18875",
               "name": "total_price",
-              "value": "={{ (parseFloat($('Get many rows1').item.json.unit_price) || 0) * (parseFloat($('Loop Over Items').item.json.quantity) || 0) }}\n",
+              "value": "={{ (parseFloat($('in KB?').item.json.unit_price) || 0) * (parseFloat($('Loop Over Items').item.json.quantity) || 0) }}\n",
               "type": "number"
             },
             {
@@ -203,19 +138,19 @@
             {
               "id": "ebe3e411-5961-42dc-bd38-326a5340a2fe",
               "name": "location",
-              "value": "={{ $('Get many rows1').item.json.location }}",
+              "value": "={{ $('in KB?').item.json.location }}",
               "type": "string"
             },
             {
               "id": "7fa2dce0-07cc-4428-993b-ee7ff91c9f8f",
               "name": "item_name",
-              "value": "={{ $('Get many rows1').item.json.item_name }}",
+              "value": "={{ $('in KB?').item.json.item_name }}",
               "type": "string"
             },
             {
               "id": "40147e72-3e39-46f2-b8f2-d63a77b7855d",
               "name": "unit_price",
-              "value": "={{ $('Get many rows1').item.json.unit_price }}",
+              "value": "={{ $('in KB?').item.json.unit_price }}",
               "type": "string"
             },
             {
@@ -233,8 +168,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1008,
-        -64
+        1024,
+        -80
       ],
       "id": "a391d2a8-0ca1-4551-964d-d7be16e447e7",
       "name": "Edit Fields1"
@@ -381,49 +316,10 @@
     },
     {
       "parameters": {
-        "tableId": "knowledge_base",
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "location",
-              "fieldValue": "={{ $('Loop Over Items').item.json.location.toLowerCase() }}"
-            },
-            {
-              "fieldId": "item_name",
-              "fieldValue": "={{ $('Loop Over Items').item.json.item_name.toLowerCase() }}"
-            },
-            {
-              "fieldId": "unit_price",
-              "fieldValue": "={{ $('Loop Over Items').item.json.unit_price || $('Loop Over Items').item.json.total_price / $('Loop Over Items').item.json.quantity }}"
-            },
-            {
-              "fieldId": "type",
-              "fieldValue": "={{ $json.output }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        1168,
-        144
-      ],
-      "id": "4298e1eb-e990-408c-b668-d3a435e2f17e",
-      "name": "Create a row",
-      "credentials": {
-        "supabaseApi": {
-          "id": "uR11DW6nxElpCIXq",
-          "name": "Supabase Aistralis"
-        }
-      }
-    },
-    {
-      "parameters": {
         "promptType": "define",
         "text": "={{ $('Loop Over Items').item.json.item_name }}",
         "options": {
-          "systemMessage": "You are a helpful assistant and you have to classify what the item is in.\nThe options are: alcohol, drinks, sports, tobacco, snacks, food, leisure, fruit\nOnly output the option you have found, nothing else"
+          "systemMessage": "=You are a helpful assistant and you have to classify what the item is in.\nThe options are: alcohol, drinks, sports, tobacco, snacks, food, leisure, fruit\nOnly output the option you have found, nothing else"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -463,112 +359,48 @@
     },
     {
       "parameters": {
-        "tableId": "item_categories",
-        "fieldsUi": {
-          "fieldValues": [
-            {
-              "fieldId": "item_keyword",
-              "fieldValue": "={{ $('Loop Over Items').item.json.item_name }}"
-            },
-            {
-              "fieldId": "subcategory",
-              "fieldValue": "={{ $json.name }}"
-            },
-            {
-              "fieldId": "category_id",
-              "fieldValue": "={{ $json.id }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        1632,
-        160
-      ],
-      "id": "b6319621-59c7-47e3-956e-1b2989f1ebb4",
-      "name": "Create a row1",
-      "credentials": {
-        "supabaseApi": {
-          "id": "uR11DW6nxElpCIXq",
-          "name": "Supabase Aistralis"
-        }
-      },
-      "onError": "continueErrorOutput"
-    },
-    {
-      "parameters": {
-        "operation": "get",
-        "tableId": "categories",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "name",
-              "keyValue": "={{ $('AI Agent1').item.json.output }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        1392,
-        144
-      ],
-      "id": "6df503ce-a4ea-4800-b036-ba32e0af0dd2",
-      "name": "Get a row",
-      "credentials": {
-        "supabaseApi": {
-          "id": "uR11DW6nxElpCIXq",
-          "name": "Supabase Aistralis"
-        }
-      }
-    },
-    {
-      "parameters": {
         "assignments": {
           "assignments": [
             {
               "id": "2feeff6d-adc8-4529-bab4-078a39d18875",
               "name": "total_price",
-              "value": "={{ parseFloat($('Create a row').item.json.unit_price || 0) * (parseFloat($('Loop Over Items').item.json.quantity) || 0) }}\n",
+              "value": "={{ parseFloat($('Create in KB').item.json.unit_price || 0) * (parseFloat($('Loop Over Items').item.json.quantity) || 0) }}\n",
               "type": "number"
             },
             {
               "id": "c340caa5-a9e4-482e-8992-3e9d5035dca5",
               "name": "item_name",
-              "value": "={{ $('Create a row').item.json.item_name }}",
+              "value": "={{ $('Create in KB').item.json.item_name }}",
               "type": "string"
             },
             {
               "id": "d3c80b5f-c334-4d9f-b2fc-64bef76105ff",
               "name": "subcategory",
-              "value": "={{ $('Get a row').item.json.name }}",
+              "value": "={{ $('Get Categories1').item.json.name }}",
               "type": "string"
             },
             {
               "id": "ede17fca-9b71-4c1f-a7b3-51f403e4ad93",
               "name": "category_id",
-              "value": "={{ $('Get a row').item.json.id }}",
+              "value": "={{ $('Get Categories1').item.json.id }}",
               "type": "string"
             },
             {
               "id": "ebe3e411-5961-42dc-bd38-326a5340a2fe",
               "name": "location",
-              "value": "={{ $('Create a row').item.json.location }}",
+              "value": "={{ $('Create in KB').item.json.location }}",
               "type": "string"
             },
             {
               "id": "7fa2dce0-07cc-4428-993b-ee7ff91c9f8f",
               "name": "item_name",
-              "value": "={{ $('Create a row').item.json.item_name }}",
+              "value": "={{ $('Create in KB').item.json.item_name }}",
               "type": "string"
             },
             {
               "id": "40147e72-3e39-46f2-b8f2-d63a77b7855d",
               "name": "unit_price",
-              "value": "={{ $('Create a row').item.json.unit_price }}",
+              "value": "={{ $('Create in KB').item.json.unit_price }}",
               "type": "string"
             },
             {
@@ -586,8 +418,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1792,
-        480
+        1872,
+        432
       ],
       "id": "6584b987-06b2-45e2-9acb-67731235f484",
       "name": "Edit Fields2"
@@ -765,6 +597,174 @@
       ],
       "id": "3b2302ce-16a9-4c36-b223-24e00f36a45c",
       "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "knowledge_base",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "location",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop Over Items').item.json.location.toLowerCase() }}"
+            },
+            {
+              "keyName": "item_name",
+              "condition": "eq",
+              "keyValue": "={{ $json.item_name.toLowerCase() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        208,
+        -64
+      ],
+      "id": "40bfc82d-e257-45df-b7ec-41cccfe6ee40",
+      "name": "in KB?",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "uR11DW6nxElpCIXq",
+          "name": "Supabase Aistralis"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "item_categories",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "item_keyword",
+              "condition": "eq",
+              "keyValue": "={{ $json.item_name.toLowerCase() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        688,
+        -80
+      ],
+      "id": "924acc9e-fad7-4c50-91ce-d5dd08e893cd",
+      "name": "Get Categories",
+      "credentials": {
+        "supabaseApi": {
+          "id": "uR11DW6nxElpCIXq",
+          "name": "Supabase Aistralis"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "knowledge_base",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "location",
+              "fieldValue": "={{ $('Loop Over Items').item.json.location.toLowerCase() }}"
+            },
+            {
+              "fieldId": "item_name",
+              "fieldValue": "={{ $('Loop Over Items').item.json.item_name.toLowerCase() }}"
+            },
+            {
+              "fieldId": "unit_price",
+              "fieldValue": "={{ $('Loop Over Items').item.json.unit_price || $('Loop Over Items').item.json.total_price / $('Loop Over Items').item.json.quantity }}"
+            },
+            {
+              "fieldId": "type",
+              "fieldValue": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1168,
+        144
+      ],
+      "id": "4298e1eb-e990-408c-b668-d3a435e2f17e",
+      "name": "Create in KB",
+      "credentials": {
+        "supabaseApi": {
+          "id": "uR11DW6nxElpCIXq",
+          "name": "Supabase Aistralis"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "categories",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "name",
+              "keyValue": "={{ $('AI Agent1').item.json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1392,
+        144
+      ],
+      "id": "6df503ce-a4ea-4800-b036-ba32e0af0dd2",
+      "name": "Get Categories1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "uR11DW6nxElpCIXq",
+          "name": "Supabase Aistralis"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "item_categories",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "item_keyword",
+              "fieldValue": "={{ $('Loop Over Items').item.json.item_name.toLowerCase() }}"
+            },
+            {
+              "fieldId": "subcategory",
+              "fieldValue": "={{ $json.name }}"
+            },
+            {
+              "fieldId": "category_id",
+              "fieldValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        1632,
+        144
+      ],
+      "id": "b6319621-59c7-47e3-956e-1b2989f1ebb4",
+      "name": "Create Item Category",
+      "credentials": {
+        "supabaseApi": {
+          "id": "uR11DW6nxElpCIXq",
+          "name": "Supabase Aistralis"
+        }
+      },
+      "onError": "continueErrorOutput"
     }
   ],
   "connections": {
@@ -812,17 +812,6 @@
         ]
       ]
     },
-    "Get many rows": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Split Out": {
       "main": [
         [
@@ -845,18 +834,7 @@
         ],
         [
           {
-            "node": "Get many rows1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many rows1": {
-      "main": [
-        [
-          {
-            "node": "If",
+            "node": "in KB?",
             "type": "main",
             "index": 0
           }
@@ -905,7 +883,7 @@
       "main": [
         [
           {
-            "node": "Get many rows",
+            "node": "Get Categories",
             "type": "main",
             "index": 0
           }
@@ -937,22 +915,11 @@
         ]
       ]
     },
-    "Create a row": {
-      "main": [
-        [
-          {
-            "node": "Get a row",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "AI Agent1": {
       "main": [
         [
           {
-            "node": "Create a row",
+            "node": "Create in KB",
             "type": "main",
             "index": 0
           }
@@ -965,35 +932,6 @@
           {
             "node": "AI Agent1",
             "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Create a row1": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields2",
-            "type": "main",
-            "index": 0
-          }
-        ],
-        [
-          {
-            "node": "Edit Fields2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get a row": {
-      "main": [
-        [
-          {
-            "node": "Create a row1",
-            "type": "main",
             "index": 0
           }
         ]
@@ -1080,6 +1018,68 @@
           }
         ]
       ]
+    },
+    "in KB?": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Categories": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create in KB": {
+      "main": [
+        [
+          {
+            "node": "Get Categories1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Categories1": {
+      "main": [
+        [
+          {
+            "node": "Create Item Category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Item Category": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1093,13 +1093,13 @@
     "When Executed by Another Workflow": [
       {
         "json": {
-          "query": "4 days ago: - 2 bananas for 1.2 - cheese for 2.7 - bread for 1.1 - butter for 0.9 at The Farmer House"
+          "query": "4 days ago I played padel at club Olympus"
         }
       }
     ]
   },
-  "versionId": "c82309b6-acc3-461c-9b15-fac4cca1ae9a",
-  "versionCounter": 198,
+  "versionId": "ddd22e1a-e1de-4d0c-a0a8-93a1eaa5e48b",
+  "versionCounter": 202,
   "triggerCount": 0,
   "shared": [
     {
@@ -1123,7 +1123,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-02T00:00:36.327Z",
+              "updatedAt": "2025-12-14T00:00:41.353Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -1150,7 +1150,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-01",
+              "lastActiveAt": "2025-12-13",
               "isPending": false
             }
           }
