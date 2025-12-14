@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-01T18:45:08.813Z",
+  "updatedAt": "2025-12-10T06:32:25.869Z",
   "createdAt": "2025-11-14T10:10:30.304Z",
   "id": "szUDREfsQyI0SRBC",
   "name": "Private Financial Assistant",
@@ -24,8 +24,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -32,
-        -96
+        288,
+        -272
       ],
       "id": "7ba2f828-4a9b-4683-9ce5-a479d2696c4b",
       "name": "Edit Fields"
@@ -35,14 +35,14 @@
         "promptType": "define",
         "text": "={{ $json.question }}",
         "options": {
-          "systemMessage": "=You are a strict message router.\n\nYOUR RULES:\n1. Only process messages that come from the HUMAN.\n2. If the message originates from a TOOL → DO NOT THINK. Apply the IF THE TOOL RETURNED A RESULT rules directly.\n\nTOOL RULES (MANDATORY):\n- When a HUMAN message is an expense or write request, your **ONLY** response MUST be the correctly formatted tool call to 'Incoming_PFA'.\n- When a HUMAN message is a retrieval or data request, your **ONLY** response MUST be the correctly formatted tool call to 'Retrieval_PFA'.\n- Forward the HUMAN'S raw message text exactly as received as the tool input.\n- **NEVER** generate any text, commentary, or summary when you are making a tool call.\n- **CRITICAL BLOCK:** DO NOT output any text that starts with \"Used tools:\", \"Tool:\", \"Result:\", or \"Input:\". This is internal log information that must never be exposed.\n- **CRITICAL TRANSACTION RULE:** If the human input is a single message containing a list, multiple line items, or a single receipt image, you MUST treat it as ONE SINGLE TRANSACTION. You must call the 'Incoming_PFA' tool **ONLY ONCE** with the entire, complete text input. NEVER split a single message into multiple tool calls.\n- NEVER GIVE YOUR OWN OPNION, YOU ONLY OUTPUT WHAT IS GIVEN TO YOU BY THE TOOLS OR SUB-AGENTS\n\nIF THE TOOL RETURNED A RESULT:\n\n- **CRITICAL OUTPUT RULE:** Your final output MUST be clean and concise.\n\n- **1. ASK/QUESTION RESULT:** If the tool result contains the field \"ask\", you MUST output **ONLY** the text value of the \"ask\" field.\n\n- **2. FINAL CONFIRMATION RESULT:** If the tool result contains \"response\" or \"answer\", you MUST output **ONLY** the text value of the \"response\" or \"answer\" field.\n\n- **MANDATORY NEGATIVE CONSTRAINT (READ THIS CAREFULLY):** Under no circumstances are you to include any of your internal reasoning, tool execution logs, or traces in your final output. **DO NOT output any text that starts with \"Used tools:\", \"Tool:\", \"Input:\", \"Result:\", or any summary of the action you took.** Output **ONLY** the content requested above.\n\nDETECTION:\nIf the message contains fields like: \"ask\", \"item_name\", \"result\", \"output\" → This is a tool result → Apply the IF THE TOOL RETURNED A RESULT rules.\n\nDEFAULT:\nIf unsure → call Incoming_PFA (the write tool).\n\n\nCRITICAL EXECUTION RULE: You are a Tool Orchestrator, not a confirmation system. NEVER generate a confirmation message (e.g., \"I have logged the expense,\" or \"Data was added to the database\"). After calling a tool, your sole output is the raw JSON result received from that tool, which the main workflow will use for final message generation.\n"
+          "systemMessage": "=You are a strict message router.\n\nYOUR RULES:\n1. Only process messages that come from the HUMAN.\n2. If the message originates from a 'Incoming_pfa' TOOL → DO NOT THINK. Apply the IF THE TOOL RETURNED A RESULT rules directly.\n\nTOOL RULES (MANDATORY):\n- When a HUMAN message is an expense or write request, your **ONLY** response MUST be the correctly formatted tool call to 'Incoming_PFA'.\n- When a HUMAN message is a retrieval or data request, your **ONLY** response MUST be the correctly formatted tool call to 'Retrieval_PFA'.\n- Forward the HUMAN'S raw message text exactly as received as the tool input.\n- **NEVER** generate any text, commentary, or summary when you are making a tool call.\n- **CRITICAL BLOCK:** DO NOT output any text that starts with \"Used tools:\", \"Tool:\", \"Result:\", or \"Input:\". This is internal log information that must never be exposed.\n- **CRITICAL TRANSACTION RULE:** If the human input is a single message containing a list, multiple line items, or a single receipt image, you MUST treat it as ONE SINGLE TRANSACTION. You must call the 'Incoming_PFA' tool **ONLY ONCE** with the entire, complete text input. NEVER split a single message into multiple tool calls.\n- NEVER GIVE YOUR OWN OPNION, YOU ONLY OUTPUT WHAT IS GIVEN TO YOU BY THE TOOLS OR SUB-AGENTS\n\nIF THE TOOL RETURNED A RESULT:\n- if you receive a result from the Call 'Retrieval_PFA'tool, you may create your own answer\n\n- **CRITICAL OUTPUT RULE:** Your final output MUST be clean and concise.\n\n- **1. ASK/QUESTION RESULT:** If the tool result contains the field \"ask\", you MUST output **ONLY** the text value of the \"ask\" field.\n\n- **2. FINAL CONFIRMATION RESULT:** If the tool result contains \"response\" or \"answer\", you MUST output **ONLY** the text value of the \"response\" or \"answer\" field.\n\n- **MANDATORY NEGATIVE CONSTRAINT (READ THIS CAREFULLY):** Under no circumstances are you to include any of your internal reasoning, tool execution logs, or traces in your final output. **DO NOT output any text that starts with \"Used tools:\", \"Tool:\", \"Input:\", \"Result:\", or any summary of the action you took.** Output **ONLY** the content requested above.\n\nDETECTION:\nIf the message contains fields like: \"ask\", \"item_name\", \"result\", \"output\" → This is a tool result → Apply the IF THE TOOL RETURNED A RESULT rules.\n\nDEFAULT:\nIf unsure → call Incoming_PFA (the write tool).\n\n\nCRITICAL EXECUTION RULE: You are a Tool Orchestrator, not a confirmation system. NEVER generate a confirmation message (e.g., \"I have logged the expense,\" or \"Data was added to the database\"). After calling a tool, your sole output is the raw JSON result received from that tool, which the main workflow will use for final message generation.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        160,
-        -96
+        864,
+        -48
       ],
       "id": "1c06c774-8452-4eb8-a79a-0459f9acd9d3",
       "name": "AI Agent"
@@ -63,8 +63,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -128,
-        144
+        736,
+        176
       ],
       "id": "eafe6a95-91ae-42a5-b718-87c0d7d0a845",
       "name": "OpenAI Chat Model",
@@ -93,8 +93,8 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        192,
-        144
+        992,
+        176
       ],
       "id": "fd66f054-1851-4ff3-91ba-212fd7dd94e7",
       "name": "Call 'Incoming_PFA'"
@@ -109,8 +109,8 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.2,
       "position": [
-        -256,
-        -96
+        -384,
+        -48
       ],
       "id": "1901e772-930c-484e-9655-0a45f4fe49df",
       "name": "Telegram Trigger",
@@ -126,13 +126,13 @@
       "parameters": {
         "sessionIdType": "customKey",
         "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
-        "contextWindowLength": "=5"
+        "contextWindowLength": "=2"
       },
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.3,
       "position": [
-        32,
-        144
+        864,
+        176
       ],
       "id": "597221c3-50b4-4043-94f0-04e3fa762360",
       "name": "Simple Memory"
@@ -148,8 +148,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        512,
-        -96
+        1328,
+        -48
       ],
       "id": "349632c2-d8d3-43ea-af20-0194e2676e31",
       "name": "Send a text message",
@@ -179,11 +179,242 @@
       "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
       "typeVersion": 2.2,
       "position": [
-        416,
-        144
+        1120,
+        176
       ],
       "id": "58f1083e-a54a-4552-a058-5c5e43070028",
       "name": "Call 'Retrieval_PFA'"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": 8888888888,
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "d49ca100-7147-4b16-9985-a6bfc854c5b9"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Text"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "c75c1b20-6c6f-4674-9f95-0d093f89c0ed",
+                    "leftValue": "={{ $json.message.photo[0].file_unique_id }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Image"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "2ae6e04c-b29a-4ab4-a825-9dc93aef51b2",
+                    "leftValue": "={{ $json.message.voice.mime_type }}",
+                    "rightValue": "audio/ogg",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Audio"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.3,
+      "position": [
+        -160,
+        -64
+      ],
+      "id": "104d9e81-85d8-4d74-875d-b031f10a1856",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $('Telegram Trigger').item.json.message.photo[3].file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        -48
+      ],
+      "id": "e70d7d84-1e35-4e3c-9e41-fdc406ba8ab2",
+      "name": "Get a file1",
+      "webhookId": "d422cba1-8516-4f29-9e96-5ac447a8ef56",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "text": "get the text from this image and only output the text, nothing else",
+        "inputType": "binary",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        288,
+        -48
+      ],
+      "id": "a9c8fb82-e8d3-4755-b23d-1015742976bc",
+      "name": "Analyze an image",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "hxuUpUy1J8QhbA96",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ed424dd5-2a15-4eb5-a5ce-1a322f07e811",
+              "name": "question",
+              "value": "={{ $json.content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        512,
+        -48
+      ],
+      "id": "a20c0b88-9a9f-476e-9b88-83987977f579",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        144
+      ],
+      "id": "e8938f9a-2155-4dd3-9588-e1c0a1f508e0",
+      "name": "Get a file",
+      "webhookId": "9a5e098b-8e97-408d-abb1-d66e57ce2408",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2,
+      "position": [
+        288,
+        144
+      ],
+      "id": "43e7dc63-2496-401a-b172-c876f448d295",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "452b8e3a-70ee-493e-b7cb-17d0142b995f",
+              "name": "question",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        512,
+        144
+      ],
+      "id": "04a4f47b-12c1-4f78-ada5-64c9b1a377c2",
+      "name": "Edit Fields2"
     }
   ],
   "connections": {
@@ -224,7 +455,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "Switch",
             "type": "main",
             "index": 0
           }
@@ -268,6 +499,97 @@
           }
         ]
       ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file1": {
+      "main": [
+        [
+          {
+            "node": "Analyze an image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze an image": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -281,9 +603,9 @@
     "Telegram Trigger": [
       {
         "json": {
-          "update_id": 181780929,
+          "update_id": 181781015,
           "message": {
-            "message_id": 3381,
+            "message_id": 3550,
             "from": {
               "id": 2034253630,
               "is_bot": false,
@@ -299,15 +621,21 @@
               "username": "peter_aurelius",
               "type": "private"
             },
-            "date": 1764610878,
-            "text": "on what did I spend the most money in the last 7 days?"
+            "date": 1764651455,
+            "voice": {
+              "duration": 2,
+              "mime_type": "audio/ogg",
+              "file_id": "AwACAgUAAxkBAAIN3mkucb-6URVoWh1pLz5v3wumoG48AAKkGAACH0p5VUB34ECZ-2GmNgQ",
+              "file_unique_id": "AgADpBgAAh9KeVU",
+              "file_size": 9042
+            }
           }
         }
       }
     ]
   },
-  "versionId": "67b2a2d1-6d27-42c2-91d5-8c5244297f32",
-  "versionCounter": 149,
+  "versionId": "582935be-fc27-478e-8065-449369dde522",
+  "versionCounter": 192,
   "triggerCount": 1,
   "shared": [
     {
@@ -331,7 +659,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-02T00:00:36.327Z",
+              "updatedAt": "2025-12-14T00:00:41.353Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -358,7 +686,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-01",
+              "lastActiveAt": "2025-12-13",
               "isPending": false
             }
           }
