@@ -1045,9 +1045,14 @@
     },
     "node:Gmail Trigger": {
       "Gmail Trigger": {
-        "lastTimeChecked": 1765632428,
+        "lastTimeChecked": 1765714074,
         "possibleDuplicates": [
-          "19b17e4ca4f60072"
+          "19b1cc29e2fc0eb1",
+          "19b1c9266358cbbc",
+          "19b1c3bb12a6b9d7",
+          "19b1c39b42f22ce9",
+          "19b1c38e74488b3a",
+          "19b1c261c69a55ed"
         ]
       }
     }
@@ -1107,7 +1112,7 @@
     ]
   },
   "versionId": "dcbdc1b6-cadf-410d-95df-ce1a27e80e4f",
-  "versionCounter": 99,
+  "versionCounter": 108,
   "triggerCount": 6,
   "shared": [
     {
@@ -1131,7 +1136,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-14T00:00:41.353Z",
+              "updatedAt": "2025-12-15T00:00:42.365Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -1158,7 +1163,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-13",
+              "lastActiveAt": "2025-12-14",
               "isPending": false
             }
           }
