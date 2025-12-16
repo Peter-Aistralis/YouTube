@@ -1,0 +1,1101 @@
+{
+  "updatedAt": "2025-12-15T14:49:03.582Z",
+  "createdAt": "2025-12-13T18:16:18.030Z",
+  "id": "wYPvqbZoy4blC07X",
+  "name": "Enrich-nok",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://api.bounceban.com/v1/verify/single",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "email",
+              "value": "={{ $json.email }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        96,
+        128
+      ],
+      "id": "8cf9601a-dfdf-496d-a1e2-7859a87bcf88",
+      "name": "Email Check"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f1798f3-2bd2-469a-9d4e-776e768a5a52",
+              "name": "Name",
+              "value": "={{ $json['What is your full name?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "487716ed-81c2-4dc4-8b14-449546bf107d",
+              "name": "email",
+              "value": "={{ $json['What is your email address?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "03b1092b-c225-4c03-a38a-4f76b5eeb943",
+              "name": "question",
+              "value": "={{ $json['What is the reason you would like to contact us?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "80f8249e-0263-4137-88ff-bd63945ed766",
+              "name": "source",
+              "value": "Stripe",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        -160
+      ],
+      "id": "66c8db94-1f3d-4433-a6e3-410ca1d966f5",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f1798f3-2bd2-469a-9d4e-776e768a5a52",
+              "name": "Name",
+              "value": "={{ $json.attendees[0].name }}",
+              "type": "string"
+            },
+            {
+              "id": "487716ed-81c2-4dc4-8b14-449546bf107d",
+              "name": "email",
+              "value": "={{ $json.attendees[0].email }}",
+              "type": "string"
+            },
+            {
+              "id": "03b1092b-c225-4c03-a38a-4f76b5eeb943",
+              "name": "question",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "89052f21-e16d-42d3-867c-1013a9dfe85b",
+              "name": "source",
+              "value": "Cal",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        32
+      ],
+      "id": "c4269a71-a417-40a8-9654-2ede4c644b8a",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f1798f3-2bd2-469a-9d4e-776e768a5a52",
+              "name": "Name",
+              "value": "={{ $json.body.name }}",
+              "type": "string"
+            },
+            {
+              "id": "487716ed-81c2-4dc4-8b14-449546bf107d",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "03b1092b-c225-4c03-a38a-4f76b5eeb943",
+              "name": "question",
+              "value": "={{ $json.body.message }}",
+              "type": "string"
+            },
+            {
+              "id": "68647370-2e48-44fc-9e4c-3288dc79f28b",
+              "name": "source",
+              "value": "={{ $json.body.source }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        224
+      ],
+      "id": "02f19b84-3e42-4342-949b-af6ec04ecff5",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f1798f3-2bd2-469a-9d4e-776e768a5a52",
+              "name": "Name",
+              "value": "={{ $json['What is your full name?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "487716ed-81c2-4dc4-8b14-449546bf107d",
+              "name": "email",
+              "value": "={{ $json['What is your email address?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "03b1092b-c225-4c03-a38a-4f76b5eeb943",
+              "name": "question",
+              "value": "={{ $json['What is the reason you would like to contact us?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "68647370-2e48-44fc-9e4c-3288dc79f28b",
+              "name": "source",
+              "value": "Instantly Reply",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        416
+      ],
+      "id": "9b55a389-71d1-4102-9fab-826f46bf7c70",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4eb52f14-3918-467f-a652-eba8e8cd80c0",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 60,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1216,
+        -128
+      ],
+      "id": "2385f0ef-1665-4af6-8ccf-ded4c45dc1a4",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f7d31f33-f9b3-4e84-a520-d84fe99a04c9",
+              "leftValue": "={{ $json.result }}",
+              "rightValue": "deliverable",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "86462fb1-a789-4b8c-be92-4ff8f7c67bfe",
+              "leftValue": "={{ $('Extract Domain').item.json.isPersonal }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        128
+      ],
+      "id": "8e56aa67-65b9-4473-89d0-7fc7e3d28da5",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.apollo.io/v1/people/match",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "email",
+              "value": "={{ $json.email }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        576,
+        -128
+      ],
+      "id": "7ef32665-01d1-4937-9981-5b213a03b95f",
+      "name": "Enrich Person"
+    },
+    {
+      "parameters": {
+        "url": "https://api.apollo.io/api/v1/organizations/enrich",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "x-api-key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "domain",
+              "value": "={{ $('Extract Domain').item.json.domain }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        800,
+        -128
+      ],
+      "id": "bb06c419-fd1e-46a2-9f29-738a79eb2e43",
+      "name": "Enrich Company"
+    },
+    {
+      "parameters": {
+        "jsCode": "const apollo = $json[0] || {};\nconst org = $input.first().json.organization || {};\n\nlet score = 0;\nlet reasons = [];\n\nif (org.estimated_num_employees) {\n  const employees = org.estimated_num_employees;\n\n  if (employees > 5000) { score += 30; reasons.push(\"Large enterprise\"); }\n  else if (employees > 1000) { score += 25; reasons.push(\"Mid-large company\"); }\n  else if (employees > 200) { score += 20; reasons.push(\"Growing company\"); }\n  else if (employees > 20) { score += 10; reasons.push(\"Small company\"); }\n  else { score += 5; reasons.push(\"Tiny company\"); }\n} else {\n  reasons.push(\"Unknown company size\");\n}\n\n\nconst industry = (org.industry || org.industries?.[0] || \"\").toLowerCase();\n\nif (\n  industry.includes(\"software\") ||\n  industry.includes(\"technology\") ||\n  industry.includes(\"ai\") ||\n  industry.includes(\"research\") ||       \n  industry.includes(\"development\") ||\n  industry.includes(\"engineering\")\n) {\n  score += 20;\n  reasons.push(\"Relevant industry: tech / AI / research / engineering\");\n}\n\nif (industry.includes(\"consulting\")) {\n  score += 10;\n  reasons.push(\"Consulting industry (automation-friendly)\");\n}\n\n\nif (org.total_funding && org.total_funding > 0) {\n  if (org.total_funding > 1_000_000_000) {\n    score += 25;\n    reasons.push(\"Heavily funded company\");\n  } else if (org.total_funding > 100_000_000) {\n    score += 15;\n    reasons.push(\"Well funded\");\n  } else if (org.total_funding > 10_000_000) {\n    score += 10;\n    reasons.push(\"Moderately funded\");\n  }\n}\n\n\nlet onlinePresence = 0;\n\nif (org.linkedin_url) onlinePresence += 1;\nif (org.twitter_url)  onlinePresence += 1;\nif (org.facebook_url) onlinePresence += 1;\nif (org.website_url)  onlinePresence += 1;\n\nscore += onlinePresence * 3;\n\nif (onlinePresence >= 3) {\n  reasons.push(\"Strong online presence\");\n} else if (onlinePresence >= 1) {\n  reasons.push(\"Basic online presence\");\n}\n\n// Normalize score\nif (score > 100) score = 100;\n\n// Lead quality label\nlet quality = \"low\";\nif (score >= 75) quality = \"high\";\nelse if (score >= 40) quality = \"medium\";\n\n// Output\nreturn [{\n  score,\n  quality,\n  reasons,\n  companyName: org.name || null,\n  industry: org.industry || null,\n  employees: org.estimated_num_employees || null,\n  domain: org.primary_domain || null,\n  website: org.website_url || null,\n  funding: org.total_funding || null,\n  raw: org\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        992,
+        -128
+      ],
+      "id": "3b1a7d77-a88e-43b3-9ae4-793e3c532e18",
+      "name": "Score"
+    },
+    {
+      "parameters": {
+        "jsCode": "const email = $json.email || \"\";\n\nif (!email.includes('@')) {\n  return [{ ...$json, domain: null, companyName: \"Unknown\", isPersonal: true }];\n}\n\nconst domain = email.split('@')[1].toLowerCase();\n\nconst personalDomains = [\n  \"gmail.com\", \"yahoo.com\", \"hotmail.com\", \"outlook.com\",\n  \"icloud.com\", \"proton.me\", \"protonmail.com\", \"me.com\",\n  \"aol.com\", \"live.com\"\n];\n\n// Detect personal email\nconst isPersonal = personalDomains.includes(domain);\n\n// Company name logic\nlet companyName;\n\n// If personal email → use a fallback label\nif (isPersonal) {\n  companyName = \"Personal email (no company)\";\n} else {\n  // Convert domain (microsoft.com → Microsoft)\n  const root = domain.split('.')[0];\n  companyName = root.charAt(0).toUpperCase() + root.slice(1);\n}\n\n// Output everything cleanly\nreturn [{\n  ...$json,\n  domain,\n  isPersonal,\n  companyName\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        128
+      ],
+      "id": "da6f57ca-ba40-4672-ba2b-647070742e9c",
+      "name": "Extract Domain"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1VBHfgMT0trSYOcLoSnDcyvs4dzp9GFvyJ3dVPxWPG5U",
+          "mode": "list",
+          "cachedResultName": "Statistics",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VBHfgMT0trSYOcLoSnDcyvs4dzp9GFvyJ3dVPxWPG5U/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1768162165,
+          "mode": "list",
+          "cachedResultName": "incoming",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1VBHfgMT0trSYOcLoSnDcyvs4dzp9GFvyJ3dVPxWPG5U/edit#gid=1768162165"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('Extract Domain').item.json.email }}",
+            "legit": "={{ $('Email Check').item.json.result }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "message",
+              "displayName": "message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "legit",
+              "displayName": "legit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1424,
+        624
+      ],
+      "id": "7a53a5cc-1d1d-4e61-87dd-8380771b92ff",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyWeek"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -576,
+        608
+      ],
+      "id": "1b21d6d8-1ed5-4e3f-823c-5ff9f313862c",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f1798f3-2bd2-469a-9d4e-776e768a5a52",
+              "name": "Name",
+              "value": "={{ $json['What is your full name?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "487716ed-81c2-4dc4-8b14-449546bf107d",
+              "name": "email",
+              "value": "={{ $json['What is your email address?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "03b1092b-c225-4c03-a38a-4f76b5eeb943",
+              "name": "question",
+              "value": "={{ $json['What is the reason you would like to contact us?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "68647370-2e48-44fc-9e4c-3288dc79f28b",
+              "name": "source",
+              "value": "Instantly Reply",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        608
+      ],
+      "id": "4f8e500d-c613-470a-b37f-c27b6d1ddf53",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "#Finances"
+        },
+        "text": "=*New Lead Detected!*  \n\n*Score:* `{{ $json.score }}` / 100  \n*Quality:* *{{$json.quality.toUpperCase()}}*  \n\n*Name:* {{ $('Extract Domain').item.json.Name }}\n*Company:* {{$json.companyName || \"Unknown\"}}  \n*Industry:* {{$json.industry || \"Unknown\"}}  \n*Employees:* {{$json.employees || \"Unknown\"}}  \n*Website:* {{$json.website || \"—\"}}  \n\n*Why this lead scored {{$json.score}}:*\n{{$json.reasons.map(r => `• ${r}`).join(\"\\n\")}}\n\n*Email:* {{ $('Extract Domain').item.json.email|| \"Unknown\"}}  \n*Domain:* {{$json.domain || \"N/A\"}}\n\n*Source:* {{ $('Webhook').item.json.body.source }}",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1472,
+        -352
+      ],
+      "id": "28fdd2bf-ed50-4905-b6bd-b7b6f39b333b",
+      "name": "Slack - Send Message",
+      "webhookId": "b6841b06-ce53-458c-acc6-9ed1699e0034",
+      "credentials": {
+        "slackApi": {
+          "id": "V700Ft2dm0NEii1V",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "2c66c00e971980d28b88f2bb1caf0cba",
+          "mode": "id"
+        },
+        "title": "={{ $('Extract Domain').item.json.email }}",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Email|email",
+              "emailValue": "={{ $('Extract Domain').item.json.email }}"
+            },
+            {
+              "key": "Company|rich_text",
+              "textContent": "={{ $json.companyName }}"
+            },
+            {
+              "key": "Employees|number",
+              "numberValue": "={{ $('Enrich Company').item.json.organization.estimated_num_employees }}"
+            },
+            {
+              "key": "First Name|rich_text",
+              "textContent": "={{ $('Enrich Person').item.json.person.first_name || \"\"}}"
+            },
+            {
+              "key": "Funding|number",
+              "numberValue": "={{ $('Enrich Company').item.json.organization.total_funding }}"
+            },
+            {
+              "key": "Industry|rich_text",
+              "textContent": "={{ $('Enrich Company').item.json.organization.industry }}"
+            },
+            {
+              "key": "Last Name|rich_text",
+              "textContent": "={{ $('Enrich Person').item.json.person.last_name || \"\"}}"
+            },
+            {
+              "key": "LinkedIn |url",
+              "ignoreIfEmpty": true,
+              "urlValue": "={{ $('Enrich Person').item.json.person.linkedin_url || \"\" }}"
+            },
+            {
+              "key": "Quality|select",
+              "selectValue": "={{ $json.quality }}"
+            },
+            {
+              "key": "Name|title",
+              "title": "={{ $('Extract Domain').item.json.Name }}"
+            },
+            {
+              "key": "Score|number",
+              "numberValue": "={{ $json.score }}"
+            },
+            {
+              "key": "Website|rich_text",
+              "textContent": "={{ $json.website }}"
+            },
+            {
+              "key": "Source|rich_text",
+              "textContent": "Form Website"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1472,
+        -144
+      ],
+      "id": "06420fe3-d2c8-4744-be77-37729df13e17",
+      "name": "Notion - Create DB Page",
+      "credentials": {
+        "notionApi": {
+          "id": "AziN0Uk3Q10Fbsfr",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "peterjawel@gmail.com",
+        "subject": "iii",
+        "message": "iii",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1472,
+        48
+      ],
+      "id": "d5b11823-ee14-4689-bb62-2adf574889e0",
+      "name": "Send Mail",
+      "webhookId": "d6cf48e7-b858-4b91-abcb-ae85b2b3812e",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f1798f3-2bd2-469a-9d4e-776e768a5a52",
+              "name": "Name",
+              "value": "={{ $json['What is your full name?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "487716ed-81c2-4dc4-8b14-449546bf107d",
+              "name": "email",
+              "value": "={{ $json['What is your email address?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "03b1092b-c225-4c03-a38a-4f76b5eeb943",
+              "name": "question",
+              "value": "={{ $json['What is the reason you would like to contact us?'] }}",
+              "type": "string"
+            },
+            {
+              "id": "817e7658-3dc4-4101-9f4a-77a8d49bc997",
+              "name": "source",
+              "value": "Typeform",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -352,
+        -352
+      ],
+      "id": "3900cc87-dc55-4167-a0fa-e4c6f36110fb",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "formId": "wY2YNyGz"
+      },
+      "type": "n8n-nodes-base.typeformTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -576,
+        -352
+      ],
+      "id": "91464f62-7b03-4819-8324-bb5fd96df2a3",
+      "name": "Typeform Trigger",
+      "webhookId": "b6fa1e56-a876-48fe-b4ad-15ce6a82769c",
+      "credentials": {
+        "typeformApi": {
+          "id": "kz2XbML7zdJLf6YB",
+          "name": "Typeform account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "events": [
+          "checkout.session.completed",
+          "invoice.payment_succeeded"
+        ]
+      },
+      "type": "n8n-nodes-base.stripeTrigger",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        -160
+      ],
+      "id": "335c6a43-4278-41a4-88d4-5e3f0e0b0920",
+      "name": "Stripe Trigger",
+      "webhookId": "8d3c10e1-9469-4d17-bfcb-2e34ef9296f0",
+      "credentials": {
+        "stripeApi": {
+          "id": "OrIwrlLlaSKtsyH8",
+          "name": "Stripe account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "events": [
+          "BOOKING_CREATED"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.calTrigger",
+      "typeVersion": 2,
+      "position": [
+        -576,
+        32
+      ],
+      "id": "3c6fffe0-39d3-4cbc-a594-55e9a5ab9eae",
+      "name": "Cal.com Trigger",
+      "webhookId": "d58463f4-b927-4175-b230-96fd9817518e",
+      "credentials": {
+        "calApi": {
+          "id": "KKlLMBoEG0erzXvj",
+          "name": "Cal account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ceb55597-71f6-48ad-ac57-7fd78419ca87",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -576,
+        224
+      ],
+      "id": "a326b4e3-f6d8-40fc-b164-3daba6baac61",
+      "name": "Webhook",
+      "webhookId": "ceb55597-71f6-48ad-ac57-7fd78419ca87"
+    },
+    {
+      "parameters": {
+        "path": "f7b07fba-384b-4e4b-a98c-1ecbbbabb609",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -576,
+        416
+      ],
+      "id": "afe87488-dbea-42ce-a86a-b34c5511e03e",
+      "name": "Instantly",
+      "webhookId": "f7b07fba-384b-4e4b-a98c-1ecbbbabb609"
+    }
+  ],
+  "connections": {
+    "Email Check": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Extract Domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Extract Domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Extract Domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Extract Domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Slack - Send Message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Notion - Create DB Page",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Mail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Enrich Person",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich Person": {
+      "main": [
+        [
+          {
+            "node": "Enrich Company",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enrich Company": {
+      "main": [
+        [
+          {
+            "node": "Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Score": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Domain": {
+      "main": [
+        [
+          {
+            "node": "Email Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Extract Domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Extract Domain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Typeform Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Stripe Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cal.com Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instantly": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "3c3ec5e3-86fc-486e-9af8-52970470d9f0",
+  "versionCounter": 13,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-13T18:16:18.030Z",
+      "createdAt": "2025-12-13T18:16:18.030Z",
+      "role": "workflow:owner",
+      "workflowId": "wYPvqbZoy4blC07X",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-07-05T04:34:00.267Z",
+            "createdAt": "2025-07-05T04:34:00.267Z",
+            "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+            "projectId": "2KiFcKNLK1JyaklJ",
+            "user": {
+              "updatedAt": "2025-12-16T00:00:43.253Z",
+              "createdAt": "2025-07-05T04:33:38.764Z",
+              "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+              "email": "peterjawel@gmail.com",
+              "firstName": "peter",
+              "lastName": "aistralis",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-07-05T04:35:25.871Z",
+                "personalization_survey_n8n_version": "1.100.1",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "business-owner",
+                "reportedSource": "youtube"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "FAkXhJwuAslD2JDu",
+                "userActivatedAt": 1751716484498,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1753381963375
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2025-12-15",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ]
+}
