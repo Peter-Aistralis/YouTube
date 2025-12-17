@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-15T10:51:17.308Z",
+  "updatedAt": "2025-12-16T06:03:43.182Z",
   "createdAt": "2025-12-07T13:49:37.099Z",
   "id": "Ir2PQaIg7E3CoCwe",
   "name": "Parallelization_Sub",
@@ -10,7 +10,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=what is the capital of {{ $json.Name }}",
+        "text": "=You are an assistant that explains things carefully. When asked 'What is the capital of {{ $json.Name }}?', first reason for one sentence, then give the answer on a new line. Format your final answer as: 'The capital is [City].'",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -77,11 +77,78 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        560,
+        1072,
         16
       ],
       "id": "6236ce26-5d17-4908-a02e-8575f065b059",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1n7KX6bgXqG08eWcme2gUb9hfS99M7jRpD8MJb8Gev5o",
+          "mode": "list",
+          "cachedResultName": "Countries",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n7KX6bgXqG08eWcme2gUb9hfS99M7jRpD8MJb8Gev5o/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1n7KX6bgXqG08eWcme2gUb9hfS99M7jRpD8MJb8Gev5o/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('When Executed by Another Workflow').item.json.Name }}",
+            "Capital": "={{ $json.output }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Capital",
+              "displayName": "Capital",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        560,
+        16
+      ],
+      "id": "1f952eb8-944e-4e31-ac0a-c98f2641ee39",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "connections": {
@@ -111,6 +178,17 @@
       "main": [
         [
           {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
             "node": "Edit Fields",
             "type": "main",
             "index": 0
@@ -123,20 +201,22 @@
     "executionOrder": "v1"
   },
   "staticData": null,
-  "meta": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
   "pinData": {
     "When Executed by Another Workflow": [
       {
         "json": {
-          "row_number": 6,
-          "Name": "Italy",
+          "row_number": 11,
+          "Name": "China",
           "Capital": ""
         }
       }
     ]
   },
-  "versionId": "2c3edd93-5240-4744-adf0-3312a9e0d62d",
-  "versionCounter": 8,
+  "versionId": "9ebea100-b27f-41da-8e16-5bd7ac5c2d82",
+  "versionCounter": 13,
   "triggerCount": 0,
   "shared": [
     {
@@ -160,7 +240,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-16T00:00:43.253Z",
+              "updatedAt": "2025-12-17T00:00:16.651Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -187,7 +267,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-15",
+              "lastActiveAt": "2025-12-16",
               "isPending": false
             }
           }
