@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-15T12:37:29.607Z",
+  "updatedAt": "2025-12-16T06:05:01.581Z",
   "createdAt": "2025-12-15T12:37:24.888Z",
   "id": "J4KaeyAQMaW695su",
   "name": "Parallelization - Okay",
@@ -12,7 +12,7 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -624,
+        -688,
         80
       ],
       "id": "9a0d8560-db08-42e0-996f-ee88ee5fe74d",
@@ -39,7 +39,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -416,
+        -496,
         80
       ],
       "id": "98781454-3907-4107-99f5-dfc7ffb84599",
@@ -48,46 +48,6 @@
         "googleSheetsOAuth2Api": {
           "id": "XkUcr0YLOP2CkVg1",
           "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=what is the capital of {{ $json.Name }}",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3,
-      "position": [
-        224,
-        288
-      ],
-      "id": "4ac17b8d-cd79-48ff-b011-64986239fe2d",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "builtInTools": {},
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.3,
-      "position": [
-        0,
-        320
-      ],
-      "id": "d014c547-47ba-4fa0-84fa-85ec2e6f1e7a",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "TVzP9p8nOtsqZFLa",
-          "name": "OpenAi account"
         }
       }
     },
@@ -104,7 +64,6 @@
           "mappingMode": "defineBelow",
           "value": {}
         },
-        "mode": "each",
         "options": {
           "waitForSubWorkflow": false
         }
@@ -112,8 +71,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.3,
       "position": [
-        160,
-        80
+        144,
+        176
       ],
       "id": "24f3b1d4-c54c-4a79-b3a2-345283d0a2b3",
       "name": "Call 'Parallelization_Sub'"
@@ -193,7 +152,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -208,
+        -272,
         80
       ],
       "id": "cfa9ab9c-c60b-40d4-9670-a89e17762fde",
@@ -218,17 +177,6 @@
           {
             "node": "Loop Over Items",
             "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
             "index": 0
           }
         ]
@@ -269,9 +217,15 @@
   },
   "staticData": null,
   "meta": null,
-  "pinData": {},
-  "versionId": "004d41e8-c19a-48a3-87a7-7e2631078620",
-  "versionCounter": 2,
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "versionId": "fd38ca5c-70fb-42e7-8a9a-68660accbbf1",
+  "versionCounter": 10,
   "triggerCount": 0,
   "shared": [
     {
@@ -295,7 +249,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-16T00:00:43.253Z",
+              "updatedAt": "2025-12-17T00:00:16.651Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -322,7 +276,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-15",
+              "lastActiveAt": "2025-12-16",
               "isPending": false
             }
           }
