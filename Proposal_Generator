@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-19T18:35:56.600Z",
+  "updatedAt": "2025-12-20T18:17:02.313Z",
   "createdAt": "2025-12-18T07:08:42.857Z",
   "id": "jrHRA6w06ZVZSfCe",
   "name": "Proposal_Generator",
@@ -28,8 +28,8 @@
       "type": "n8n-nodes-base.notionTrigger",
       "typeVersion": 1,
       "position": [
-        -624,
-        -144
+        -864,
+        -128
       ],
       "id": "65f655e6-54ef-48af-86f9-67d5da989722",
       "name": "Notion Trigger",
@@ -46,14 +46,14 @@
         "text": "=",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are a Senior Systems Architect. Your task is to synthesize CRM data and Website Scrapes into a brutal, high-impact proposal.\n\n### INPUT DATA:\n- Pain Points: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n- Website Context: {{ $json.results[0].raw_content }}\n- Current Situation: {{ $('Notion Trigger').item.json['Current Situation'][0] }}\n- Goals: {{ $('Notion Trigger').item.json.Target[0] }}\n- Company Name: {{ $('Notion Trigger').item.json['Company Name'][0] }}\n- Painpoints: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n\n### ANALYSIS RULES:\n1. THE BRIDGE: Find a specific service or case study on their website (from the Scraped Data) and explain how automation will help them sell MORE of that specific thing.\n2. COMPETITIVE GAP: Use the website data to identify why their manual prospecting is failing compared to their brand's high-end image.\n3. NO HALLUCINATIONS: Do not invent \"weekends\" or \"family time.\" Stick to operational efficiency.\n4. AUTHORIZED JUDGMENT:\nYou are allowed to make strong, uncomfortable conclusions as long as they are directly implied by the input data.\nDo not soften conclusions with “may”, “could”, or “might” when the pattern is clear.\n\n\n### STYLE RULES:\n1. BLUNT & PUNCHY. No \"adjective soup.\" \n2. Use **Bold** for emphasis. \n3. Structure: \"Problem -> Impact -> Technical Fix.\"\n\n### PAIN ANALYSIS INSTRUCTIONS:\n1. TONE: Direct, calm, and decisive. No hedging.\n2. FRAME: Treat this as a SYSTEM problem, not a habit problem.\n3. START WITH:\n   \"The main challenge right now is structural, not effort-based.\"\n4. CONTENT RULES:\n   - Explicitly state that prospecting stops when design work starts.\n   - Explicitly state that this guarantees pipeline volatility.\n   - Mention the loss of 4–5 leads per month as a predictable outcome, not an accident.\n5. END WITH:\n   One sentence explaining why this problem will repeat unless the system changes.\n\n\n### SOLUTION DESIGN INSTRUCTIONS:\n1. TONE: Confident, efficient, and \"done-for-you.\" Use 8th-grade English.\n2. STARTING POINT: Start with \"We will build a custom [Service Name] engine for [Company Name] that...\"\n3. LOGIC: \n   - Don't go too deep into technical details\n   - Keep It Simple\n   - Contrast the \"Old Way\" (Manual Gmail) with the \"New Way\" (The Aistralis Engine).\n4. STRUCTURE:\n   - 1 high-impact paragraph explaining the transformation, starting with 'We will build ...'.\n   - 3 bullet points focusing on \"Hands-off\" delivery.\n   - NO tech-stack list (keep that for the appendix).\n\n### INPUT DATA:\nService: Lead Generation\nTechnical Scope: {{ $('Notion Trigger').item.json.Solution[0] }}\nClient: {{Company_Name}}\n\n### TECH STACK ###\n1. from the Technical Scope, extract the tech stack\n\n### PRICING SECTION INSTRUCTIONS:\n1. TONE: Professional, transparent, and direct. Use 8th-grade English.\n2. STRUCTURE: \n   - Start with a brief sentence about the investment for [Company Name].\n   - Use two clear bullet points for the \"Implementation Fee\" and \"Operational Retainer.\"\n   - Include a \"Terms of Payment\" sub-section that explains the 50/50 split.\n3. CONTENT:\n   - Implementation Fee: {{ $('Notion Trigger').item.json['Setup Fee'][0] }} (One-time)\n   - Operational Retainer: {{ $('Notion Trigger').item.json['Monthly Retainer'][0] }}(Monthly)\n   - Payment Split: 50% to start, 50% upon delivery.\n4. CALCULATION: Explicitly state the dollar amount of the 50% deposit (e.g., $500).\n5. FORMATTING (STRICT):\n   - DO NOT put an empty line between the introductory sentence and the first bullet point.\n   - The first bullet point must start on the very next line after the introduction.\n   - Use only a single line break between the list and the \"Terms of Payment\" header.\n\n### OUTPUT FORMAT:\nReturn only the text for the pricing section. Do not include headers like \"Pricing Section\" in the output.\n\n### ROI STATEMENT INSTRUCTIONS:\n1. TONE: Blunt and mathematical. \n2. LOGIC: \n   - Identify the specific number of lost leads or wasted hours from the 'Pain Points' or 'Current Situation' data.\n   - Use that specific number to calculate the \"Break-even.\"\n   - Contrast the Implementation Fee against the value of recovering just ONE of those lost opportunities.\n3. START WITH: \"The math is simple:\"\n4. CONTENT:\n   - State that the system pays for itself by fixing [Specific Pain Point from Input].\n   - Conclude by stating that this isn't a cost, it's a revenue recovery mission.\n\n### NEXT STEPS INSTRUCTIONS:\n1. TONE: Action-oriented and frictionless. \n2. START WITH: \"To move forward and secure your implementation slot:\"\n3. STRUCTURE: \n   - Step 1: Click the link below to approve the proposal and pay the initial 50% deposit.\n   - Step 2: Once paid, you will be automatically redirected to our \"Onboarding Blueprint\" form to sync your CRM access.\n   - Step 3: We schedule a 20-minute kickoff call to verify the tech stack.\n\n\n### INPUT DATA:\n\n### OUTPUT STRUCTURE:\n- One short sentence acknowledging the core problem.\n- 2-3 blunt bullet points explaining what that problem actually does to the business (the 'bottleneck').\n\n### FINAL OUTPUT INSTRUCTIONS:\nYou must output a single JSON object. Every key below is mandatory.\n\n{\n  \"strategic_hook\": \"A 1-sentence opening connecting their brand to the goal.\",\n  \"pain_analysis\": \"The full blunt output from the PAIN ANALYSIS section.\",\n  \"solution_statement\": \"The 'We will build...' paragraph and bullets from the SOLUTION section.\",\n  \"the_fix\": \"The 3-step 'Technical Execution' list.\",\n  \"roi_statement\": \"The blunt closing on results.\",\n  \"pricing\": \"The full investment breakdown: Setup ($1000), Retainer ($200), and the 50/50 payment split math.\",\n  \"tech_stack\": \"List of tools (Instantly, n8n, etc.) extracted from the scope.\",\n  \"next_step\": \"result from the next step block\"\n}\n\nIMPORTANT: DO NOT OMIT THE PRICING KEY. IT MUST BE POPULATED."
+          "systemMessage": "=You are a Senior Systems Architect. Your task is to synthesize CRM data and Website Scrapes into a brutal, high-impact proposal.\n\n### INPUT DATA:\n- Pain Points: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n- Website Context: {{ $json.results[0].raw_content }}\n- Current Situation: {{ $('Notion Trigger').item.json['Current Situation'][0] }}\n- Goals: {{ $('Notion Trigger').item.json.Target[0] }}\n- Company Name: {{ $('Notion Trigger').item.json['Company Name'][0] }}\n- Painpoints: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n- Target: {{ $('Notion Trigger').item.json.Target[0] }}\n\n\n### target MAPPING INSTRUCTIONS:\n1. TONE: Result-oriented and high-level.\n2. INPUT: Target\n3. RULES:\n   - Identify the \"North Star Metric\" from the input (e.g., calls, revenue, hours saved).\n   - Identify the \"Quality Filter\" (e.g., revenue floor, specific industry, qualified leads).\n   - Contrast \"Activity\" (doing work) with \"Outcome\" (business growth).\n4. STRUCTURE: \n   - Start with: \"The deployment of this system is designed to achieve one primary outcome: [Summarize the North Star Metric].\"\n   - Follow with: \"Specifically, we are shifting [Company Name] away from manual [Current Situation] and toward an automated filter that ensures only [Quality Filter] reach the final stage.\"\n\n\n### ANALYSIS RULES:\n1. THE BRIDGE: Find a specific service or case study on their website (from the Scraped Data) and explain how automation will help them sell MORE of that specific thing.\n2. COMPETITIVE GAP: Use the website data to identify why their manual prospecting is failing compared to their brand's high-end image.\n3. NO HALLUCINATIONS: Do not invent \"weekends\" or \"family time.\" Stick to operational efficiency.\n4. AUTHORIZED JUDGMENT:\nYou are allowed to make strong, uncomfortable conclusions as long as they are directly implied by the input data.\nDo not soften conclusions with “may”, “could”, or “might” when the pattern is clear.\n\n\n### STYLE RULES:\n1. BLUNT & PUNCHY. No \"adjective soup.\" \n2. Use **Bold** for emphasis. \n3. Structure: \"Problem -> Impact -> Technical Fix.\"\n\n### PAIN ANALYSIS INSTRUCTIONS:\n1. TONE: Direct, calm, and decisive. No hedging.\n2. FRAME: Treat this as a SYSTEM problem, not a habit problem.\n3. START WITH:\n   \"The main challenge right now is structural, not effort-based.\"\n4. CONTENT RULES:\n   - Explicitly state that prospecting stops when design work starts.\n   - Explicitly state that this guarantees pipeline volatility.\n   - Mention the loss of 4–5 leads per month as a predictable outcome, not an accident.\n5. END WITH:\n   One sentence explaining why this problem will repeat unless the system changes.\n\n\n### SOLUTION DESIGN INSTRUCTIONS:\n1. TONE: Confident, efficient, and \"done-for-you.\" Use 8th-grade English.\n2. STARTING POINT: Start with \"We will build a custom [Service Name] engine for [Company Name] that...\"\n3. LOGIC: \n   - Don't go too deep into technical details\n   - Keep It Simple\n   - Contrast the \"Old Way\" (Manual Gmail) with the \"New Way\" (The Aistralis Engine).\n4. STRUCTURE:\n   - 1 high-impact paragraph explaining the transformation, starting with 'We will build ...'.\n   - 3 bullet points focusing on \"Hands-off\" delivery.\n   - NO tech-stack list (keep that for the appendix).\n\n### INPUT DATA:\nService: Lead Generation\nTechnical Scope: {{ $('Notion Trigger').item.json.Solution[0] }}\nClient: {{Company_Name}}\n\n### TECH STACK ###\n1. from the Technical Scope, extract the tech stack\n\n### PRICING SECTION INSTRUCTIONS:\n1. TONE: Professional, transparent, and direct. Use 8th-grade English.\n2. STRUCTURE: \n   - Start with a brief sentence about the investment for [Company Name].\n   - Use two clear bullet points for the \"Implementation Fee\" and \"Operational Retainer.\"\n   - Include a \"Terms of Payment\" sub-section that explains the 50/50 split.\n3. CONTENT:\n   - Implementation Fee: {{ $('Notion Trigger').item.json['Setup Fee'][0] }} (One-time)\n   - Operational Retainer: {{ $('Notion Trigger').item.json['Monthly Retainer'][0] }}(Monthly)\n   - Payment Split: 50% to start, 50% upon delivery.\n4. CALCULATION: Explicitly state the dollar amount of the 50% deposit (e.g., $500).\n5. FORMATTING (STRICT):\n   - DO NOT put an empty line between the introductory sentence and the first bullet point.\n   - The first bullet point must start on the very next line after the introduction.\n   - Use only a single line break between the list and the \"Terms of Payment\" header.\n\n### OUTPUT FORMAT:\nReturn only the text for the pricing section. Do not include headers like \"Pricing Section\" in the output.\n\n### ROI STATEMENT INSTRUCTIONS:\n1. TONE: Blunt and mathematical. \n2. LOGIC: \n   - Identify the specific number of lost leads or wasted hours from the 'Pain Points' or 'Current Situation' data.\n   - Use that specific number to calculate the \"Break-even.\"\n   - Contrast the Implementation Fee against the value of recovering just ONE of those lost opportunities.\n3. START WITH: \"The math is simple:\"\n4. CONTENT:\n   - State that the system pays for itself by fixing [Specific Pain Point from Input].\n   - Conclude by stating that this isn't a cost, it's a revenue recovery mission.\n\n### NEXT STEPS INSTRUCTIONS:\n1. TONE: Action-oriented and frictionless. \n2. START WITH: \"To move forward and secure your implementation slot:\"\n3. STRUCTURE: \n   - Step 1: Click the link below to approve the proposal and pay the initial 50% deposit.\n   - Step 2: Once paid, you will be automatically redirected to our \"Onboarding Blueprint\" form to sync your CRM access.\n   - Step 3: We schedule a 20-minute kickoff call to verify the tech stack.\n\n### Target INSTRUCTIONS:\n1. TONE: Direct, calm, and decisive. No hedging.\n2. Based on Target, write 2 sentences what the target is and how this will be obtained\n\n### INPUT DATA:\n\n### OUTPUT STRUCTURE:\n- One short sentence acknowledging the core problem.\n- 2-3 blunt bullet points explaining what that problem actually does to the business (the 'bottleneck').\n\n### FINAL OUTPUT INSTRUCTIONS:\nYou must output a single JSON object. Every key below is mandatory.\n\n{\n  \"strategic_hook\": \"A 1-sentence opening connecting their brand to the goal.\",\n  \"pain_analysis\": \"The full blunt output from the PAIN ANALYSIS section.\",\n  \"solution_statement\": \"The 'We will build...' paragraph and bullets from the SOLUTION section.\",\n  \"the_fix\": \"The 3-step 'Technical Execution' list.\",\n  \"roi_statement\": \"The blunt closing on results.\",\n  \"pricing\": \"The full investment breakdown: Setup ($1000), Retainer ($200), and the 50/50 payment split math.\",\n  \"tech_stack\": \"List of tools (Instantly, n8n, etc.) extracted from the scope.\",\n  \"next_step\": \"result from the next step block\",\n  \"target\": \"result from the target block\"\n}\n\nIMPORTANT: DO NOT OMIT THE PRICING KEY. IT MUST BE POPULATED."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        -32,
-        80
+        -176,
+        48
       ],
       "id": "ab6d1127-c13b-4cd6-9c02-6b6458c18b41",
       "name": "AI Agent"
@@ -71,8 +71,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -24,
-        296
+        -208,
+        272
       ],
       "id": "f9643655-dd3d-49b1-be2b-9464dda4a9e4",
       "name": "OpenAI Chat Model",
@@ -95,21 +95,21 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -256,
-        72
+        -352,
+        48
       ],
       "id": "9f357473-35ba-4669-af6b-2263f8ac0b02",
       "name": "HTTP Request"
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n  \"strategic_hook\": \"A 1-sentence opening connecting their specific brand (from the scrape) to the goal.\",\n  \"pain_analysis\": \"output\",\n  \"the_fix\": \"A 3-step 'Technical Execution' list using n8n and the scraped context.\",\n  \"roi_statement\": \"A blunt closing on the expected result.\",\n  \"pricing\": \"the result of the pricing block\",\n  \"next_step\": \"the result of the next steps block\"\n}"
+        "jsonSchemaExample": "{\n  \"strategic_hook\": \"A 1-sentence opening connecting their specific brand (from the scrape) to the goal.\",\n  \"pain_analysis\": \"output\",\n  \"the_fix\": \"A 3-step 'Technical Execution' list using n8n and the scraped context.\",\n  \"roi_statement\": \"A blunt closing on the expected result.\",\n  \"pricing\": \"the result of the pricing block\",\n  \"next_step\": \"the result of the next steps block\",\n  \"target\": \"the result of the target block\"\n}"
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        104,
-        296
+        0,
+        272
       ],
       "id": "98ad6f3d-2e49-4bbb-8554-a69c44375aeb",
       "name": "Structured Output Parser"
@@ -125,8 +125,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        -32,
-        -432
+        -336,
+        -400
       ],
       "id": "b8f6618b-4b6e-4c4a-83a9-ec2a3028bd5d",
       "name": "AI Agent1"
@@ -144,7 +144,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        40,
+        -352,
         -208
       ],
       "id": "cdb77c55-9e86-477a-900f-ea533a7d1606",
@@ -161,8 +161,8 @@
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        544,
-        -128
+        384,
+        -144
       ],
       "id": "734140f4-5c62-497b-affd-99562d45ffc2",
       "name": "Merge"
@@ -176,8 +176,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        768,
-        -128
+        560,
+        -144
       ],
       "id": "a707b91e-b454-4cbf-9a87-b3abef706b6c",
       "name": "Split Out1"
@@ -190,11 +190,137 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        320,
-        72
+        144,
+        48
       ],
       "id": "75a865c9-4608-4895-9023-f6b637e2f4c6",
       "name": "Split Out2"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        736,
+        -144
+      ],
+      "id": "0486af5c-7ec9-4a77-b1d5-fdb7516241ff",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This takes the \"string\" from the AI and turns it into real JSON\nconst rawOutput = $json.output;\nconst parsedData = JSON.parse(rawOutput);\n\nreturn parsedData;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        -400
+      ],
+      "id": "3c7c1add-3644-47b7-bf3e-23af32873306",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "50688563-5fda-4e6e-834a-3a6d7e60b0cf",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Ready for Proposal",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -672,
+        -128
+      ],
+      "id": "fa84148d-d5af-4eab-8c91-3a13cd0c3587",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "share",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.documentId }}",
+          "mode": "id"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "reader",
+            "type": "user",
+            "emailAddress": "={{ $('Notion Trigger').item.json['Email Address'][0] }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1312,
+        -272
+      ],
+      "id": "5d918319-b1e4-487d-a289-43b908d36b2c",
+      "name": "Share file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Notion Trigger').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Status|select",
+              "selectValue": "Proposal Generated"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1728,
+        -144
+      ],
+      "id": "055f365a-a147-429d-b662-21df3cad7917",
+      "name": "Update a database page",
+      "credentials": {
+        "notionApi": {
+          "id": "AziN0Uk3Q10Fbsfr",
+          "name": "Notion account"
+        }
+      }
     },
     {
       "parameters": {
@@ -212,11 +338,11 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1440,
-        -128
+        912,
+        -144
       ],
       "id": "e2a8fb7a-a757-404c-b59d-99990d8c90e8",
-      "name": "Copy file1",
+      "name": "Copy Template",
       "credentials": {
         "googleDriveOAuth2Api": {
           "id": "VcFFZkWlXOO43tdB",
@@ -319,12 +445,12 @@
             {
               "action": "replaceAll",
               "text": "{{solutionStatement}}",
-              "replaceText": "={{ $('AI Agent').item.json.output.the_fix }}"
+              "replaceText": "=To secure a consistent pipeline of high-quality leads for Creavoa, we will:\n{{ $('AI Agent').item.json.output.the_fix }}"
             },
             {
               "action": "replaceAll",
               "text": "{{aistralisStatement}}",
-              "replaceText": "=We specialize in building automation systems for agencies and service businesses.\n\nWhat makes us different:\n• We build, not consult: you get a working system deployed in your tools (HubSpot, Notion, etc.), not a strategy deck.\n• Founder-led execution: I personally build and support every implementation, so nothing gets lost in translation.\n• Designed for speed: our systems are built to get proposals, reports, or outreach out the door in minutes, not days, so you can respond while leads are still warm.\n\nWe don't promise \"AI magic.\" We promise a reliable system that keeps your pipeline full even when your design team is buried in projects."
+              "replaceText": "=Your expertise is design, not automated lead-generation. Ours is building those systems for creatives like you.\nAs the founder, I personally build and deploy your system to achieve one goal: to stop the monthly loss of 4-5 high-value leads.\n\n* You get a working asset, not a service. A complete system installed in your tools (like HubSpot), owned by you.\n* Direct, founder-led execution. I am your single point of contact from start to finish, ensuring it reflects your brand and goals.\n* Designed to capture intent. The system responds in minutes, so you can seize opportunities while they're hot.\n\nLet's connect our specialties. You focus on your craft; we'll ensure the pipeline is always full.\nWe don't promise \"AI magic.\" We promise a reliable system that keeps your pipeline full even when your design team is buried in projects."
             },
             {
               "action": "replaceAll",
@@ -349,7 +475,17 @@
             {
               "action": "replaceAll",
               "text": "{{CTA}}",
-              "replaceText": "* APPROVE & START IMPLEMENTATION*."
+              "replaceText": "\n* APPROVE & START IMPLEMENTATION*."
+            },
+            {
+              "action": "replaceAll",
+              "text": "{{timelineStatement}}",
+              "replaceText": "To ensure a smooth and efficient implementation, we’ve structured the project into 4 phases. "
+            },
+            {
+              "action": "replaceAll",
+              "text": "{{objectivesStatement}}",
+              "replaceText": "={{ $('AI Agent').item.json.output.target }}"
             }
           ]
         }
@@ -357,11 +493,11 @@
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
       "position": [
-        1664,
-        -128
+        1088,
+        -144
       ],
       "id": "0eb0a633-6fbd-44f1-a031-2dc90f68449d",
-      "name": "Update a document1",
+      "name": "Update Copy Template",
       "credentials": {
         "googleDocsOAuth2Api": {
           "id": "WHeRY1hw2tRHjuCJ",
@@ -371,96 +507,100 @@
     },
     {
       "parameters": {
-        "aggregate": "aggregateAllItemData",
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.documentId }}",
+          "mode": "id"
+        },
+        "options": {
+          "googleFileConversion": {
+            "conversion": {
+              "docsToFormat": "application/pdf"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1312,
+        -16
+      ],
+      "id": "bc3d8cf5-1c90-437a-ba67-73caea3830b3",
+      "name": "Proposal->PDF",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Copy Template').item.json.name }}",
+        "emailType": "html",
+        "message": "=<p>Hi {{ $('Notion Trigger').item.json['First Name'][0] }},</p>\n\n<p>First of all, thank you for the interesting call.</p>\n\n<p>\nAs promised, here’s the \n<a href=\"https://docs.google.com/document/d/{{ $('Update Copy Template').item.json.documentId }}/edit?usp=sharing\" target=\"_blank\">\nproposal\n</a>\noutlining how we can help {{ $('Notion Trigger').item.json['Company Name'][0] }} with optimizing their lead-generation.\n</p>\n\n<p>It covers the scope, approach, timeline, and pricing we discussed.</p>\n\n<p>\nIf anything feels off or you’d like to tweak the scope, I’m happy to adjust it or walk through it together.\n</p>\n\n<p>\nLet me know your thoughts, and what the best next step would be on your side.\n</p>\n\n<p>\nBest,<br>\nPeter\n</p>\n",
         "options": {}
       },
-      "type": "n8n-nodes-base.aggregate",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1488,
+        -272
+      ],
+      "id": "313a6221-d949-4278-9eca-79f3bb088c4e",
+      "name": "Draft Proposal Shared",
+      "webhookId": "bc19018e-1094-4088-b5e3-acd1f2b49310",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $('Notion Trigger').item.json.Proposal }}",
+        "message": "=Hi {{ $('Notion Trigger').item.json['First Name'][0] }},\n\nFirst of all, thank you for the interesting call.\n\nAs promised, I’ve attached a proposal outlining how we can help {{ $('Notion Trigger').item.json['Company Name'][0] }} with optimizing their lead-generation.\n\nIt covers the scope, approach, timeline, and pricing we discussed.\n\nIf anything feels off or you’d like to tweak the scope, I’m happy to adjust it or walk through it together.\n\nLet me know your thoughts, and what the best next step would be on your side.\n\nBest,\nPeter",
+        "options": {
+          "attachmentsUi": {
+            "attachmentsBinary": [
+              {
+                "property": "=data"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1488,
+        -16
+      ],
+      "id": "37f52089-09f2-4871-a10b-e94a177e6950",
+      "name": "Draft Proposal Attached",
+      "webhookId": "87f613b9-0696-4083-b93a-cc4a1a7ccafb",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
       "typeVersion": 1,
       "position": [
-        1232,
-        -240
+        -736,
+        144
       ],
-      "id": "0486af5c-7ec9-4a77-b1d5-fdb7516241ff",
-      "name": "Aggregate1"
-    },
-    {
-      "parameters": {
-        "jsCode": "// This takes the \"string\" from the AI and turns it into real JSON\nconst rawOutput = $json.output;\nconst parsedData = JSON.parse(rawOutput);\n\nreturn parsedData;"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        320,
-        -328
-      ],
-      "id": "3c7c1add-3644-47b7-bf3e-23af32873306",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "50688563-5fda-4e6e-834a-3a6d7e60b0cf",
-              "leftValue": "={{ $json['Proposal Status'] }}",
-              "rightValue": "Ready for Proposal",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        992,
-        -128
-      ],
-      "id": "b6cb65c1-7bf3-4d68-8c87-088ac3959223",
-      "name": "If1"
-    },
-    {
-      "parameters": {
-        "conditions": {
-          "options": {
-            "caseSensitive": true,
-            "leftValue": "",
-            "typeValidation": "strict",
-            "version": 2
-          },
-          "conditions": [
-            {
-              "id": "50688563-5fda-4e6e-834a-3a6d7e60b0cf",
-              "leftValue": "={{ $json['Proposal Status'] }}",
-              "rightValue": "Ready for Proposal",
-              "operator": {
-                "type": "string",
-                "operation": "equals"
-              }
-            }
-          ],
-          "combinator": "and"
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.if",
-      "typeVersion": 2.2,
-      "position": [
-        -448,
-        -352
-      ],
-      "id": "fa84148d-d5af-4eab-8c91-3a13cd0c3587",
-      "name": "If"
+      "id": "6a15275c-903e-4f38-b7e8-8fb21929b9ea",
+      "name": "Do Nothing"
     }
   ],
   "connections": {
@@ -468,12 +608,7 @@
       "main": [
         [
           {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "HTTP Request",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -561,7 +696,7 @@
       "main": [
         [
           {
-            "node": "If1",
+            "node": "Aggregate1",
             "type": "main",
             "index": 0
           }
@@ -579,22 +714,11 @@
         ]
       ]
     },
-    "Copy file1": {
-      "main": [
-        [
-          {
-            "node": "Update a document1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Aggregate1": {
       "main": [
         [
           {
-            "node": "Copy file1",
+            "node": "Copy Template",
             "type": "main",
             "index": 0
           }
@@ -612,18 +736,94 @@
         ]
       ]
     },
-    "If1": {
+    "Share file": {
       "main": [
         [
           {
-            "node": "Aggregate1",
+            "node": "Draft Proposal Shared",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Aggregate1",
+            "node": "Do Nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy Template": {
+      "main": [
+        [
+          {
+            "node": "Update Copy Template",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Copy Template": {
+      "main": [
+        [
+          {
+            "node": "Share file",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Proposal->PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Proposal->PDF": {
+      "main": [
+        [
+          {
+            "node": "Draft Proposal Attached",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Proposal Shared": {
+      "main": [
+        [
+          {
+            "node": "Update a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Proposal Attached": {
+      "main": [
+        [
+          {
+            "node": "Update a database page",
             "type": "main",
             "index": 0
           }
@@ -636,7 +836,7 @@
   },
   "staticData": {
     "node:Notion Trigger": {
-      "lastTimeChecked": "2025-12-19T18:35:00.000Z",
+      "lastTimeChecked": "2025-12-20T18:17:00.000Z",
       "possibleDuplicates": [
         "2ce6c00e-9719-809d-89a9-fcf2669b89f1"
       ]
@@ -645,9 +845,62 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {},
-  "versionId": "608ad435-4ef6-4cb4-9f56-f1b34cee4edd",
-  "versionCounter": 140,
+  "pinData": {
+    "Notion Trigger": [
+      {
+        "json": {
+          "id": "2ce6c00e-9719-809d-89a9-fcf2669b89f1",
+          "Setup Fee": [
+            750
+          ],
+          "Services": [
+            "2cd6c00e-9719-80fd-8ce7-f274cbc020bb"
+          ],
+          "First Name": [
+            "Peter"
+          ],
+          "Email Address": [
+            "peter@creavoa.com"
+          ],
+          "Painpoints": [
+            "When the team is busy designing there is no prospecting. When projects end, the pipeline is empty. Currently losing 4-5 high-value leads a month to competitors who respond faster. So, high fluctuation of incoming clients and leads"
+          ],
+          "Timeline": [
+            "Week 1: Infrastructure setup, CRM integration, and Defining Ideal Client Profile (ICP).\nWeek 2: Personalization and AI prompt engineering for brand-voice alignment.\nWeek 3: System stress-testing, lead-scoring calibration, ...\nWeek 4: Official Go-Live, performance monitoring, and team training."
+          ],
+          "Bonus": [
+            200
+          ],
+          "Current Situation": [
+            "Founder spends 2-3 hours a week manually searching for local businesses with outdated websites. Cold emails are sent one-by-one from a personal Gmail. Response rate is <1%. No tracking of who opens emails."
+          ],
+          "Monthly Retainer": [
+            200
+          ],
+          "Name": [
+            "2c86c00e-9719-81b1-9b0b-f9f8ce8372db"
+          ],
+          "Target": [
+            "8-10 discovery calls per month with businesses doing over $0.5m in revenue. Automate the 'first touch' so the founder only speaks to qualified leads."
+          ],
+          "Notes": "ererer",
+          "Last Name": [
+            "Wettinck"
+          ],
+          "Status": "Ready for Proposal",
+          "Company Name": [
+            "CreaVoa"
+          ],
+          "Solution": [
+            "We analyze customer’s ICP and use designated online tools to find all necessary details.\nWe set up the needed amount of inboxes and domains, warm up the emails\nWe set the complete email sequence and do personalization where needed\nIf there are over 3000 leads, we will use our in-house designed model to optimize the results.\nWe also implement automatic answering to mails (based on your data) using the best llm\nTech stack used: Instantly, N8N, Python, OpenAI, Apollo, Clay, Zerobounce,…\n"
+          ],
+          "Proposal": "Lead-generation Creavoa"
+        }
+      }
+    ]
+  },
+  "versionId": "70273238-f4ff-48d4-9b4e-f596b1e80ba9",
+  "versionCounter": 219,
   "triggerCount": 1,
   "shared": [
     {
@@ -671,7 +924,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-20T00:00:05.182Z",
+              "updatedAt": "2025-12-21T00:00:37.405Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -698,7 +951,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-19",
+              "lastActiveAt": "2025-12-20",
               "isPending": false
             }
           }
