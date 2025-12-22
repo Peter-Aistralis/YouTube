@@ -1,0 +1,281 @@
+{
+  "updatedAt": "2025-12-21T16:13:23.436Z",
+  "createdAt": "2025-12-21T11:44:54.606Z",
+  "id": "tTZZWb2IeBORtu9G",
+  "name": "Google Docs",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        -80
+      ],
+      "id": "a6e12a3c-d735-485c-911a-849a5b1ba34d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1K9JiuedwIGCBmsW8ijIAeiHGzF5uoipB_X7hTTHwr0M",
+          "mode": "list",
+          "cachedResultName": "Template_Docs",
+          "cachedResultUrl": "https://docs.google.com/document/d/1K9JiuedwIGCBmsW8ijIAeiHGzF5uoipB_X7hTTHwr0M/edit?usp=drivesdk"
+        },
+        "name": "New File from template",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -256,
+        -80
+      ],
+      "id": "a86a92d9-41ad-42fe-8835-f4d998a0a966",
+      "name": "Copy file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "{{some_text}}",
+              "replaceText": "new text"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        -48,
+        -80
+      ],
+      "id": "acdf8695-0b10-48f5-a664-75abbc1884f4",
+      "name": "Update a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "da6bc358-8bf0-43f2-9739-df7775e654fe",
+              "name": "Index_of_image",
+              "value": "={{ $json.content.indexOf('{{image_here')}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        384,
+        -80
+      ],
+      "id": "93346759-3819-41c8-bd16-e5a1be716c3b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "={{ $json.documentId }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "f9e03263-d7c0-41f4-914e-d580feae09d4",
+      "name": "Get a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ $('Get a document').item.json.documentId }}:batchUpdate",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"insertInlineImage\": {\n        \"location\": {\n          \"index\": {{ $json.Index_of_image }}\n        },\n        \"uri\": \"https://drive.google.com/uc?id=10tuuxFj4O6-ts4_agJyjr7mTvjZDMBnw\",\n        \"objectSize\": {\n          \"width\": {\n            \"magnitude\": 150,\n            \"unit\": \"PT\"\n          },\n          \"height\": {\n            \"magnitude\": 150,\n            \"unit\": \"PT\"\n          }\n        }\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        592,
+        -80
+      ],
+      "id": "2c295bba-2abd-448c-831e-d14489f90b9f",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "s3C4lrsUXNTatIUs",
+          "name": "Google"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Copy file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy file": {
+      "main": [
+        [
+          {
+            "node": "Update a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "fc7df391-b398-4e7f-b94b-c57edbc9dfe4",
+  "versionCounter": 6,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2025-12-21T11:44:54.606Z",
+      "createdAt": "2025-12-21T11:44:54.606Z",
+      "role": "workflow:owner",
+      "workflowId": "tTZZWb2IeBORtu9G",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-07-05T04:34:00.267Z",
+            "createdAt": "2025-07-05T04:34:00.267Z",
+            "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+            "projectId": "2KiFcKNLK1JyaklJ",
+            "user": {
+              "updatedAt": "2025-12-22T00:00:04.267Z",
+              "createdAt": "2025-07-05T04:33:38.764Z",
+              "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+              "email": "peterjawel@gmail.com",
+              "firstName": "peter",
+              "lastName": "aistralis",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-07-05T04:35:25.871Z",
+                "personalization_survey_n8n_version": "1.100.1",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "business-owner",
+                "reportedSource": "youtube"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "FAkXhJwuAslD2JDu",
+                "userActivatedAt": 1751716484498,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1753381963375
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2025-12-21",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ]
+}
