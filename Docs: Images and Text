@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-23T08:32:55.832Z",
+  "updatedAt": "2025-12-28T16:53:58.785Z",
   "createdAt": "2025-12-23T07:25:26.177Z",
   "id": "nDav0ufd69WpQ5WA",
   "name": "Docs: Images and Text",
@@ -229,6 +229,82 @@
           "name": "Google Docs account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "object": "table",
+              "action": "insert",
+              "locationChoice": "location",
+              "rows": 2,
+              "columns": 2
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        -176
+      ],
+      "id": "5461c42b-5b34-4dd4-9bf9-afa7c2fde8f0",
+      "name": "Update a document2",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1ln6NbvPqDUKWrmxl1q2PO0qRiWLvZR1PyAYAgchWsYs",
+          "mode": "list",
+          "cachedResultName": "Stats",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ln6NbvPqDUKWrmxl1q2PO0qRiWLvZR1PyAYAgchWsYs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ln6NbvPqDUKWrmxl1q2PO0qRiWLvZR1PyAYAgchWsYs/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        352,
+        144
+      ],
+      "id": "797195ba-9375-4d63-8d85-1d4f0c5899fa",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const SHEET_ID = '1ln6NbvPqDUKWrmxl1q2PO0qRiWLvZR1PyAYAgchWsYs'; // Replace with your sheet ID\nconst CHART_GID = '0'; // Usually 0 for first sheet, find in URL\nconst CHART_INDEX = 0; // Which chart in the sheet (0 = first)\n\n// Construct chart URL\nconst chartUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/chart?gid=${CHART_GID}&chartNumber=${CHART_INDEX}&headers=false&size=800x400`;\n\n// Get the first item from input\nconst inputData = $input.first();\n\n// Return the chart URL\nreturn {\n  chartImageUrl: chartUrl,\n  timestamp: new Date().toISOString(),\n  originalData: inputData.json\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        -256
+      ],
+      "id": "d91cb9c9-6d02-4e9f-8d7a-189388135713",
+      "name": "Code in JavaScript"
     }
   ],
   "connections": {
@@ -236,7 +312,7 @@
       "main": [
         [
           {
-            "node": "Copy file",
+            "node": "Get row(s) in sheet",
             "type": "main",
             "index": 0
           }
@@ -319,6 +395,17 @@
           }
         ]
       ]
+    },
+    "Update a document1": {
+      "main": [
+        [
+          {
+            "node": "Update a document2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -329,8 +416,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "2b93f4a8-8dc4-4019-90fa-8d2ca7abde65",
-  "versionCounter": 8,
+  "versionId": "acd931bf-d0a7-4d47-8f4f-6db2ab50dc75",
+  "versionCounter": 10,
   "triggerCount": 0,
   "shared": [
     {
@@ -354,7 +441,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-24T00:00:55.108Z",
+              "updatedAt": "2025-12-29T00:00:39.132Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -381,7 +468,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-23",
+              "lastActiveAt": "2025-12-28",
               "isPending": false
             }
           }
