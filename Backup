@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-24T11:03:01.415Z",
+  "updatedAt": "2026-02-16T05:56:54.452Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
@@ -1251,23 +1251,23 @@
     "Schedule Trigger": [
       {
         "json": {
-          "timestamp": "2025-12-24T01:00:55.006+01:00",
-          "Readable date": "December 24th 2025, 1:00:55 am",
-          "Readable time": "1:00:55 am",
-          "Day of week": "Wednesday",
-          "Year": "2025",
-          "Month": "December",
-          "Day of month": "24",
+          "timestamp": "2026-02-16T01:00:28.011+01:00",
+          "Readable date": "February 16th 2026, 1:00:28 am",
+          "Readable time": "1:00:28 am",
+          "Day of week": "Monday",
+          "Year": "2026",
+          "Month": "February",
+          "Day of month": "16",
           "Hour": "01",
           "Minute": "00",
-          "Second": "55",
+          "Second": "28",
           "Timezone": "Europe/Berlin (UTC+01:00)"
         }
       }
     ]
   },
-  "versionId": "88cdab08-03a0-44a3-b8a2-e783c3663e0a",
-  "versionCounter": 78,
+  "versionId": "d7ff6d15-6d50-41db-97bb-fa727803803d",
+  "versionCounter": 108,
   "triggerCount": 1,
   "shared": [
     {
@@ -1291,7 +1291,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-24T00:00:55.108Z",
+              "updatedAt": "2026-02-16T00:00:28.219Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -1313,12 +1313,12 @@
                 "userActivatedAt": 1751716484498,
                 "npsSurvey": {
                   "responded": true,
-                  "lastShownAt": 1753381963375
+                  "lastShownAt": 1769850829423
                 }
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-23",
+              "lastActiveAt": "2026-02-15",
               "isPending": false
             }
           }
