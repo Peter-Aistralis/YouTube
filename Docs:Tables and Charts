@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2025-12-29T15:33:09.699Z",
+  "updatedAt": "2025-12-30T06:05:17.401Z",
   "createdAt": "2025-12-29T11:42:12.432Z",
   "id": "C8rNulrNraXyj7zN",
   "name": "Docs:Tables and Charts",
@@ -220,7 +220,7 @@
             {
               "id": "53f13cdd-7eaf-4eda-943a-6d1294e6dcfe",
               "name": "index",
-              "value": "={{ $json.content.indexOf(\"{{image_here\") }}",
+              "value": "={{ $json.content.indexOf(\"{{chart_here\") }}",
               "type": "string"
             }
           ]
@@ -302,6 +302,58 @@
           "name": "Google Docs account"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ $('Copy file').item.json.id }}:batchUpdate ",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"insertInlineImage\": {\n        \"location\": {\n          \"index\": 102\n        },\n        \"uri\": \"https://drive.google.com/uc?id=2PACX-1vTXrHJTP7IitXbZM9l6uu5NdtF6CPd0D8MyprokVQHmxQnjMIXyExIns8uL-wxrieNFn-jk3PXuHO5u\"\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        320,
+        -336
+      ],
+      "id": "2cd0d906-e193-4771-9886-b93a9375e050",
+      "name": "HTTP Request",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "s3C4lrsUXNTatIUs",
+          "name": "Google"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ $('Copy file').item.json.id }}:batchUpdate ",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"insertInlineImage\": {\n        \"location\": {\n          \"index\": {{ $('Edit Fields').item.json.index }}\n        },\n        \"uri\": \"https://drive.google.com/uc?id={{ $('Upload file').item.json.id }}\"\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1264,
+        160
+      ],
+      "id": "1c57d080-f674-4f47-9284-b4c220ca9f03",
+      "name": "HTTP Request6",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "s3C4lrsUXNTatIUs",
+          "name": "Google"
+        }
+      }
     }
   ],
   "connections": {
@@ -364,7 +416,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request5",
+            "node": "HTTP Request6",
             "type": "main",
             "index": 0
           }
@@ -413,8 +465,8 @@
     "templateCredsSetupCompleted": true
   },
   "pinData": {},
-  "versionId": "01339181-4ea9-4f35-a45d-644c9c9f9cc8",
-  "versionCounter": 3,
+  "versionId": "1f66e47c-cc95-4552-a227-a250dfa1f3f7",
+  "versionCounter": 6,
   "triggerCount": 0,
   "shared": [
     {
@@ -438,7 +490,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2025-12-30T00:00:39.142Z",
+              "updatedAt": "2026-02-16T00:00:28.219Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -460,12 +512,12 @@
                 "userActivatedAt": 1751716484498,
                 "npsSurvey": {
                   "responded": true,
-                  "lastShownAt": 1753381963375
+                  "lastShownAt": 1769850829423
                 }
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2025-12-29",
+              "lastActiveAt": "2026-02-15",
               "isPending": false
             }
           }
