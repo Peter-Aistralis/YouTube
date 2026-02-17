@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-15T07:51:07.917Z",
+  "updatedAt": "2026-02-16T07:09:53.692Z",
   "createdAt": "2025-12-18T07:08:42.857Z",
   "id": "jrHRA6w06ZVZSfCe",
   "name": "Proposal_Generator",
@@ -46,7 +46,7 @@
         "text": "=",
         "hasOutputParser": true,
         "options": {
-          "systemMessage": "=You are a Senior Systems Architect. Your task is to synthesize CRM data and Website Scrapes into a brutal, high-impact proposal.\n\n\n### DYNAMIC INPUTS:\n- Pain Points: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n- Website Context: {{ $json.results[0].raw_content }}\n- Current Situation: {{ $('Notion Trigger').item.json['Current Situation'][0] }}\n- Goals: {{ $('Notion Trigger').item.json.Target[0] }}\n- Company Name: {{ $('Notion Trigger').item.json['Company Name'][0] }}\n- Painpoints: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n- Target: {{ $('Notion Trigger').item.json.Target[0] }}\n- Solution: {{ $('Notion Trigger').item.json.Solution[0] }}\n- Setup Fee: {{ $('Notion Trigger').item.json['Setup Fee'][0] }}\n- Retainer: {{ $('Notion Trigger').item.json['Monthly Retainer'][0] }}\n\n### STYLE RULES:\n1. **Direct Address**: Use \"You\" and \"Your.\" Do not refer to \"The Founder\" or \"The Team\" in the third person.\n2. **Professional Peer**: Speak to the client as a high-level partner, not a lecturer.\n3. **Synthesis**: Combine the \"Current Situation\" with the \"Pain Points\"  into a single narrative of **Scale**.\n\n###WRITING CONSTRAINT: \nNever use em-dashes (—) or double-hyphen dashes (--). Use commas, colons, or periods to break sentences instead.\n\n### ARCHITECTURAL LOGIC RULES:\n1. **The Structural Pivot**: You MUST start the analysis with: \"The main challenge right now is structural, not effort-based.\" \n2. **Abstract the Problem**: Identify the core conflict between \"Doing the Work\" and \"Managing the System.\" Whether it is onboarding, lead gen, or data entry, explain that manual handling has reached its \"Terminal Velocity.\"\n3. **Address the Recipient**: Use \"You\" and \"Your.\" Speak to them as a peer executive. \n4. **Quantify the Leak**: Use the specific numbers from the 'Pain Points' (e.g., 4-5 leads, 2-3 hours, 1% response) to prove the system is failing, not the person.\n5. **Universal ROI**: Start with: \"The math is simple:\" Contrast the setup cost against the value of fixing the specific bottleneck identified in the Pain Points.\n\n### OUTPUT JSON STRUCTURE:\n{\n  \"strategic_hook\": \"A 1-sentence opening connecting {{ $('Notion Trigger').item.json['Company Name'][0] }}'s specific market position (from scrape) to the necessity of automating lead generation.\",\n  \n  \"pain_analysis\": \"Start with the mandatory phrase. Dynamically explain why their current manual approach to lead generation creates a bottleneck for their specific business model. Reference their specific pain points to show how this limits their scale.\",\n\n  \"the_fix\": \"A 3-step technical execution plan that uses the Tech Scope to solve the specific bottlenecks of {{ $('Notion Trigger').item.json.Solution[0] }}.\",\n\n  \"roi_statement\": \"Start with 'The math is simple:' Synthesize the financial impact of fixing the specific problem described in the Pain Points vs the cost of the setup fee.\",\n\n  \"pricing\": \"Investment breakdown: Setup Fee setup and Retainer monthly. Terms: 50% deposit of [AI: Calculate 50% of Setup Fee] to secure the implementation slot.\",\n\n  \"target\": \"2 sentences explaining how this system makes the goal of 'Target' a technical certainty.\",\n\n  \"next_step\": \"A 3-step action plan to move from proposal to kickoff.\"\n}"
+          "systemMessage": "=You are a Senior Systems Architect. Your task is to synthesize CRM data and Website Scrapes into a brutal, high-impact proposal.\n\n\n### DYNAMIC INPUTS:\n- Pain Points: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n- Website Context: {{ $json.results[0].raw_content }}\n- Current Situation: {{ $('Notion Trigger').item.json['Current Situation'][0] }}\n- Goals: {{ $('Notion Trigger').item.json.Target[0] }}\n- Company Name: {{ $('Notion Trigger').item.json['Company Name'][0] }}\n- Painpoints: {{ $('Notion Trigger').item.json.Painpoints[0] }}\n- Target: {{ $('Notion Trigger').item.json.Target[0] }}\n- Solution: {{ $('Notion Trigger').item.json.Solution[0] }}\n- Setup Fee: {{ $('Notion Trigger').item.json['Setup Fee'][0] }}\n- Retainer: {{ $('Notion Trigger').item.json['Monthly Retainer'][0] }}\n\n### STYLE RULES:\n1. **Direct Address**: Use \"You\" and \"Your.\" Do not refer to \"The Founder\" or \"The Team\" in the third person.\n2. **Professional Peer**: Speak to the client as a high-level partner, not a lecturer.\n3. **Synthesis**: Combine the \"Current Situation\" with the \"Pain Points\"  into a single narrative of **Scale**.\n\n###WRITING CONSTRAINT: \nNever use em-dashes (—) or double-hyphen dashes (--). Use commas, colons, or periods to break sentences instead.\n\n### ARCHITECTURAL LOGIC RULES:\n1. **The Structural Pivot**: You MUST start the analysis with: \"The main challenge right now is structural, not effort-based.\" \n2. **Abstract the Problem**: Identify the core conflict between \"Doing the Work\" and \"Managing the System.\" Whether it is onboarding, lead gen, or data entry, explain that manual handling has reached its \"Terminal Velocity.\"\n3. **Address the Recipient**: Use \"You\" and \"Your.\" Speak to them as a peer executive. \n4. **Quantify the Leak**: Use the specific numbers from the 'Pain Points' (e.g., 4-5 leads, 2-3 hours, 1% response) to prove the system is failing, not the person.\n5. **Universal ROI**: Start with: \"The math is simple:\" Contrast the setup cost against the value of fixing the specific bottleneck identified in the Pain Points.\n\n### OUTPUT JSON STRUCTURE:\n{\n  \"strategic_hook\": \"A 1-sentence opening connecting {{ $('Notion Trigger').item.json['Company Name'][0] }}'s specific market position (from scrape) to the necessity of automating lead generation.\",\n  \n  \"pain_analysis\": \"Start with the mandatory phrase. Dynamically explain why their current manual approach to lead generation creates a bottleneck for their specific business model. Reference their specific pain points to show how this limits their scale.\",\n\n  \"the_fix\": \"A 3-step technical execution plan that uses the Tech Scope to solve the specific bottlenecks of {{ $('Notion Trigger').item.json.Solution[0] }}.\nEach step must be written on a new line. If possible make it a bullet point list\",\n\n  \"roi_statement\": \"Start with 'The math is simple:' (followed by a new line) Synthesize the financial impact of fixing the specific problem described in the Pain Points vs the cost of the setup fee.\",\n\n  \"pricing\": \"Investment breakdown: Setup Fee setup and Retainer monthly. Terms: 50% deposit of [AI: Calculate 50% of Setup Fee] to secure the implementation slot.\",\n\n  \"target\": \"2 sentences explaining how this system makes the goal of 'Target' a technical certainty.\",\n\n  \"next_step\": \"A 3-step action plan to move from proposal to kickoff.\"\n}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -310,8 +310,8 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
       "position": [
-        1696,
-        -144
+        1824,
+        -96
       ],
       "id": "055f365a-a147-429d-b662-21df3cad7917",
       "name": "Update a database page",
@@ -524,8 +524,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1280,
-        32
+        1296,
+        -16
       ],
       "id": "bc3d8cf5-1c90-437a-ba67-73caea3830b3",
       "name": "Proposal->PDF",
@@ -542,12 +542,14 @@
         "subject": "={{ $('Copy Template').item.json.name }}",
         "emailType": "html",
         "message": "=<p>Hi {{ $('Notion Trigger').item.json['First Name'][0] }},</p>\n\n<p>First of all, thank you for the interesting call.</p>\n\n<p>\nAs promised, here’s the \n<a href=\"https://docs.google.com/document/d/{{ $('Update Copy Template').item.json.documentId }}/edit?usp=sharing\" target=\"_blank\">\nproposal\n</a>\noutlining how we can help {{ $('Notion Trigger').item.json['Company Name'][0] }} with optimizing their lead-generation.\n</p>\n\n<p>It covers the scope, approach, timeline, and pricing we discussed.</p>\n\n<p>\nIf anything feels off or you’d like to tweak the scope, I’m happy to adjust it or walk through it together.\n</p>\n\n<p>\nLet me know your thoughts, and what the best next step would be on your side.\n</p>\n\n<p>\nBest,<br>\nPeter\n</p>\n",
-        "options": {}
+        "options": {
+          "sendTo": "={{ $('Notion Trigger').item.json['Email Address'][0] }}"
+        }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1456,
+        1488,
         -272
       ],
       "id": "313a6221-d949-4278-9eca-79f3bb088c4e",
@@ -572,14 +574,15 @@
                 "property": "=data"
               }
             ]
-          }
+          },
+          "sendTo": "={{ $('Notion Trigger').item.json['Email Address'][0] }}"
         }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1456,
-        32
+        1488,
+        -96
       ],
       "id": "37f52089-09f2-4871-a10b-e94a177e6950",
       "name": "Draft Proposal Attached",
@@ -601,6 +604,36 @@
       ],
       "id": "6a15275c-903e-4f38-b7e8-8fb21929b9ea",
       "name": "Do Nothing"
+    },
+    {
+      "parameters": {
+        "name": "={{ $('Copy Template').item.json.name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1ZwP0jOm3UzHy29MyxyQQThzvt2lJGbF3",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1488,
+        96
+      ],
+      "id": "346e7890-d2bc-4e5a-8fcb-aae7f4b4149b",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
     }
   ],
   "connections": {
@@ -801,6 +834,11 @@
       "main": [
         [
           {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          },
+          {
             "node": "Draft Proposal Attached",
             "type": "main",
             "index": 0
@@ -834,6 +872,17 @@
       "main": [
         []
       ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Update a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -843,7 +892,10 @@
   },
   "staticData": {
     "node:Notion Trigger": {
-      "lastTimeChecked": "2026-02-15T07:51:00.000Z"
+      "lastTimeChecked": "2026-02-16T07:11:00.000Z",
+      "possibleDuplicates": [
+        "3096c00e-9719-8033-8291-dba4a05aff3a"
+      ]
     }
   },
   "meta": {
@@ -853,7 +905,7 @@
     "Notion Trigger": [
       {
         "json": {
-          "id": "3086c00e-9719-8042-919d-e395c114dfb4",
+          "id": "3096c00e-9719-8033-8291-dba4a05aff3a",
           "Setup Fee": [
             750,
             1000
@@ -892,7 +944,7 @@
           "Target": [
             "8-10 discovery calls per month with businesses doing over $0.5m in revenue. Automate the 'first touch' so the founder only speaks to qualified leads."
           ],
-          "Notes": "",
+          "Notes": ".",
           "Last Name": [
             "Wettinck"
           ],
@@ -909,8 +961,8 @@
       }
     ]
   },
-  "versionId": "f496c707-9a22-4bbd-8336-e7734b034b19",
-  "versionCounter": 327,
+  "versionId": "065360e7-dadb-4319-9c95-fdce7f9af256",
+  "versionCounter": 354,
   "triggerCount": 1,
   "shared": [
     {
@@ -934,7 +986,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-02-16T00:00:28.219Z",
+              "updatedAt": "2026-02-17T00:00:25.215Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -961,7 +1013,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-02-15",
+              "lastActiveAt": "2026-02-16",
               "isPending": false
             }
           }
