@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-16T07:09:53.692Z",
+  "updatedAt": "2026-02-18T08:32:26.317Z",
   "createdAt": "2025-12-18T07:08:42.857Z",
   "id": "jrHRA6w06ZVZSfCe",
   "name": "Proposal_Generator",
@@ -493,8 +493,8 @@
       "type": "n8n-nodes-base.googleDocs",
       "typeVersion": 2,
       "position": [
-        1088,
-        -144
+        1072,
+        -128
       ],
       "id": "0eb0a633-6fbd-44f1-a031-2dc90f68449d",
       "name": "Update Copy Template",
@@ -892,10 +892,7 @@
   },
   "staticData": {
     "node:Notion Trigger": {
-      "lastTimeChecked": "2026-02-16T07:11:00.000Z",
-      "possibleDuplicates": [
-        "3096c00e-9719-8033-8291-dba4a05aff3a"
-      ]
+      "lastTimeChecked": "2026-02-18T16:50:00.000Z"
     }
   },
   "meta": {
@@ -905,7 +902,7 @@
     "Notion Trigger": [
       {
         "json": {
-          "id": "3096c00e-9719-8033-8291-dba4a05aff3a",
+          "id": "30b6c00e-9719-803c-a94c-f369384cf66c",
           "Setup Fee": [
             750,
             1000
@@ -944,7 +941,7 @@
           "Target": [
             "8-10 discovery calls per month with businesses doing over $0.5m in revenue. Automate the 'first touch' so the founder only speaks to qualified leads."
           ],
-          "Notes": ".",
+          "Notes": "",
           "Last Name": [
             "Wettinck"
           ],
@@ -956,13 +953,13 @@
             "We analyze customer’s ICP and use designated online tools to find all necessary details.\nWe set up the needed amount of inboxes and domains, warm up the emails\nWe set the complete email sequence and do personalization where needed\nIf there are over 3000 leads, we will use our in-house designed model to optimize the results.\nWe also implement automatic answering to mails (based on your data) using the best llm\nTech stack used: Instantly, N8N, Python, OpenAI, Apollo, Clay, Zerobounce,…\n",
             "We connect all incoming channels and to customer’s crm (so they run in parallel)"
           ],
-          "Proposal": "Lead Generation"
+          "Proposal": "lead generation"
         }
       }
     ]
   },
-  "versionId": "065360e7-dadb-4319-9c95-fdce7f9af256",
-  "versionCounter": 354,
+  "versionId": "89edda62-46ad-4a20-861d-d4a8efc5de25",
+  "versionCounter": 361,
   "triggerCount": 1,
   "shared": [
     {
@@ -986,7 +983,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-02-17T00:00:25.215Z",
+              "updatedAt": "2026-02-19T00:00:27.551Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -1013,7 +1010,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-02-16",
+              "lastActiveAt": "2026-02-18",
               "isPending": false
             }
           }
