@@ -1,0 +1,298 @@
+{
+  "updatedAt": "2026-02-19T10:36:59.647Z",
+  "createdAt": "2026-02-19T07:56:12.781Z",
+  "id": "oRF3tz6U0TcimYnt",
+  "name": "OCR_Advanced",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1YDofthAyhzxRRZacm_zLbKJgZayrOHfs",
+          "mode": "list",
+          "cachedResultName": "test_text.jpeg",
+          "cachedResultUrl": "https://drive.google.com/file/d/1YDofthAyhzxRRZacm_zLbKJgZayrOHfs/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        224,
+        0
+      ],
+      "id": "7fbccd62-b444-474f-90b7-a57b8b494ee1",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a precise OCR transcription engine. Your only job is to transcribe exactly what is visually present in the image. You will complete this task in three explicit steps, and you must show all steps in your output.\nGround Rules (apply to all steps):\n\nTranscribe only what is explicitly visible. Do not auto-correct spelling, do not finish incomplete sentences, and do not infer context.\nIf a word looks like a misspelling of a real word, transcribe the misspelling exactly. Do not substitute the likely intended word.\nEvaluate every character independently. Do not use surrounding words or sentence context to resolve unclear characters.\nWhen in doubt, always prefer [?] over a guess. A transcription with [?] markers is more valuable than one with confidently wrong characters.\nPreserve all original line breaks, indentations, and spacing exactly as they appear in the image.\n\n\nStep 1 — Raw Draft:\nTranscribe the image as-is, character by character, with no corrections or interpretations. Output this in a code block. This is your working draft, not your final answer.\nStep 2 — Doubt Review:\nGo through your Step 1 draft word by word. For every word, ask yourself: \"Am I 90% or more confident in every individual character, evaluated independently of context?\"\nFor each word where the answer is no, write it out like this:\n\nWord: [your transcription] → Reason for doubt: [explain which character(s) are ambiguous and why] → Revised: [corrected version with [?] markers]\n\nIf you are fully confident in a word, skip it.\nStep 3 — Final Output:\nApply all revisions from Step 2 to your Step 1 draft. Output the final result in a code block, preserving all original formatting.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        448,
+        0
+      ],
+      "id": "e7013c63-1ead-4235-8fd0-257078add5bb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "83079fcc-58a7-4798-ac8d-be5424e0e04d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        400,
+        192
+      ],
+      "id": "f73ac6bf-5342-409e-a4c4-73e73dadd815",
+      "name": "Gemini 2.5 Flash",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "hxuUpUy1J8QhbA96",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"Company Name\": \"Aistralis\",\n\t\"Full Name\": \"peter Wettinck\",\n  \"email\" : \"peter@aistralis.com\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        208
+      ],
+      "id": "9219061e-c496-41f8-b50e-51e62d0190eb",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1L_-P4vGK3lgJQ-wmj5InmI3IlG4qHZ30GHH2nsG81VM",
+          "mode": "list",
+          "cachedResultName": "boekhouders_NL",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1L_-P4vGK3lgJQ-wmj5InmI3IlG4qHZ30GHH2nsG81VM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1575746680,
+          "mode": "list",
+          "cachedResultName": "ocr",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1L_-P4vGK3lgJQ-wmj5InmI3IlG4qHZ30GHH2nsG81VM/edit#gid=1575746680"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "text": "={{ $json.output }}"
+          },
+          "matchingColumns": [
+            "text"
+          ],
+          "schema": [
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        800,
+        0
+      ],
+      "id": "bf014df8-98fd-4f2f-8f50-a27f5bf06430",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\n1. *Maintain Formatting:* Replicate the original layout exactly. Preserve all original line breaks, indentations, and spacing.\n\n2. *Zero Hallucination:* Transcribe only what is explicitly visible. Do not \"auto-correct\" spelling, do not finish incomplete sentences, and do not infer context that isn't there.\n\n3. Strict Visual Match (The \"Doubt\" Rule): If a word contains a character that does not 100% match a standard alphanumeric shape, you MUST use [?]. Do not assume the word based on context. If the word is misspelled (e.g., \"whith\"), transcribe the misspelling exactly, but if the characters themselves are malformed, use the marker.\n\n4. *Quality Gate (Verification):* Before providing the final output, perform a second \"pass\" by comparing your draft transcription against the image character-by-character to ensure no words were skipped or misread.*Output Format:* Provide the transcription in a code block to ensure the line breaks and spacing remain intact.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        -128
+      ],
+      "id": "3b1e0670-1909-4da0-8c01-d973eb41dfcd",
+      "name": "AI Agent1"
+    }
+  ],
+  "connections": {
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini 2.5 Flash": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When clicking ‘Execute workflow’": [
+      {
+        "json": {}
+      }
+    ]
+  },
+  "versionId": "14cd57d8-7787-488f-9dfb-f5734002433d",
+  "versionCounter": 8,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-19T07:56:12.781Z",
+      "createdAt": "2026-02-19T07:56:12.781Z",
+      "role": "workflow:owner",
+      "workflowId": "oRF3tz6U0TcimYnt",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-07-05T04:34:00.267Z",
+            "createdAt": "2025-07-05T04:34:00.267Z",
+            "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+            "projectId": "2KiFcKNLK1JyaklJ",
+            "user": {
+              "updatedAt": "2026-02-20T00:00:20.569Z",
+              "createdAt": "2025-07-05T04:33:38.764Z",
+              "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+              "email": "peterjawel@gmail.com",
+              "firstName": "peter",
+              "lastName": "aistralis",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-07-05T04:35:25.871Z",
+                "personalization_survey_n8n_version": "1.100.1",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "business-owner",
+                "reportedSource": "youtube"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "FAkXhJwuAslD2JDu",
+                "userActivatedAt": 1751716484498,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1769850829423
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-02-19",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ]
+}
