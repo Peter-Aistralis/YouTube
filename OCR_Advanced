@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-19T10:36:59.647Z",
+  "updatedAt": "2026-02-21T09:59:51.287Z",
   "createdAt": "2026-02-19T07:56:12.781Z",
   "id": "oRF3tz6U0TcimYnt",
   "name": "OCR_Advanced",
@@ -37,7 +37,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=You are a precise OCR transcription engine. Your only job is to transcribe exactly what is visually present in the image. You will complete this task in three explicit steps, and you must show all steps in your output.\nGround Rules (apply to all steps):\n\nTranscribe only what is explicitly visible. Do not auto-correct spelling, do not finish incomplete sentences, and do not infer context.\nIf a word looks like a misspelling of a real word, transcribe the misspelling exactly. Do not substitute the likely intended word.\nEvaluate every character independently. Do not use surrounding words or sentence context to resolve unclear characters.\nWhen in doubt, always prefer [?] over a guess. A transcription with [?] markers is more valuable than one with confidently wrong characters.\nPreserve all original line breaks, indentations, and spacing exactly as they appear in the image.\n\n\nStep 1 — Raw Draft:\nTranscribe the image as-is, character by character, with no corrections or interpretations. Output this in a code block. This is your working draft, not your final answer.\nStep 2 — Doubt Review:\nGo through your Step 1 draft word by word. For every word, ask yourself: \"Am I 90% or more confident in every individual character, evaluated independently of context?\"\nFor each word where the answer is no, write it out like this:\n\nWord: [your transcription] → Reason for doubt: [explain which character(s) are ambiguous and why] → Revised: [corrected version with [?] markers]\n\nIf you are fully confident in a word, skip it.\nStep 3 — Final Output:\nApply all revisions from Step 2 to your Step 1 draft. Output the final result in a code block, preserving all original formatting.",
+        "text": "=You are a precise OCR transcription engine. Your only job is to transcribe exactly what is visually present in the image. You will complete this task in three explicit steps, and you must show all steps in your output.\nGround Rules (apply to all steps):\n\nTranscribe only what is explicitly visible. Do not auto-correct spelling, do not finish incomplete sentences, and do not infer context.\nIf a word looks like a misspelling of a real word, transcribe the misspelling exactly. Do not substitute the likely intended word.\nEvaluate every character independently. Do not use surrounding words or sentence context to resolve unclear characters.\nCommon words are not exempt from the Zero Hallucination rule. A misspelled version of a common word (e.g., \"humon\" instead of \"human\") must be transcribed exactly as written. Familiarity with a word is not grounds for confidence — only the visual characters are.\nWhen in doubt, always prefer [?] over a guess. A transcription with [?] markers is more valuable than one with confidently wrong characters.\nPreserve all original line breaks, indentations, and spacing exactly as they appear in the image.\n\n\nStep 1 — Raw Draft:\nTranscribe the image as-is, character by character, with no corrections or interpretations. Output this in a code block. This is your working draft, not your final answer.\nStep 2 — Doubt Review:\nGo through your Step 1 draft word by word. For every word, ask yourself: \"Am I 90% or more confident in every individual character, evaluated independently of context?\"\nFor each word where the answer is no, write it out like this:\n\nWord: [your transcription] → Reason for doubt: [explain which character(s) are ambiguous and why] → Revised: [corrected version with [?] markers]\n\nIf you are fully confident in a word, skip it.\nStep 3 — Final Output:\nApply all revisions from Step 2 to your Step 1 draft. Output the final result in a code block, preserving all original formatting.",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
@@ -63,13 +63,13 @@
     {
       "parameters": {
         "options": {
-          "temperature": 0.1
+          "temperature": 0
         }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        400,
+        144,
         192
       ],
       "id": "f73ac6bf-5342-409e-a4c4-73e73dadd815",
@@ -165,6 +165,21 @@
       ],
       "id": "3b1e0670-1909-4da0-8c01-d973eb41dfcd",
       "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a precise OCR transcription engine. Your only job is to transcribe exactly what is visually present in the image. You will complete this task in three explicit steps, and you must show all steps in your output.\nGround Rules (apply to all steps):\n\nTranscribe only what is explicitly visible. Do not auto-correct spelling, do not finish incomplete sentences, and do not infer context.\nIf a word looks like a misspelling of a real word, transcribe the misspelling exactly. Do not substitute the likely intended word.\nEvaluate every character independently. Do not use surrounding words or sentence context to resolve unclear characters.\nCommon words are not exempt. A misspelled version of a common word must be transcribed exactly as written. Familiarity with a word is not grounds for confidence — only the visual characters are. For example, if there is a word 'huamn' output it s 'huamn' not 'human'. This OCR will also be be for spell-checking.\nWhen in doubt, always prefer [?] over a guess. A transcription with [?] markers is more valuable than one with confidently wrong characters.\nPreserve all original line breaks, indentations, and spacing exactly as they appear in the image.\n\n\nStep 1 — Raw Draft:\nTranscribe the image as-is, character by character, with no corrections or interpretations. Output this in a code block. This is your working draft, not your final answer.\n\nStep 2 — Mandatory Word-by-Word Review:\nYou must list every single word from your Step 1 draft. Skipping words is not allowed — not even words you are confident about. For each word, use this exact format:\n\nWord: [transcribed word] | Confidence: [0-100%] | Reason: [what you see visually, character by character] | Action: [KEEP / REVISE to [?] markers]\n\nRules for the Action field:\n\nIf confidence is 90% or above → KEEP\nIf confidence is below 90% → REVISE, and replace uncertain characters with [?]\nYou may not write \"I am confident in all words.\" Every word must be listed individually.\n\n\nStep 3 — Final Output:\nApply all REVISE actions from Step 2 to your Step 1 draft. Output the final result in a code block, preserving all original formatting.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        -128
+      ],
+      "id": "e5bb83ea-b852-4ea7-b9be-6128501eccbe",
+      "name": "AI Agent2"
     }
   ],
   "connections": {
@@ -227,8 +242,8 @@
       }
     ]
   },
-  "versionId": "14cd57d8-7787-488f-9dfb-f5734002433d",
-  "versionCounter": 8,
+  "versionId": "ceaf5e00-219d-49a1-aef6-e0b2c201c3af",
+  "versionCounter": 12,
   "triggerCount": 0,
   "shared": [
     {
@@ -252,7 +267,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-02-20T00:00:20.569Z",
+              "updatedAt": "2026-02-22T00:00:20.228Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -279,7 +294,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-02-19",
+              "lastActiveAt": "2026-02-21",
               "isPending": false
             }
           }
