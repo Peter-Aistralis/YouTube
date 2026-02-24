@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-22T14:29:34.073Z",
+  "updatedAt": "2026-02-23T13:14:53.220Z",
   "createdAt": "2026-02-19T07:56:12.781Z",
   "id": "oRF3tz6U0TcimYnt",
   "name": "OCR_Advanced",
@@ -12,10 +12,10 @@
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "1gyyT5YUlP9U2lIti23o5ebwKVB7syxjh",
+          "value": "1zUc03j_M0MrYBF-4bzjIGVDtnHuUKFEv",
           "mode": "list",
-          "cachedResultName": "test_handwriting.jpeg",
-          "cachedResultUrl": "https://drive.google.com/file/d/1gyyT5YUlP9U2lIti23o5ebwKVB7syxjh/view?usp=drivesdk"
+          "cachedResultName": "my_text.jpeg",
+          "cachedResultUrl": "https://drive.google.com/file/d/1zUc03j_M0MrYBF-4bzjIGVDtnHuUKFEv/view?usp=drivesdk"
         },
         "options": {}
       },
@@ -43,8 +43,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        448,
-        80
+        576,
+        128
       ],
       "id": "e7013c63-1ead-4235-8fd0-257078add5bb",
       "name": "AI Agent"
@@ -139,8 +139,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        800,
-        0
+        880,
+        64
       ],
       "id": "bf014df8-98fd-4f2f-8f50-a27f5bf06430",
       "name": "Append row in sheet",
@@ -160,8 +160,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        256,
-        -128
+        896,
+        240
       ],
       "id": "3b1e0670-1909-4da0-8c01-d973eb41dfcd",
       "name": "AI Agent1"
@@ -180,6 +180,21 @@
       ],
       "id": "e5bb83ea-b852-4ea7-b9be-6128501eccbe",
       "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "you are an ocr expert and you are given a handwritten text\nYou output what is written, only the text",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        384,
+        48
+      ],
+      "id": "4da3cef8-182c-4e5c-a74b-6dbf54d69016",
+      "name": "AI Agent3"
     }
   ],
   "connections": {
@@ -187,7 +202,7 @@
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "AI Agent3",
             "type": "main",
             "index": 0
           }
@@ -228,11 +243,27 @@
             "node": "AI Agent2",
             "type": "ai_languageModel",
             "index": 0
+          },
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
           }
         ]
       ]
     },
     "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
       "main": [
         [
           {
@@ -258,8 +289,8 @@
       }
     ]
   },
-  "versionId": "45f2a669-8df8-4225-b000-e976048b1fa3",
-  "versionCounter": 15,
+  "versionId": "fd840240-eea3-4cb7-bbca-e01e5a7d37d2",
+  "versionCounter": 19,
   "triggerCount": 0,
   "shared": [
     {
@@ -283,7 +314,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-02-23T00:00:23.629Z",
+              "updatedAt": "2026-02-24T00:00:53.284Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -310,7 +341,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-02-22",
+              "lastActiveAt": "2026-02-23",
               "isPending": false
             }
           }
