@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-23T13:24:35.157Z",
+  "updatedAt": "2026-02-24T02:25:24.796Z",
   "createdAt": "2025-12-10T13:44:01.029Z",
   "id": "kzPeHoj4g2IaILq9",
   "name": "Enrich",
@@ -67,29 +67,6 @@
       ],
       "id": "3900cc87-dc55-4167-a0fa-e4c6f36110fb",
       "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "events": [
-          "checkout.session.completed",
-          "invoice.payment_succeeded"
-        ]
-      },
-      "type": "n8n-nodes-base.stripeTrigger",
-      "typeVersion": 1,
-      "position": [
-        -576,
-        -160
-      ],
-      "id": "335c6a43-4278-41a4-88d4-5e3f0e0b0920",
-      "name": "Stripe Trigger",
-      "webhookId": "8d3c10e1-9469-4d17-bfcb-2e34ef9296f0",
-      "credentials": {
-        "stripeApi": {
-          "id": "OrIwrlLlaSKtsyH8",
-          "name": "Stripe account"
-        }
-      }
     },
     {
       "parameters": {
@@ -787,17 +764,6 @@
         ]
       ]
     },
-    "Stripe Trigger": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Cal.com Trigger": {
       "main": [
         [
@@ -993,7 +959,7 @@
   },
   "staticData": {
     "node:Typeform Trigger": {
-      "webhookId": "n8n-gqzwb2orkr"
+      "webhookId": "n8n-53vcmk1ler"
     },
     "node:Stripe Trigger": {
       "webhookId": "we_1T3z7nAGnfsk8FMSCKm9hHQs",
@@ -1004,7 +970,7 @@
       "webhookSecret": "whsec_oHkQrboCvOyEKahXf914mzyvQ0S4flMh"
     },
     "node:Cal.com Trigger": {
-      "webhookId": "967e8c0a-5e19-40a8-8228-6ee6f1df5514"
+      "webhookId": "5805a842-c98f-406e-adb0-1b4249fabc6c"
     },
     "node:Gmail Trigger": {
       "Gmail Trigger": {
@@ -1069,9 +1035,9 @@
       }
     ]
   },
-  "versionId": "b6964ad8-3fb0-41e9-9bb8-a5c75cdda1fb",
-  "versionCounter": 223,
-  "triggerCount": 5,
+  "versionId": "a8f02d4f-44f6-4a6b-8570-2bb1a908456d",
+  "versionCounter": 233,
+  "triggerCount": 4,
   "shared": [
     {
       "updatedAt": "2025-12-10T13:44:01.029Z",
@@ -1094,7 +1060,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-02-24T00:00:53.284Z",
+              "updatedAt": "2026-02-25T00:00:05.159Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -1121,7 +1087,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-02-23",
+              "lastActiveAt": "2026-02-24",
               "isPending": false
             }
           }
