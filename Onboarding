@@ -1,0 +1,943 @@
+{
+  "updatedAt": "2026-03-01T15:50:30.976Z",
+  "createdAt": "2026-03-01T08:57:21.657Z",
+  "id": "Ms7d1n8FAO41VVlL",
+  "name": "Onboarding",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "events": [
+          "checkout.session.completed"
+        ]
+      },
+      "type": "n8n-nodes-base.stripeTrigger",
+      "typeVersion": 1,
+      "position": [
+        -496,
+        -96
+      ],
+      "id": "1a743ea4-2fa0-42c3-9194-9ba7dadbaab4",
+      "name": "Stripe Trigger",
+      "webhookId": "e01b0af5-1bb9-4a49-8c3a-372de75e2f70",
+      "credentials": {
+        "stripeApi": {
+          "id": "g1pflT85wYxGMl6j",
+          "name": "Stripe account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://api.stripe.com/v1/checkout/sessions/{{ $json.data.object.id }}/line_items",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "stripeApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -336,
+        -96
+      ],
+      "id": "a562fe3e-d991-4e1b-aceb-ddac51a5521e",
+      "name": "HTTP Request",
+      "credentials": {
+        "stripeApi": {
+          "id": "g1pflT85wYxGMl6j",
+          "name": "Stripe account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        16
+      ],
+      "id": "9a06e502-4643-4273-81a9-284ce16e263d",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1AWOgwCcJIJ2CoiVRB_VPIrnhFh_HnwczYCZ97Y3p4uU",
+          "mode": "list",
+          "cachedResultName": "Rendering Services",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AWOgwCcJIJ2CoiVRB_VPIrnhFh_HnwczYCZ97Y3p4uU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AWOgwCcJIJ2CoiVRB_VPIrnhFh_HnwczYCZ97Y3p4uU/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Product_id",
+              "lookupValue": "={{ $json.price.product }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        16
+      ],
+      "id": "49d93583-88be-4853-b4dd-79550d0bc5de",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "=Documents + Renders for {{ $('Stripe Trigger').item.json.data.object.customer_details.name }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1K3KcY732Oul9O7U7fj_ANJKIitfZbv6A",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -80,
+        -208
+      ],
+      "id": "a5ccaae2-4cc4-4f74-a434-c64610ca24ae",
+      "name": "Create folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "share",
+        "folderNoRootId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "permissionsUi": {
+          "permissionsValues": {
+            "role": "writer",
+            "type": "user",
+            "emailAddress": "={{ $('Stripe Trigger').item.json.data.object.customer_details.email }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        96,
+        -208
+      ],
+      "id": "60602f7a-7c43-4561-a67b-f7e10b70712e",
+      "name": "Share folder",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Uploads",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        256,
+        -208
+      ],
+      "id": "9ffa5d2a-3291-4bc6-b5cb-66e8961d3cf5",
+      "name": "Create folder1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "name": "Final Renders",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create folder').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        416,
+        -208
+      ],
+      "id": "f6454e82-1e6d-4261-84dd-6228e4ca2187",
+      "name": "Create folder2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cf2941fb-966c-4497-93f6-2886b71ffa0b",
+              "name": "Product_id",
+              "value": "={{ $json.Product_id }}",
+              "type": "string"
+            },
+            {
+              "id": "6acea140-91dd-4fdb-ab91-4693e4f1ca40",
+              "name": "Product_name",
+              "value": "={{ $json.Product_name }}",
+              "type": "string"
+            },
+            {
+              "id": "fcc4caa2-1ba6-4e66-bd72-e9ddb10247fc",
+              "name": "Loom_url",
+              "value": "={{ $json.Loom_url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        272,
+        16
+      ],
+      "id": "a0a21acc-67b1-42e5-8a73-5f6ce6866d8b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b43622a5-e34f-4a48-8fbb-d4a87e360478",
+              "name": "shared_folder_id",
+              "value": "={{ $('Create folder').item.json.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        560,
+        -208
+      ],
+      "id": "e9203d3f-8c57-4dee-adcb-8e062ed94e3d",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "resource": "channel",
+        "channelId": "=rendering_for_{{ $('Stripe Trigger').item.json.data.object.customer_details.name }}",
+        "channelVisibility": "private"
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        144
+      ],
+      "id": "a8529013-ad8c-4471-8e7f-f74a92dde735",
+      "name": "Create a channel",
+      "webhookId": "f5226cff-7941-4c39-aa0d-57cabf2ab080",
+      "credentials": {
+        "slackApi": {
+          "id": "V700Ft2dm0NEii1V",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "channel",
+        "operation": "invite",
+        "channelId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        16,
+        144
+      ],
+      "id": "4f08dcc3-bee9-4251-bac5-d41a0874cf34",
+      "name": "Invite a user to a channel",
+      "webhookId": "9e14718b-0585-4159-b13c-68e7d9b65797",
+      "credentials": {
+        "slackOAuth2Api": {
+          "id": "VEFzv4jzBI57WTwk",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        944,
+        -144
+      ],
+      "id": "e0ba738f-918d-4bda-b9a7-3c7e19d41bdd",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Task: Generate a list of products and their Loom URLs.\n\nInput:\nProduct names: {{ $json.Product_name }}\nLoom Url: {{ $json.Loom_url }}\n\nInstructions:\n\nOutput ONLY a bulleted list in the following plain text format:\n\nDo not use Markdown brackets or parentheses.\n\nDo not include headers (like \"Markdown Format\") or JSON blocks.\n\nEnsure there is a single line break between each bullet point.\n\nExample Output:\n\nInterior Rendering: https://www.loom.com/...\n\nExterior Rendering: https://www.loom.com/...",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        640,
+        16
+      ],
+      "id": "6d13ce9e-856a-4283-8301-31d4336e0fbb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Product_name"
+            },
+            {
+              "fieldToAggregate": "Loom_url"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        480,
+        16
+      ],
+      "id": "f3b4cac4-c1e3-4dee-b500-2714302a35dc",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        224
+      ],
+      "id": "396047df-1f00-4943-ae23-6f7142303094",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        -144
+      ],
+      "id": "128bad9a-2ffd-4c38-a68b-911cce0525c4",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "operation": "copy",
+        "fileId": {
+          "__rl": true,
+          "value": "1wXrpVmtXUMt6gEJ8W1vZ78xpS1ml210_kbZQVKLOBAc",
+          "mode": "list",
+          "cachedResultName": "Onboarding",
+          "cachedResultUrl": "https://docs.google.com/document/d/1wXrpVmtXUMt6gEJ8W1vZ78xpS1ml210_kbZQVKLOBAc/edit?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1072,
+        128
+      ],
+      "id": "53443b0e-fff7-4e50-88d6-fc5c374b9265",
+      "name": "Copy file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ $json.id }}:batchUpdate",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDocsOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"updateTextStyle\": {\n        \"textStyle\": {\n          \"link\": {\n            \"url\": \"https://www.example.com\"\n          }\n        },\n        \"range\": {\n          \"startIndex\": 25,\n          \"endIndex\": 35\n        },\n        \"fields\": \"link\"\n      }\n    }\n  ]\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1280,
+        128
+      ],
+      "id": "4653d509-d095-4bcc-a345-d5488baeaada",
+      "name": "HTTP Request1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        },
+        "oAuth2Api": {
+          "id": "s3C4lrsUXNTatIUs",
+          "name": "Google"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ $json.id }}:batchUpdate",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDocsOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"replaceAllText\": {\n        \"containsText\": {\n          \"text\": \"[[links]]\",\n          \"matchCase\": true\n        },\n        \"replaceText\": {{ JSON.stringify($('Aggregate1').item.json.data[1].output) }}\n      }\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1024,
+        416
+      ],
+      "id": "0cbca02f-4331-4b11-912b-aa2b2717dbbb",
+      "name": "HTTP Request2",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        },
+        "oAuth2Api": {
+          "id": "s3C4lrsUXNTatIUs",
+          "name": "Google"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Stripe Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Create folder",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder": {
+      "main": [
+        [
+          {
+            "node": "Share folder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share folder": {
+      "main": [
+        [
+          {
+            "node": "Create folder1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder1": {
+      "main": [
+        [
+          {
+            "node": "Create folder2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create folder2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a channel": {
+      "main": [
+        [
+          {
+            "node": "Invite a user to a channel",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Copy file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copy file": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": {
+    "node:Stripe Trigger": {
+      "webhookId": "we_1T6CGJEmOCxfDzgdc1rCKCZQ",
+      "webhookEvents": [
+        "checkout.session.completed"
+      ],
+      "webhookSecret": "whsec_8FxYyAG3dO9zODAbMGJGDueBoGZC6LWA"
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "Stripe Trigger": [
+      {
+        "json": {
+          "id": "evt_1T65zdEmOCxfDzgdEuBag6zV",
+          "object": "event",
+          "api_version": "2020-08-27",
+          "created": 1772356133,
+          "data": {
+            "object": {
+              "id": "cs_test_b1XEEqpqwPBWMM0KVehOatacalfR1SGz4smtsxlOZB2f9QxHiup5HIAqWT",
+              "object": "checkout.session",
+              "adaptive_pricing": {
+                "enabled": true
+              },
+              "after_expiration": null,
+              "allow_promotion_codes": null,
+              "amount_subtotal": 25000,
+              "amount_total": 25000,
+              "automatic_tax": {
+                "enabled": false,
+                "liability": null,
+                "provider": null,
+                "status": null
+              },
+              "billing_address_collection": null,
+              "branding_settings": {
+                "background_color": "#ffffff",
+                "border_style": "rounded",
+                "button_color": "#0074d4",
+                "display_name": "Aistralis",
+                "font_family": "default",
+                "icon": null,
+                "logo": null
+              },
+              "cancel_url": "https://preview--atmospheric-renderings.lovable.app/order?canceled=true",
+              "client_reference_id": null,
+              "client_secret": null,
+              "collected_information": null,
+              "consent": null,
+              "consent_collection": null,
+              "created": 1772356110,
+              "currency": "eur",
+              "currency_conversion": null,
+              "custom_fields": [],
+              "custom_text": {
+                "after_submit": null,
+                "shipping_address": null,
+                "submit": null,
+                "terms_of_service_acceptance": null
+              },
+              "customer": null,
+              "customer_account": null,
+              "customer_creation": "if_required",
+              "customer_details": {
+                "address": {
+                  "city": null,
+                  "country": "SG",
+                  "line1": null,
+                  "line2": null,
+                  "postal_code": null,
+                  "state": null
+                },
+                "business_name": null,
+                "email": "peterjawel@gmail.com",
+                "individual_name": null,
+                "name": "peter",
+                "phone": null,
+                "tax_exempt": "none",
+                "tax_ids": []
+              },
+              "customer_email": null,
+              "discounts": [],
+              "expires_at": 1772442509,
+              "invoice": null,
+              "invoice_creation": {
+                "enabled": false,
+                "invoice_data": {
+                  "account_tax_ids": null,
+                  "custom_fields": null,
+                  "description": null,
+                  "footer": null,
+                  "issuer": null,
+                  "metadata": {},
+                  "rendering_options": null
+                }
+              },
+              "livemode": false,
+              "locale": null,
+              "metadata": {},
+              "mode": "payment",
+              "origin_context": null,
+              "payment_intent": "pi_3T65zcEmOCxfDzgd0CYPAPgI",
+              "payment_link": null,
+              "payment_method_collection": "if_required",
+              "payment_method_configuration_details": {
+                "id": "pmc_1LOOCcEmOCxfDzgdPvAtlAIB",
+                "parent": null
+              },
+              "payment_method_options": {
+                "card": {
+                  "request_three_d_secure": "automatic"
+                }
+              },
+              "payment_method_types": [
+                "card",
+                "bancontact",
+                "eps",
+                "ideal"
+              ],
+              "payment_status": "paid",
+              "permissions": null,
+              "phone_number_collection": {
+                "enabled": false
+              },
+              "recovered_from": null,
+              "saved_payment_method_options": null,
+              "setup_intent": null,
+              "shipping": null,
+              "shipping_address_collection": null,
+              "shipping_options": [],
+              "shipping_rate": null,
+              "status": "complete",
+              "submit_type": null,
+              "subscription": null,
+              "success_url": "https://preview--atmospheric-renderings.lovable.app/order?success=true",
+              "total_details": {
+                "amount_discount": 0,
+                "amount_shipping": 0,
+                "amount_tax": 0
+              },
+              "ui_mode": "hosted",
+              "url": null,
+              "wallet_options": null
+            }
+          },
+          "livemode": false,
+          "pending_webhooks": 1,
+          "request": {
+            "id": null,
+            "idempotency_key": null
+          },
+          "type": "checkout.session.completed"
+        }
+      }
+    ]
+  },
+  "versionId": "fa85bebc-7640-4d80-8837-7ec2eab97b82",
+  "versionCounter": 93,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-01T08:57:21.657Z",
+      "createdAt": "2026-03-01T08:57:21.657Z",
+      "role": "workflow:owner",
+      "workflowId": "Ms7d1n8FAO41VVlL",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "projectRelations": [
+          {
+            "updatedAt": "2025-07-05T04:34:00.267Z",
+            "createdAt": "2025-07-05T04:34:00.267Z",
+            "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+            "projectId": "2KiFcKNLK1JyaklJ",
+            "user": {
+              "updatedAt": "2026-03-02T00:00:12.439Z",
+              "createdAt": "2025-07-05T04:33:38.764Z",
+              "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
+              "email": "peterjawel@gmail.com",
+              "firstName": "peter",
+              "lastName": "aistralis",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-07-05T04:35:25.871Z",
+                "personalization_survey_n8n_version": "1.100.1",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "business-owner",
+                "reportedSource": "youtube"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "FAkXhJwuAslD2JDu",
+                "userActivatedAt": 1751716484498,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1769850829423
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-03-01",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ]
+}
