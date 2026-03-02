@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-27T12:35:47.427Z",
+  "updatedAt": "2026-03-01T07:51:58.845Z",
   "createdAt": "2026-02-19T07:56:12.781Z",
   "id": "oRF3tz6U0TcimYnt",
   "name": "OCR_Advanced",
@@ -12,17 +12,17 @@
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "1YDofthAyhzxRRZacm_zLbKJgZayrOHfs",
+          "value": "15HMJFVbMREJOETe-g9xSjP9R5tZBvPw0",
           "mode": "list",
-          "cachedResultName": "test_text.jpeg",
-          "cachedResultUrl": "https://drive.google.com/file/d/1YDofthAyhzxRRZacm_zLbKJgZayrOHfs/view?usp=drivesdk"
+          "cachedResultName": "My_writing.jpeg",
+          "cachedResultUrl": "https://drive.google.com/file/d/15HMJFVbMREJOETe-g9xSjP9R5tZBvPw0/view?usp=drivesdk"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        224,
+        160,
         0
       ],
       "id": "7fbccd62-b444-474f-90b7-a57b8b494ee1",
@@ -37,14 +37,15 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=You are a precise OCR transcription engine. Your only job is to transcribe exactly what is visually present in the image. You will complete this task in three explicit steps, and you must show all steps in your output.\nGround Rules (apply to all steps):\n\nTranscribe only what is explicitly visible. Do not auto-correct spelling, do not finish incomplete sentences, and do not infer context.\nIf a word looks like a misspelling of a real word, transcribe the misspelling exactly. Do not substitute the likely intended word.\nEvaluate every character independently. Do not use surrounding words or sentence context to resolve unclear characters.\nCommon words are not exempt from the Zero Hallucination rule. A misspelled version of a common word (e.g., \"humon\" instead of \"human\") must be transcribed exactly as written. Familiarity with a word is not grounds for confidence — only the visual characters are.\nWhen in doubt, always prefer [?] over a guess. A transcription with [?] markers is more valuable than one with confidently wrong characters.\nPreserve all original line breaks, indentations, and spacing exactly as they appear in the image.\n\n\nStep 1 — Raw Draft:\nTranscribe the image as-is, character by character, with no corrections or interpretations. Output this in a code block. This is your working draft, not your final answer.\nStep 2 — Doubt Review:\nGo through your Step 1 draft word by word. For every word, ask yourself: \"Am I 90% or more confident in every individual character, evaluated independently of context?\"\nFor each word where the answer is no, write it out like this:\n\nWord: [your transcription] → Reason for doubt: [explain which character(s) are ambiguous and why] → Revised: [corrected version with [?] markers]\n\nIf you are fully confident in a word, skip it.\nStep 3 — Final Output:\nApply all revisions from Step 2 to your Step 1 draft. Output the final result in a code block, preserving all original formatting.",
+        "text": "=You are a precise OCR transcription engine. Your only job is to transcribe exactly what is visually present in the image. You will complete this task in three explicit steps, and you must show all steps in your output.\nGround Rules (apply to all steps):\n\nTranscribe only what is explicitly visible. Do not auto-correct spelling, do not finish incomplete sentences, and do not infer context.\nIf a word looks like a misspelling of a real word, transcribe the misspelling exactly. Do not substitute the likely intended word.\nEvaluate every character independently AND in sequence. Do not use surrounding words or sentence context to resolve unclear characters.\n\nCRITICAL — Transposition Rule: Before finalizing any word, verify the exact left-to-right order of every character. A word like \"bitter\" could be written as \"bittre\" — the characters may all be correct but in the wrong order. Do not assume the order matches a known word. Read the sequence as written, not as expected.\n\nCRITICAL — Common Word Trap: The more familiar a word looks, the more dangerous it is. Common words like \"every\", \"large\", \"happy\" are highest risk for silent auto-correction. Treat these with extra suspicion, not extra confidence.\nWhen in doubt, always prefer [?] over a guess. A transcription with [?] markers is more valuable than one with confidently wrong characters.\nPreserve all original line breaks, indentations, and spacing exactly as they appear in the image.\n\n\n\nStep 1 — Raw Draft:\nTranscribe the image as-is, character by character, left to right, with no corrections or interpretations. For every word, explicitly read and output each character in the exact order you see it — do not let word recognition override character sequence. Output this in a code block. This is your working draft, not your final answer.\nStep 2 — Doubt Review:\nGo through your Step 1 draft word by word. For every word, ask yourself two questions:\n\n\"Am I 90% or more confident in every individual character, evaluated independently of context?\"\n\"Have I verified the exact left-to-right character order, without assuming it matches a known word?\"\n\nFor each word where either answer is no, write it out like this:\n\nWord: [your transcription] → Reason for doubt: [explain which character(s) or their order is ambiguous] → Revised: [corrected version with [?] markers]\n\nIf you are fully confident in both the characters AND their order, skip it.\nStep 3 — Final Output:\nApply all revisions from Step 2 to your Step 1 draft. Output the final result in a code block, preserving all original formatting.\nIMPORTANT OUTPUT INSTRUCTION:\nYou must return ONLY valid JSON. Do not include markdown, code blocks, or explanations outside the JSON structure.\nReturn strictly this format:\n{\n  \"step_1_raw_draft\": \"...\",\n  \"step_2_doubt_review\": \"...\",\n  \"step_3_final_output\": \"...\"\n}",
+        "hasOutputParser": true,
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.2,
       "position": [
-        576,
-        128
+        336,
+        0
       ],
       "id": "e7013c63-1ead-4235-8fd0-257078add5bb",
       "name": "AI Agent"
@@ -69,8 +70,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
       "typeVersion": 1,
       "position": [
-        144,
-        192
+        320,
+        208
       ],
       "id": "f73ac6bf-5342-409e-a4c4-73e73dadd815",
       "name": "Gemini 2.5 Flash",
@@ -83,13 +84,13 @@
     },
     {
       "parameters": {
-        "jsonSchemaExample": "{\n\t\"Company Name\": \"Aistralis\",\n\t\"Full Name\": \"peter Wettinck\",\n  \"email\" : \"peter@aistralis.com\"\n}"
+        "jsonSchemaExample": "{\n  \"step_1_raw_draft\": \"Your character-by-character transcription with no corrections.\",\n  \"step_2_doubt_review\": \"Your word-by-word analysis of every word where you are <90% confident. Format: Word: [transcription] -> Reason: [why] -> Revised: [with ? markers].\",\n  \"step_3_final_output\": \"The final transcription with all revisions and markers applied, inside a code block format.\"\n}"
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        624,
-        208
+        496,
+        192
       ],
       "id": "9219061e-c496-41f8-b50e-51e62d0190eb",
       "name": "Structured Output Parser"
@@ -139,8 +140,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        880,
-        64
+        752,
+        160
       ],
       "id": "bf014df8-98fd-4f2f-8f50-a27f5bf06430",
       "name": "Append row in sheet",
@@ -153,48 +154,78 @@
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "=\n1. *Maintain Formatting:* Replicate the original layout exactly. Preserve all original line breaks, indentations, and spacing.\n\n2. *Zero Hallucination:* Transcribe only what is explicitly visible. Do not \"auto-correct\" spelling, do not finish incomplete sentences, and do not infer context that isn't there.\n\n3. Strict Visual Match (The \"Doubt\" Rule): If a word contains a character that does not 100% match a standard alphanumeric shape, you MUST use [?]. Do not assume the word based on context. If the word is misspelled (e.g., \"whith\"), transcribe the misspelling exactly, but if the characters themselves are malformed, use the marker.\n\n4. *Quality Gate (Verification):* Before providing the final output, perform a second \"pass\" by comparing your draft transcription against the image character-by-character to ensure no words were skipped or misread.*Output Format:* Provide the transcription in a code block to ensure the line breaks and spacing remain intact.",
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f611740d-664a-4a25-b48b-1266e4be52ad",
+              "leftValue": "={{ $json.output.step_3_final_output }}",
+              "rightValue": "[?]",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.agent",
+      "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        896,
-        240
+        688,
+        -32
       ],
-      "id": "3b1e0670-1909-4da0-8c01-d973eb41dfcd",
-      "name": "AI Agent1"
+      "id": "0bf4bafc-4caa-461c-b9df-715b80e70e01",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "1YDofthAyhzxRRZacm_zLbKJgZayrOHfs",
+          "mode": "list",
+          "cachedResultName": "test_text.jpeg",
+          "cachedResultUrl": "https://drive.google.com/file/d/1YDofthAyhzxRRZacm_zLbKJgZayrOHfs/view?usp=drivesdk"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        912,
+        160
+      ],
+      "id": "37d3d131-6249-4a9d-b595-76f8fccdfc51",
+      "name": "Download file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=You are a precise OCR transcription engine. Your only job is to transcribe exactly what is visually present in the image. You will complete this task in three explicit steps, and you must show all steps in your output.\nGround Rules (apply to all steps):\n\nTranscribe only what is explicitly visible. Do not auto-correct spelling, do not finish incomplete sentences, and do not infer context.\nIf a word looks like a misspelling of a real word, transcribe the misspelling exactly. Do not substitute the likely intended word.\nEvaluate every character independently. Do not use surrounding words or sentence context to resolve unclear characters.\nCommon words are not exempt. A misspelled version of a common word must be transcribed exactly as written. Familiarity with a word is not grounds for confidence — only the visual characters are. For example, if there is a word 'huamn' output it s 'huamn' not 'human'. This OCR will also be be for spell-checking.\nWhen in doubt, always prefer [?] over a guess. A transcription with [?] markers is more valuable than one with confidently wrong characters.\nPreserve all original line breaks, indentations, and spacing exactly as they appear in the image.\n\n\nStep 1 — Raw Draft:\nTranscribe the image as-is, character by character, with no corrections or interpretations. Output this in a code block. This is your working draft, not your final answer.\n\nStep 2 — Mandatory Word-by-Word Review:\nYou must list every single word from your Step 1 draft. Skipping words is not allowed — not even words you are confident about. For each word, use this exact format:\n\nWord: [transcribed word] | Confidence: [0-100%] | Reason: [what you see visually, character by character] | Action: [KEEP / REVISE to [?] markers]\n\nRules for the Action field:\n\nIf confidence is 90% or above → KEEP\nIf confidence is below 90% → REVISE, and replace uncertain characters with [?]\nYou may not write \"I am confident in all words.\" Every word must be listed individually.\n\n\nStep 3 — Final Output:\nApply all REVISE actions from Step 2 to your Step 1 draft. Output the final result in a code block, preserving all original formatting.",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        624,
-        -128
-      ],
-      "id": "e5bb83ea-b852-4ea7-b9be-6128501eccbe",
-      "name": "AI Agent2"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "you are an ocr expert and you are given a handwritten text\nYou output what is written, only the text",
+        "text": "=Task: Refine the transcription from Agent 1 by resolving uncertainty markers ([?]) and identifying potential misreadings using linguistic context and visual re-verification.\n\nInput Data:\n\nDraft Transcription: {{ $json.text.step_3_final_output }}\n\nDoubt Analysis: {{ $json.text.step_2_doubt_review }}\n\nOriginal Image: {{ $binary.data }}\n\nInstructions:\n\nResolve Uncertainty: Examine every instance of [?] or [???]. Use the surrounding sentence structure and the original image to determine the most likely intended word.\n\nIdentify Linguistic Improbability: Review words that the first agent marked as \"confident\" but do not make sense in the sentence (e.g., a word that breaks the grammatical flow or tone). Re-examine the image to see if a similar-looking word fits the context better.\n\nDo NOT alter any word that was not marked with [?] or [???] by Agent 1. If Agent 1 was confident in a transcription, treat it as ground truth regardless of whether it makes linguistic sense. Your job is only to resolve marked uncertainty — not to second-guess Agent 1's confident readings.\n\nPreserve Author Intent: Distinguish between a writer's deliberate misspelling (e.g., \"whith\" or \"himsey\") and an OCR error. Keep the writer's original spelling if the characters are clearly formed, but resolve the word if the first agent simply misread the handwriting strokes.\n\nMaintain Formatting: Do not change the layout. Keep all original line breaks and spacing provided in the draft.",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        384,
-        -112
+        1120,
+        160
       ],
-      "id": "4da3cef8-182c-4e5c-a74b-6dbf54d69016",
-      "name": "AI Agent3"
+      "id": "d227360d-29ff-4855-a6fc-69b065f11adb",
+      "name": "AI Agent1"
     }
   ],
   "connections": {
@@ -211,13 +242,7 @@
     },
     "AI Agent": {
       "main": [
-        [
-          {
-            "node": "Append row in sheet",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "When clicking ‘Execute workflow’": {
@@ -240,20 +265,27 @@
             "index": 0
           },
           {
-            "node": "AI Agent2",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AI Agent3",
+            "node": "AI Agent1",
             "type": "ai_languageModel",
             "index": 0
           }
         ]
       ]
     },
-    "AI Agent2": {
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
       "main": [
+        [],
         [
           {
             "node": "Append row in sheet",
@@ -263,11 +295,22 @@
         ]
       ]
     },
-    "AI Agent1": {
+    "Append row in sheet": {
       "main": [
         [
           {
-            "node": "Append row in sheet",
+            "node": "Download file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
             "type": "main",
             "index": 0
           }
@@ -289,8 +332,8 @@
       }
     ]
   },
-  "versionId": "42bfd95d-b872-438c-a4d2-bf79abfeb1c7",
-  "versionCounter": 21,
+  "versionId": "a98e9ced-9cd6-4507-9700-13597daac08c",
+  "versionCounter": 28,
   "triggerCount": 0,
   "shared": [
     {
@@ -314,7 +357,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-02-28T00:00:39.325Z",
+              "updatedAt": "2026-03-02T00:00:12.439Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -341,7 +384,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-02-27",
+              "lastActiveAt": "2026-03-01",
               "isPending": false
             }
           }
