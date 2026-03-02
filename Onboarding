@@ -719,7 +719,7 @@
       "webhookEvents": [
         "checkout.session.completed"
       ],
-      "webhookSecret": "whsec_8FxYyAG3dO9zODAbMGJGDueBoGZC6LWA"
+      "webhookSecret": "A"
     }
   },
   "meta": {
