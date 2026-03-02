@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-01T15:50:30.976Z",
+  "updatedAt": "2026-03-02T04:30:31.292Z",
   "createdAt": "2026-03-01T08:57:21.657Z",
   "id": "Ms7d1n8FAO41VVlL",
   "name": "Onboarding",
@@ -299,8 +299,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        -160,
-        144
+        -112,
+        368
       ],
       "id": "a8529013-ad8c-4471-8e7f-f74a92dde735",
       "name": "Create a channel",
@@ -326,8 +326,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        16,
-        144
+        208,
+        368
       ],
       "id": "4f08dcc3-bee9-4251-bac5-d41a0874cf34",
       "name": "Invite a user to a channel",
@@ -713,167 +713,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": {
-    "node:Stripe Trigger": {
-      "webhookId": "we_1T6CGJEmOCxfDzgdc1rCKCZQ",
-      "webhookEvents": [
-        "checkout.session.completed"
-      ],
-      "webhookSecret": "A"
-    }
-  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "Stripe Trigger": [
-      {
-        "json": {
-          "id": "evt_1T65zdEmOCxfDzgdEuBag6zV",
-          "object": "event",
-          "api_version": "2020-08-27",
-          "created": 1772356133,
-          "data": {
-            "object": {
-              "id": "cs_test_b1XEEqpqwPBWMM0KVehOatacalfR1SGz4smtsxlOZB2f9QxHiup5HIAqWT",
-              "object": "checkout.session",
-              "adaptive_pricing": {
-                "enabled": true
-              },
-              "after_expiration": null,
-              "allow_promotion_codes": null,
-              "amount_subtotal": 25000,
-              "amount_total": 25000,
-              "automatic_tax": {
-                "enabled": false,
-                "liability": null,
-                "provider": null,
-                "status": null
-              },
-              "billing_address_collection": null,
-              "branding_settings": {
-                "background_color": "#ffffff",
-                "border_style": "rounded",
-                "button_color": "#0074d4",
-                "display_name": "Aistralis",
-                "font_family": "default",
-                "icon": null,
-                "logo": null
-              },
-              "cancel_url": "https://preview--atmospheric-renderings.lovable.app/order?canceled=true",
-              "client_reference_id": null,
-              "client_secret": null,
-              "collected_information": null,
-              "consent": null,
-              "consent_collection": null,
-              "created": 1772356110,
-              "currency": "eur",
-              "currency_conversion": null,
-              "custom_fields": [],
-              "custom_text": {
-                "after_submit": null,
-                "shipping_address": null,
-                "submit": null,
-                "terms_of_service_acceptance": null
-              },
-              "customer": null,
-              "customer_account": null,
-              "customer_creation": "if_required",
-              "customer_details": {
-                "address": {
-                  "city": null,
-                  "country": "SG",
-                  "line1": null,
-                  "line2": null,
-                  "postal_code": null,
-                  "state": null
-                },
-                "business_name": null,
-                "email": "peterjawel@gmail.com",
-                "individual_name": null,
-                "name": "peter",
-                "phone": null,
-                "tax_exempt": "none",
-                "tax_ids": []
-              },
-              "customer_email": null,
-              "discounts": [],
-              "expires_at": 1772442509,
-              "invoice": null,
-              "invoice_creation": {
-                "enabled": false,
-                "invoice_data": {
-                  "account_tax_ids": null,
-                  "custom_fields": null,
-                  "description": null,
-                  "footer": null,
-                  "issuer": null,
-                  "metadata": {},
-                  "rendering_options": null
-                }
-              },
-              "livemode": false,
-              "locale": null,
-              "metadata": {},
-              "mode": "payment",
-              "origin_context": null,
-              "payment_intent": "pi_3T65zcEmOCxfDzgd0CYPAPgI",
-              "payment_link": null,
-              "payment_method_collection": "if_required",
-              "payment_method_configuration_details": {
-                "id": "pmc_1LOOCcEmOCxfDzgdPvAtlAIB",
-                "parent": null
-              },
-              "payment_method_options": {
-                "card": {
-                  "request_three_d_secure": "automatic"
-                }
-              },
-              "payment_method_types": [
-                "card",
-                "bancontact",
-                "eps",
-                "ideal"
-              ],
-              "payment_status": "paid",
-              "permissions": null,
-              "phone_number_collection": {
-                "enabled": false
-              },
-              "recovered_from": null,
-              "saved_payment_method_options": null,
-              "setup_intent": null,
-              "shipping": null,
-              "shipping_address_collection": null,
-              "shipping_options": [],
-              "shipping_rate": null,
-              "status": "complete",
-              "submit_type": null,
-              "subscription": null,
-              "success_url": "https://preview--atmospheric-renderings.lovable.app/order?success=true",
-              "total_details": {
-                "amount_discount": 0,
-                "amount_shipping": 0,
-                "amount_tax": 0
-              },
-              "ui_mode": "hosted",
-              "url": null,
-              "wallet_options": null
-            }
-          },
-          "livemode": false,
-          "pending_webhooks": 1,
-          "request": {
-            "id": null,
-            "idempotency_key": null
-          },
-          "type": "checkout.session.completed"
-        }
-      }
-    ]
-  },
-  "versionId": "fa85bebc-7640-4d80-8837-7ec2eab97b82",
-  "versionCounter": 93,
+  "versionId": "e81a7d79-a40a-47c5-95d9-bdd471b51c82",
+  "versionCounter": 97,
   "triggerCount": 1,
   "shared": [
     {
