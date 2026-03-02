@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-02-19T17:16:52.926Z",
+  "updatedAt": "2026-03-02T04:30:41.247Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
@@ -144,7 +144,7 @@
       "typeVersion": 1,
       "position": [
         -1296,
-        400
+        336
       ],
       "id": "91b41a32-a21b-40f9-99e9-e838abb9e3d1",
       "name": "n8n2",
@@ -799,7 +799,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const jsonString = JSON.stringify(items[0].json, null, 2); // keeps indentation\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [\n  {\n    binary: {\n      data: {\n        data: dataBuffer.toString('base64'),\n        fileName: 'workflow.json',\n        mimeType: 'application/json',\n      },\n    },\n    json: {}, // optional, can include metadata\n  },\n];\n"
+        "jsCode": "// Get the workflow data\nconst workflowData = items[0].json;\n\n// Remove sensitive staticData\ndelete workflowData.staticData;\n\n// Optional: Also remove pinData if it contains test data\ndelete workflowData.pinData;\n\n// Convert to JSON and upload\nconst jsonString = JSON.stringify(workflowData, null, 2);\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [{\n  binary: {\n    data: {\n      data: dataBuffer.toString('base64'),\n      fileName: 'workflow.json',\n      mimeType: 'application/json',\n    }\n  },\n  json: {},\n}];"
       },
       "id": "07160fae-5ca2-41ff-b9b3-bb9f94a85bb7",
       "name": "Code6",
@@ -812,7 +812,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return items.map(item => {\n  const jsonData = JSON.stringify(item.json);\n  const binaryData = Buffer.from(jsonData).toString('base64');\n  item.binary = {\n    data: {\n      data: binaryData,\n      mimeType: 'application/json',\n      fileName: 'data.json'\n    }\n  };\n  return item;\n});"
+        "jsCode": "// Get the workflow data\nconst workflowData = items[0].json;\n\n// Remove sensitive staticData\ndelete workflowData.staticData;\n\n// Optional: Also remove pinData if it contains test data\ndelete workflowData.pinData;\n\n// Convert to JSON and upload\nconst jsonString = JSON.stringify(workflowData, null, 2);\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [{\n  binary: {\n    data: {\n      data: dataBuffer.toString('base64'),\n      fileName: 'workflow.json',\n      mimeType: 'application/json',\n    }\n  },\n  json: {},\n}];"
       },
       "id": "c244ec7f-7da0-4ce2-afd7-5e72dad25eb2",
       "name": "Code",
@@ -825,7 +825,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const jsonString = JSON.stringify(items[0].json, null, 2); // keeps indentation\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [\n  {\n    binary: {\n      data: {\n        data: dataBuffer.toString('base64'),\n        fileName: 'workflow.json',\n        mimeType: 'application/json',\n      },\n    },\n    json: {}, // optional, can include metadata\n  },\n];\n"
+        "jsCode": "// Get the workflow data\nconst workflowData = items[0].json;\n\n// Remove sensitive staticData\ndelete workflowData.staticData;\n\n// Optional: Also remove pinData if it contains test data\ndelete workflowData.pinData;\n\n// Convert to JSON and upload\nconst jsonString = JSON.stringify(workflowData, null, 2);\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [{\n  binary: {\n    data: {\n      data: dataBuffer.toString('base64'),\n      fileName: 'workflow.json',\n      mimeType: 'application/json',\n    }\n  },\n  json: {},\n}];"
       },
       "id": "5eb23f12-e688-4525-8da6-118177cc5a14",
       "name": "Code7",
@@ -838,7 +838,7 @@
     },
     {
       "parameters": {
-        "jsCode": "return items.map(item => {\n  const jsonData = JSON.stringify(item.json);\n  const binaryData = Buffer.from(jsonData).toString('base64');\n  item.binary = {\n    data: {\n      data: binaryData,\n      mimeType: 'application/json',\n      fileName: 'data.json'\n    }\n  };\n  return item;\n});"
+        "jsCode": "// Get the workflow data\nconst workflowData = items[0].json;\n\n// Remove sensitive staticData\ndelete workflowData.staticData;\n\n// Optional: Also remove pinData if it contains test data\ndelete workflowData.pinData;\n\n// Convert to JSON and upload\nconst jsonString = JSON.stringify(workflowData, null, 2);\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [{\n  binary: {\n    data: {\n      data: dataBuffer.toString('base64'),\n      fileName: 'workflow.json',\n      mimeType: 'application/json',\n    }\n  },\n  json: {},\n}];"
       },
       "id": "d17d6345-4e9d-450d-82cb-e789e212252d",
       "name": "Code1",
@@ -885,6 +885,19 @@
       "id": "877c7fbc-9bb1-4caf-8e1c-fef095240091",
       "name": "Wait2",
       "webhookId": "801c9260-f7a8-4b73-afba-6a8c61e280a1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const jsonString = JSON.stringify(items[0].json, null, 2); // keeps indentation\nconst dataBuffer = Buffer.from(jsonString);\n\nreturn [\n  {\n    binary: {\n      data: {\n        data: dataBuffer.toString('base64'),\n        fileName: 'workflow.json',\n        mimeType: 'application/json',\n      },\n    },\n    json: {}, // optional, can include metadata\n  },\n];\n"
+      },
+      "id": "69e81eaa-84ec-4674-bbef-deaa3c99046b",
+      "name": "Code8",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -1968,
+        208
+      ],
+      "typeVersion": 2
     }
   ],
   "connections": {
@@ -1239,35 +1252,11 @@
     "availableInMCP": false,
     "errorWorkflow": "r1hEZ8InOj91e2BD"
   },
-  "staticData": {
-    "node:Schedule Trigger": {
-      "recurrenceRules": []
-    }
-  },
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "Schedule Trigger": [
-      {
-        "json": {
-          "timestamp": "2026-02-19T01:00:27.028+01:00",
-          "Readable date": "February 19th 2026, 1:00:27 am",
-          "Readable time": "1:00:27 am",
-          "Day of week": "Thursday",
-          "Year": "2026",
-          "Month": "February",
-          "Day of month": "19",
-          "Hour": "01",
-          "Minute": "00",
-          "Second": "27",
-          "Timezone": "Europe/Berlin (UTC+01:00)"
-        }
-      }
-    ]
-  },
-  "versionId": "a21075c1-edf2-45d5-8cd0-dae13125d1e9",
-  "versionCounter": 116,
+  "versionId": "0b07a746-3f0b-4581-9246-b93f7b646db3",
+  "versionCounter": 131,
   "triggerCount": 1,
   "shared": [
     {
@@ -1291,7 +1280,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-02-20T00:00:20.569Z",
+              "updatedAt": "2026-03-02T00:00:12.439Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -1318,7 +1307,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-02-19",
+              "lastActiveAt": "2026-03-01",
               "isPending": false
             }
           }
