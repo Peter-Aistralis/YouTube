@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-02T04:30:31.292Z",
+  "updatedAt": "2026-03-02T18:09:15.778Z",
   "createdAt": "2026-03-01T08:57:21.657Z",
   "id": "Ms7d1n8FAO41VVlL",
   "name": "Onboarding",
@@ -16,7 +16,7 @@
       "type": "n8n-nodes-base.stripeTrigger",
       "typeVersion": 1,
       "position": [
-        -496,
+        -560,
         -96
       ],
       "id": "1a743ea4-2fa0-42c3-9194-9ba7dadbaab4",
@@ -39,7 +39,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        -336,
+        -384,
         -96
       ],
       "id": "a562fe3e-d991-4e1b-aceb-ddac51a5521e",
@@ -59,8 +59,8 @@
       "type": "n8n-nodes-base.splitOut",
       "typeVersion": 1,
       "position": [
-        -80,
-        16
+        -176,
+        0
       ],
       "id": "9a06e502-4643-4273-81a9-284ce16e263d",
       "name": "Split Out"
@@ -94,8 +94,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        112,
-        16
+        -16,
+        0
       ],
       "id": "49d93583-88be-4853-b4dd-79550d0bc5de",
       "name": "Get row(s) in sheet",
@@ -125,7 +125,7 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        -80,
+        -176,
         -208
       ],
       "id": "a5ccaae2-4cc4-4f74-a434-c64610ca24ae",
@@ -153,12 +153,14 @@
             "emailAddress": "={{ $('Stripe Trigger').item.json.data.object.customer_details.email }}"
           }
         },
-        "options": {}
+        "options": {
+          "sendNotificationEmail": false
+        }
       },
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        96,
+        -16,
         -208
       ],
       "id": "60602f7a-7c43-4561-a67b-f7e10b70712e",
@@ -189,7 +191,7 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        256,
+        144,
         -208
       ],
       "id": "9ffa5d2a-3291-4bc6-b5cb-66e8961d3cf5",
@@ -220,7 +222,7 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        416,
+        288,
         -208
       ],
       "id": "f6454e82-1e6d-4261-84dd-6228e4ca2187",
@@ -261,8 +263,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        272,
-        16
+        144,
+        0
       ],
       "id": "a0a21acc-67b1-42e5-8a73-5f6ce6866d8b",
       "name": "Edit Fields"
@@ -273,8 +275,8 @@
           "assignments": [
             {
               "id": "b43622a5-e34f-4a48-8fbb-d4a87e360478",
-              "name": "shared_folder_id",
-              "value": "={{ $('Create folder').item.json.id }}",
+              "name": "shared_folder",
+              "value": "=https://drive.google.com/drive/folders/{{ $('Create folder').item.json.id }}",
               "type": "string"
             }
           ]
@@ -284,68 +286,19 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        560,
+        576,
         -208
       ],
       "id": "e9203d3f-8c57-4dee-adcb-8e062ed94e3d",
       "name": "Edit Fields1"
     },
     {
-      "parameters": {
-        "resource": "channel",
-        "channelId": "=rendering_for_{{ $('Stripe Trigger').item.json.data.object.customer_details.name }}",
-        "channelVisibility": "private"
-      },
-      "type": "n8n-nodes-base.slack",
-      "typeVersion": 2.3,
-      "position": [
-        -112,
-        368
-      ],
-      "id": "a8529013-ad8c-4471-8e7f-f74a92dde735",
-      "name": "Create a channel",
-      "webhookId": "f5226cff-7941-4c39-aa0d-57cabf2ab080",
-      "credentials": {
-        "slackApi": {
-          "id": "V700Ft2dm0NEii1V",
-          "name": "Slack account 2"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "authentication": "oAuth2",
-        "resource": "channel",
-        "operation": "invite",
-        "channelId": {
-          "__rl": true,
-          "value": "={{ $json.id }}",
-          "mode": "id"
-        }
-      },
-      "type": "n8n-nodes-base.slack",
-      "typeVersion": 2.3,
-      "position": [
-        208,
-        368
-      ],
-      "id": "4f08dcc3-bee9-4251-bac5-d41a0874cf34",
-      "name": "Invite a user to a channel",
-      "webhookId": "9e14718b-0585-4159-b13c-68e7d9b65797",
-      "credentials": {
-        "slackOAuth2Api": {
-          "id": "VEFzv4jzBI57WTwk",
-          "name": "Slack account"
-        }
-      }
-    },
-    {
       "parameters": {},
       "type": "n8n-nodes-base.merge",
       "typeVersion": 3.2,
       "position": [
-        944,
-        -144
+        800,
+        -112
       ],
       "id": "e0ba738f-918d-4bda-b9a7-3c7e19d41bdd",
       "name": "Merge"
@@ -353,14 +306,14 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Task: Generate a list of products and their Loom URLs.\n\nInput:\nProduct names: {{ $json.Product_name }}\nLoom Url: {{ $json.Loom_url }}\n\nInstructions:\n\nOutput ONLY a bulleted list in the following plain text format:\n\nDo not use Markdown brackets or parentheses.\n\nDo not include headers (like \"Markdown Format\") or JSON blocks.\n\nEnsure there is a single line break between each bullet point.\n\nExample Output:\n\nInterior Rendering: https://www.loom.com/...\n\nExterior Rendering: https://www.loom.com/...",
+        "text": "=System Instructions:\nYou are a professional proposal editor. Your task is to take a list of architectural visualization services and combine them into a single, grammatically correct, and concise title or sentence fragment.\n\nRules:\n\nIf both \"Interior Rendering\" and \"Exterior Rendering\" are present, combine them as \"Interior & Exterior Rendering\".\n\nUse \"and\" to connect \"Animation\" to the other services.\n\nDo not add any extra words or greetings.\n\nIf only one service is provided, output it exactly as is.\n\nExamples:\n\nInput: Interior Rendering, Exterior Rendering, Animation -> Output: Interior & Exterior Rendering and Animation\n\nInput: Interior Rendering, Animation -> Output: Interior Rendering and Animation\n\nInput: Interior Rendering, Exterior Rendering -> Output: Interior & Exterior Rendering\n\nInput: Exterior Rendering, Animation -> Output: Exterior Rendering and Animation\nInput:\nProduct names: {{ $json.Product_name }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3,
       "position": [
-        640,
-        16
+        464,
+        0
       ],
       "id": "6d13ce9e-856a-4283-8301-31d4336e0fbb",
       "name": "AI Agent"
@@ -382,8 +335,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        480,
-        16
+        288,
+        0
       ],
       "id": "f3b4cac4-c1e3-4dee-b500-2714302a35dc",
       "name": "Aggregate"
@@ -402,8 +355,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        624,
-        224
+        416,
+        192
       ],
       "id": "396047df-1f00-4943-ae23-6f7142303094",
       "name": "OpenAI Chat Model",
@@ -422,8 +375,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        1152,
-        -144
+        960,
+        -112
       ],
       "id": "128bad9a-2ffd-4c38-a68b-911cce0525c4",
       "name": "Aggregate1"
@@ -438,13 +391,14 @@
           "cachedResultName": "Onboarding",
           "cachedResultUrl": "https://docs.google.com/document/d/1wXrpVmtXUMt6gEJ8W1vZ78xpS1ml210_kbZQVKLOBAc/edit?usp=drivesdk"
         },
+        "name": "Useful Documentation",
         "options": {}
       },
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1072,
-        128
+        1120,
+        -112
       ],
       "id": "53443b0e-fff7-4e50-88d6-fc5c374b9265",
       "name": "Copy file",
@@ -457,23 +411,66 @@
     },
     {
       "parameters": {
+        "operation": "get",
+        "documentURL": "={{ $json.documentId }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        1488,
+        -112
+      ],
+      "id": "8fc36b00-ebdd-4abf-9164-1bb86ad40207",
+      "name": "Get a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39c17e96-e478-4943-9119-8397bff34b37",
+              "name": "locatiom",
+              "value": "={{ $json.content.indexOf(\"Shared Drive\") }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        800,
+        272
+      ],
+      "id": "f9cd9278-d21e-443f-9167-95a5e9f49796",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
         "method": "POST",
-        "url": "=https://docs.googleapis.com/v1/documents/{{ $json.id }}:batchUpdate",
+        "url": "=https://docs.googleapis.com/v1/documents/{{ $('Copy file').item.json.id }}:batchUpdate",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "googleDocsOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"requests\": [\n    {\n      \"updateTextStyle\": {\n        \"textStyle\": {\n          \"link\": {\n            \"url\": \"https://www.example.com\"\n          }\n        },\n        \"range\": {\n          \"startIndex\": 25,\n          \"endIndex\": 35\n        },\n        \"fields\": \"link\"\n      }\n    }\n  ]\n}\n",
+        "jsonBody": "={\n  \"requests\": [\n    {\n      \"updateTextStyle\": {\n        \"textStyle\": {\n          \"link\": {\n            \"url\": \"{{ $('Aggregate1').item.json.data[0].shared_folder }}\"\n          }\n        },\n        \"range\": {\n          \"startIndex\": {{ $json.locatiom }},\n          \"endIndex\": {{ Number($json.locatiom) + 11 }} \n        },\n        \"fields\": \"link\"\n      }\n    }\n  ]\n}",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        1280,
-        128
+        960,
+        272
       ],
-      "id": "4653d509-d095-4bcc-a345-d5488baeaada",
-      "name": "HTTP Request1",
+      "id": "95962cbe-4f89-49ad-ab5e-4d2d28b132ed",
+      "name": "HTTP Request3",
       "credentials": {
         "googleDocsOAuth2Api": {
           "id": "WHeRY1hw2tRHjuCJ",
@@ -487,31 +484,180 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "=https://docs.googleapis.com/v1/documents/{{ $json.id }}:batchUpdate",
-        "authentication": "predefinedCredentialType",
-        "nodeCredentialType": "googleDocsOAuth2Api",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={\n  \"requests\": [\n    {\n      \"replaceAllText\": {\n        \"containsText\": {\n          \"text\": \"[[links]]\",\n          \"matchCase\": true\n        },\n        \"replaceText\": {{ JSON.stringify($('Aggregate1').item.json.data[1].output) }}\n      }\n    }\n  ]\n}",
-        "options": {}
+        "operation": "update",
+        "documentURL": "={{ $json.id }}",
+        "actionsUi": {
+          "actionFields": [
+            {
+              "action": "replaceAll",
+              "text": "[[first_name]]",
+              "replaceText": "={{ $('Stripe Trigger').item.json.data.object.customer_details.name }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[package]]",
+              "replaceText": "={{ $('AI Agent').item.json.output }}"
+            },
+            {
+              "action": "replaceAll",
+              "text": "[[project_id]]",
+              "replaceText": "R026-03-007"
+            }
+          ]
+        }
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.3,
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
       "position": [
-        1024,
-        416
+        1280,
+        -112
       ],
-      "id": "0cbca02f-4331-4b11-912b-aa2b2717dbbb",
-      "name": "HTTP Request2",
+      "id": "1fc0fbc4-8ecf-4e23-b77a-6e8a4865a34b",
+      "name": "Update a document",
       "credentials": {
         "googleDocsOAuth2Api": {
           "id": "WHeRY1hw2tRHjuCJ",
           "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Copy file').item.json.id }}",
+          "mode": "id"
         },
-        "oAuth2Api": {
-          "id": "s3C4lrsUXNTatIUs",
-          "name": "Google"
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $('Create folder').item.json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        272
+      ],
+      "id": "4a02e4e6-ff12-4342-a2b6-3f40ee4f8c35",
+      "name": "Move file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AJNNS5V2L",
+          "mode": "list",
+          "cachedResultName": "rendering_for_peter"
+        },
+        "text": "=There is a new client!\n\nName: {{ $('Stripe Trigger').item.json.data.object.customer_details.name }}\nPackages: {{ $('AI Agent').item.json.output }}\n\nShared Folder: {{ $('Merge').first().json.shared_folder }}",
+        "otherOptions": {
+          "includeLinkToWorkflow": false
+        }
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.3,
+      "position": [
+        1312,
+        272
+      ],
+      "id": "b7327ff6-d14f-4779-945e-c237c2e59c63",
+      "name": "Send a message",
+      "webhookId": "36bda79c-65fb-4af1-9f28-b3f54ca1bc8a",
+      "credentials": {
+        "slackApi": {
+          "id": "V700Ft2dm0NEii1V",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Stripe Trigger').item.json.data.object.customer_details.email }}",
+        "subject": "Your SketchUp Rendering Order is Confirmed — Here's How to Get Started",
+        "message": "=<p>Hi {{ $('Stripe Trigger').item.json.data.object.customer_details.name }},</p>\n\n<p>Thank you for your order! We're excited to work on your rendering.</p>\n\n<p><strong>📁 Step 1 — Upload Your Files</strong></p>\n<p>Your personal folder is ready:<br>\n👉 <a href=\"{{ $('Aggregate1').item.json.data[0].shared_folder }}\">Click here to open your folder</a></p>\n\n<p><strong>🎬 Step 2 — Watch These Short Videos</strong></p>\n<p>📹 <a href=\"https://www.loom.com/share/73f1c8bde5b149ac9156079f503d9a7f\">How to prepare your SketchUp file</a><br>\n📹 <a href=\"https://www.loom.com/share/73f1c8bde5b149ac9156079f503d9a7f\">What to expect & delivery process</a></p>\n\n<p>Any questions? Just reply to this email.</p>\n\n<p>Looking forward to bringing your design to life! 🏡</p>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1312,
+        96
+      ],
+      "id": "a838986c-f869-4f49-af6b-2602bed9ecbc",
+      "name": "Send a message1",
+      "webhookId": "4a18546d-1c2e-4f96-9407-451cc724e43d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "2034253630",
+        "text": "=Good news ...\nA new project is waiting for you\n\nHurry up and start working!\n\nCheck Slack/Email/Stripe/...",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1312,
+        448
+      ],
+      "id": "8c1712ed-983b-460d-bdcd-d5af32f7bfab",
+      "name": "Send a text message",
+      "webhookId": "64c90907-e7ed-4012-bf16-de4ffcb6a4f6",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "sheetName": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1712,
+        16
+      ],
+      "id": "4691014e-47a2-4b94-bbca-773be1255032",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
         }
       }
     }
@@ -610,17 +756,6 @@
         ]
       ]
     },
-    "Create a channel": {
-      "main": [
-        [
-          {
-            "node": "Invite a user to a channel",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Edit Fields": {
       "main": [
         [
@@ -702,22 +837,96 @@
       "main": [
         [
           {
-            "node": "HTTP Request1",
+            "node": "Update a document",
             "type": "main",
             "index": 0
           }
         ]
       ]
+    },
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a document": {
+      "main": [
+        [
+          {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Move file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move file": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        []
+      ]
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "4a7YZEPYkxQyF3OH",
+    "timeSavedPerExecution": 1
   },
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "e81a7d79-a40a-47c5-95d9-bdd471b51c82",
-  "versionCounter": 97,
+  "versionId": "4d9678fc-7ff3-41e0-9a8c-7371faf6708b",
+  "versionCounter": 194,
   "triggerCount": 1,
   "shared": [
     {
@@ -741,7 +950,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-03-02T00:00:12.439Z",
+              "updatedAt": "2026-03-03T00:00:01.474Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -768,7 +977,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-03-01",
+              "lastActiveAt": "2026-03-02",
               "isPending": false
             }
           }
