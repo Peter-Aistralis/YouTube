@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-02T18:09:15.778Z",
+  "updatedAt": "2026-03-04T15:54:45.475Z",
   "createdAt": "2026-03-01T08:57:21.657Z",
   "id": "Ms7d1n8FAO41VVlL",
   "name": "Onboarding",
@@ -446,8 +446,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        800,
-        272
+        816,
+        352
       ],
       "id": "f9cd9278-d21e-443f-9167-95a5e9f49796",
       "name": "Edit Fields2"
@@ -466,8 +466,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        960,
-        272
+        976,
+        352
       ],
       "id": "95962cbe-4f89-49ad-ab5e-4d2d28b132ed",
       "name": "HTTP Request3",
@@ -543,8 +543,8 @@
       "type": "n8n-nodes-base.googleDrive",
       "typeVersion": 3,
       "position": [
-        1120,
-        272
+        1136,
+        352
       ],
       "id": "4a02e4e6-ff12-4342-a2b6-3f40ee4f8c35",
       "name": "Move file",
@@ -572,8 +572,8 @@
       "type": "n8n-nodes-base.slack",
       "typeVersion": 2.3,
       "position": [
-        1312,
-        272
+        1712,
+        256
       ],
       "id": "b7327ff6-d14f-4779-945e-c237c2e59c63",
       "name": "Send a message",
@@ -590,12 +590,14 @@
         "sendTo": "={{ $('Stripe Trigger').item.json.data.object.customer_details.email }}",
         "subject": "Your SketchUp Rendering Order is Confirmed — Here's How to Get Started",
         "message": "=<p>Hi {{ $('Stripe Trigger').item.json.data.object.customer_details.name }},</p>\n\n<p>Thank you for your order! We're excited to work on your rendering.</p>\n\n<p><strong>📁 Step 1 — Upload Your Files</strong></p>\n<p>Your personal folder is ready:<br>\n👉 <a href=\"{{ $('Aggregate1').item.json.data[0].shared_folder }}\">Click here to open your folder</a></p>\n\n<p><strong>🎬 Step 2 — Watch These Short Videos</strong></p>\n<p>📹 <a href=\"https://www.loom.com/share/73f1c8bde5b149ac9156079f503d9a7f\">How to prepare your SketchUp file</a><br>\n📹 <a href=\"https://www.loom.com/share/73f1c8bde5b149ac9156079f503d9a7f\">What to expect & delivery process</a></p>\n\n<p>Any questions? Just reply to this email.</p>\n\n<p>Looking forward to bringing your design to life! 🏡</p>",
-        "options": {}
+        "options": {
+          "appendAttribution": false
+        }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        1312,
+        1712,
         96
       ],
       "id": "a838986c-f869-4f49-af6b-2602bed9ecbc",
@@ -619,8 +621,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        1312,
-        448
+        1712,
+        432
       ],
       "id": "8c1712ed-983b-460d-bdcd-d5af32f7bfab",
       "name": "Send a text message",
@@ -637,20 +639,89 @@
         "operation": "appendOrUpdate",
         "documentId": {
           "__rl": true,
+          "value": "1AWOgwCcJIJ2CoiVRB_VPIrnhFh_HnwczYCZ97Y3p4uU",
           "mode": "list",
-          "value": ""
+          "cachedResultName": "Rendering Services",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AWOgwCcJIJ2CoiVRB_VPIrnhFh_HnwczYCZ97Y3p4uU/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
+          "value": 1648525668,
           "mode": "list",
-          "value": ""
-        }
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1AWOgwCcJIJ2CoiVRB_VPIrnhFh_HnwczYCZ97Y3p4uU/edit#gid=1648525668"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $('Stripe Trigger').item.json.data.object.customer_details.email }}",
+            "Name": "={{ $('Stripe Trigger').item.json.data.object.customer_details.name }}",
+            "Service": "={{ $('AI Agent').item.json.output }}",
+            "Paid": "Yes",
+            "Project_Id": "R026-03-007"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Service",
+              "displayName": "Service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Paid",
+              "displayName": "Paid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Project_Id",
+              "displayName": "Project_Id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
         1712,
-        16
+        624
       ],
       "id": "4691014e-47a2-4b94-bbca-773be1255032",
       "name": "Append or update row in sheet",
@@ -897,12 +968,17 @@
             "index": 0
           },
           {
-            "node": "Send a message1",
+            "node": "Send a text message",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Send a text message",
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send a message1",
             "type": "main",
             "index": 0
           }
@@ -925,8 +1001,8 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "4d9678fc-7ff3-41e0-9a8c-7371faf6708b",
-  "versionCounter": 194,
+  "versionId": "0ac894a2-46c8-49e7-96cf-1c47d4b221e0",
+  "versionCounter": 214,
   "triggerCount": 1,
   "shared": [
     {
@@ -950,7 +1026,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-03-03T00:00:01.474Z",
+              "updatedAt": "2026-03-05T00:00:01.187Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -977,7 +1053,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-03-02",
+              "lastActiveAt": "2026-03-04",
               "isPending": false
             }
           }
