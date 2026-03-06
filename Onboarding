@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-03-04T15:54:45.475Z",
+  "updatedAt": "2026-03-05T12:42:16.637Z",
   "createdAt": "2026-03-01T08:57:21.657Z",
   "id": "Ms7d1n8FAO41VVlL",
   "name": "Onboarding",
   "description": null,
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -1001,8 +1001,8 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "0ac894a2-46c8-49e7-96cf-1c47d4b221e0",
-  "versionCounter": 214,
+  "versionId": "12773679-08dc-4fd2-9da3-67f6a51465b2",
+  "versionCounter": 221,
   "triggerCount": 1,
   "shared": [
     {
@@ -1026,7 +1026,7 @@
             "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
             "projectId": "2KiFcKNLK1JyaklJ",
             "user": {
-              "updatedAt": "2026-03-05T00:00:01.187Z",
+              "updatedAt": "2026-03-06T00:00:57.840Z",
               "createdAt": "2025-07-05T04:33:38.764Z",
               "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
               "email": "peterjawel@gmail.com",
@@ -1053,7 +1053,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-03-04",
+              "lastActiveAt": "2026-03-05",
               "isPending": false
             }
           }
