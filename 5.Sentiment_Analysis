@@ -1,0 +1,1568 @@
+{
+  "updatedAt": "2026-03-14T19:04:44.328Z",
+  "createdAt": "2026-03-14T16:33:19.117Z",
+  "id": "GGKMfqs8T4JrCmMX",
+  "name": "5.Sentiment_Analysis",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        32
+      ],
+      "id": "8f249b60-fd9e-4dde-a9c2-6282b5d35ab3",
+      "name": "Telegram Trigger",
+      "webhookId": "d208acc7-1a15-4952-82b6-686a1f12b9de",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e0128a5c-7060-4601-a9ca-c0da7fa58566",
+              "name": "input",
+              "value": "telegram",
+              "type": "string"
+            },
+            {
+              "id": "d5abd1eb-2b40-4a17-885a-6f5d914eb6cb",
+              "name": "identifier",
+              "value": "={{ $json.message.from.username }}",
+              "type": "string"
+            },
+            {
+              "id": "28ca58c2-74c8-4128-9e97-3a7c91c4fd5b",
+              "name": "message",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -336,
+        32
+      ],
+      "id": "d91390a8-3ddc-4f81-a00d-53d54b40da67",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+          "mode": "list",
+          "cachedResultName": "Sentiment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "input",
+              "lookupValue": "={{ $json.input }}"
+            },
+            {
+              "lookupColumn": "identifier",
+              "lookupValue": "={{ $json.identifier }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        48,
+        -96
+      ],
+      "id": "7b520b55-0652-4f64-9aee-178505d6216f",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=### ROLE\nYou are a Senior Customer Success Intelligence Agent. Your goal is to analyze customer communications (emails, tickets, messages) and detect hidden churn risks through emotional nuance.\n\n### TASK\nAnalyze the provided {{ $('Edit Fields3').item.json.message }} and return a structured JSON object.\n\n### EMOTION & SCORING RUBRIC\nAssign a \"score\" from 1 to 10 and a \"key_emotion\" based on this exact scale:\n- 10: [Ecstatic] - Explicit praise, mentions of referral, or high satisfaction.\n- 8: [Grateful] - Polite, thankful, relationship is stable.\n- 6: [Neutral] - Transactional, factual, no emotional markers.\n- 4: [Confused] - Onboarding friction, asking \"how-to\" questions repeatedly. \n- 3: [Impatient] - Annoyed by delays, \"following up\" on previous messages.\n- 2: [Frustrated] - Service failure, expressing disappointment or broken trust.\n- 1: [Aggressive] - Mentioning competitors, legal action, or immediate cancellation.\n\n### RULES\n1. NUANCE DETECTION: Look for passive-aggression. (e.g., \"As per my last 3 emails\" = Score 3).\n2. VIP FLAG: If the message mentions \"Manager\", \"CEO\", or \"Urgent\", flag it.\n3. OUTPUT: You must respond ONLY with a valid JSON object. No prose.\n\n### JSON STRUCTURE\n{\n  \"score\": number,\n  \"key_emotion\": \"string (Emoji + Name)\",\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": {{ $('Edit Fields3').item.json.message }},\n  \"action_item\": \"One specific recommendation for the owner\"\n}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        304,
+        -176
+      ],
+      "id": "f01fe0c3-338c-46b4-a695-c48b1d0990fb",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        128,
+        256
+      ],
+      "id": "4b824bba-aa99-4e50-9a05-6dfbde6a7680",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"score\": 12,\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": \"the original message\",\n  \"action_item\": \"One specific recommendation for the owner\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        256,
+        256
+      ],
+      "id": "2003117e-606a-4c99-bdb2-89173959536e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+          "mode": "list",
+          "cachedResultName": "Sentiment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2011457443,
+          "mode": "list",
+          "cachedResultName": "Entries",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=2011457443"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+            "Message": "={{ $json.output.message }}",
+            "Platform": "={{ $('Edit Fields3').item.json.input }}",
+            "Summary": "={{ $json.output.summary }}",
+            "Sentiment": "={{ $json.output.score }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Summary",
+              "displayName": "Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Sentiment",
+              "displayName": "Sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        464,
+        32
+      ],
+      "id": "5953e76e-8961-4a34-953c-b257dca34261",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "763792e0-3c83-414d-ba66-799ee9aedcc1",
+              "name": "=moving_average",
+              "value": "={{ ($json.Sentiment  +  $('Get row(s) in sheet').item.json.Score) / 2}}  ",
+              "type": "number"
+            },
+            {
+              "id": "a961e245-40de-4d26-8eba-eb6629ccb332",
+              "name": "trend",
+              "value": "={{ $json.Sentiment - $('Get row(s) in sheet').item.json.Score }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        688,
+        32
+      ],
+      "id": "a5fa5423-946b-4cfb-bba8-fa87823c8e49",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "504ee271-02df-4df1-90ff-c157b27e7a4e",
+              "leftValue": "={{ $json.trend }}",
+              "rightValue": -3,
+              "operator": {
+                "type": "number",
+                "operation": "lte"
+              }
+            },
+            {
+              "id": "807f7c58-1a8c-4374-b44b-093b266b998a",
+              "leftValue": "={{ $('Get row(s) in sheet').item.json.status }}",
+              "rightValue": "VIP",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        912,
+        32
+      ],
+      "id": "64c5a839-0edd-4ea9-8654-0ffd77387eff",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+          "mode": "list",
+          "cachedResultName": "Sentiment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+            "Trend": "ALARM"
+          },
+          "matchingColumns": [
+            "Client"
+          ],
+          "schema": [
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "input",
+              "displayName": "input",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Average",
+              "displayName": "Average",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Trend",
+              "displayName": "Trend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1136,
+        -64
+      ],
+      "id": "98d525ca-1117-4e4e-b65b-74f32052f71e",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
+                    "rightValue": -3,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    },
+                    "id": "1bae18ad-4c15-42db-a6c6-66ef76480013"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Oops"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c89fa265-4262-4184-83d3-8f8aaa1c75ec",
+                    "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
+                    "rightValue": 9,
+                    "operator": {
+                      "type": "number",
+                      "operation": "gte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1136,
+        128
+      ],
+      "id": "d6c19ddb-ef48-40eb-bde4-e8fa32417fc3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e0128a5c-7060-4601-a9ca-c0da7fa58566",
+              "name": "input",
+              "value": "whatsapp",
+              "type": "string"
+            },
+            {
+              "id": "d5abd1eb-2b40-4a17-885a-6f5d914eb6cb",
+              "name": "identifier",
+              "value": "=kikychat",
+              "type": "string"
+            },
+            {
+              "id": "28ca58c2-74c8-4128-9e97-3a7c91c4fd5b",
+              "name": "message",
+              "value": "={{ $json.body.Body }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -336,
+        -192
+      ],
+      "id": "647ce0cd-e19e-41b7-a296-3c2baa50acd5",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7ec4eedf-dfc8-4eca-8527-9178c2f082df",
+              "name": "input",
+              "value": "={{ $json.input }}",
+              "type": "string"
+            },
+            {
+              "id": "f99ade0a-cdc4-4464-a220-d5a0271a64a6",
+              "name": "identifier",
+              "value": "={{ $json.identifier }}",
+              "type": "string"
+            },
+            {
+              "id": "3aaeb028-fe03-48f4-933d-3af2fcfd7d3c",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        -64
+      ],
+      "id": "79e0b1c7-2a80-4d29-9078-5d41ae2d7ed5",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "369147d5-5193-4a2a-b2c0-3a6c3affc243",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -560,
+        -192
+      ],
+      "id": "32309565-a552-4cff-b84c-15f435ea05b3",
+      "name": "Webhook",
+      "webhookId": "369147d5-5193-4a2a-b2c0-3a6c3affc243"
+    }
+  ],
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "8ed04b93-31c6-4027-85bb-d176e4930f5e",
+  "activeVersionId": "8ed04b93-31c6-4027-85bb-d176e4930f5e",
+  "versionCounter": 245,
+  "triggerCount": 2,
+  "shared": [
+    {
+      "updatedAt": "2026-03-14T16:33:19.117Z",
+      "createdAt": "2026-03-14T16:33:19.117Z",
+      "role": "workflow:owner",
+      "workflowId": "GGKMfqs8T4JrCmMX",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-03-14T19:05:01.242Z",
+    "createdAt": "2026-03-14T19:04:44.330Z",
+    "versionId": "8ed04b93-31c6-4027-85bb-d176e4930f5e",
+    "workflowId": "GGKMfqs8T4JrCmMX",
+    "nodes": [
+      {
+        "parameters": {
+          "updates": [
+            "message"
+          ],
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegramTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -560,
+          32
+        ],
+        "id": "8f249b60-fd9e-4dde-a9c2-6282b5d35ab3",
+        "name": "Telegram Trigger",
+        "webhookId": "d208acc7-1a15-4952-82b6-686a1f12b9de",
+        "credentials": {
+          "telegramApi": {
+            "id": "P9DL7o9ahJ273F89",
+            "name": "Telegram account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "e0128a5c-7060-4601-a9ca-c0da7fa58566",
+                "name": "input",
+                "value": "telegram",
+                "type": "string"
+              },
+              {
+                "id": "d5abd1eb-2b40-4a17-885a-6f5d914eb6cb",
+                "name": "identifier",
+                "value": "={{ $json.message.from.username }}",
+                "type": "string"
+              },
+              {
+                "id": "28ca58c2-74c8-4128-9e97-3a7c91c4fd5b",
+                "name": "message",
+                "value": "={{ $json.message.text }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -336,
+          32
+        ],
+        "id": "d91390a8-3ddc-4f81-a00d-53d54b40da67",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "input",
+                "lookupValue": "={{ $json.input }}"
+              },
+              {
+                "lookupColumn": "identifier",
+                "lookupValue": "={{ $json.identifier }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          48,
+          -96
+        ],
+        "id": "7b520b55-0652-4f64-9aee-178505d6216f",
+        "name": "Get row(s) in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=### ROLE\nYou are a Senior Customer Success Intelligence Agent. Your goal is to analyze customer communications (emails, tickets, messages) and detect hidden churn risks through emotional nuance.\n\n### TASK\nAnalyze the provided {{ $('Edit Fields3').item.json.message }} and return a structured JSON object.\n\n### EMOTION & SCORING RUBRIC\nAssign a \"score\" from 1 to 10 and a \"key_emotion\" based on this exact scale:\n- 10: [Ecstatic] - Explicit praise, mentions of referral, or high satisfaction.\n- 8: [Grateful] - Polite, thankful, relationship is stable.\n- 6: [Neutral] - Transactional, factual, no emotional markers.\n- 4: [Confused] - Onboarding friction, asking \"how-to\" questions repeatedly. \n- 3: [Impatient] - Annoyed by delays, \"following up\" on previous messages.\n- 2: [Frustrated] - Service failure, expressing disappointment or broken trust.\n- 1: [Aggressive] - Mentioning competitors, legal action, or immediate cancellation.\n\n### RULES\n1. NUANCE DETECTION: Look for passive-aggression. (e.g., \"As per my last 3 emails\" = Score 3).\n2. VIP FLAG: If the message mentions \"Manager\", \"CEO\", or \"Urgent\", flag it.\n3. OUTPUT: You must respond ONLY with a valid JSON object. No prose.\n\n### JSON STRUCTURE\n{\n  \"score\": number,\n  \"key_emotion\": \"string (Emoji + Name)\",\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": {{ $('Edit Fields3').item.json.message }},\n  \"action_item\": \"One specific recommendation for the owner\"\n}",
+          "hasOutputParser": true,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          304,
+          -176
+        ],
+        "id": "f01fe0c3-338c-46b4-a695-c48b1d0990fb",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          128,
+          256
+        ],
+        "id": "4b824bba-aa99-4e50-9a05-6dfbde6a7680",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "TVzP9p8nOtsqZFLa",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsonSchemaExample": "{\n  \"score\": 12,\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": \"the original message\",\n  \"action_item\": \"One specific recommendation for the owner\"\n}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+        "typeVersion": 1.3,
+        "position": [
+          256,
+          256
+        ],
+        "id": "2003117e-606a-4c99-bdb2-89173959536e",
+        "name": "Structured Output Parser"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 2011457443,
+            "mode": "list",
+            "cachedResultName": "Entries",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=2011457443"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+              "Message": "={{ $json.output.message }}",
+              "Platform": "={{ $('Edit Fields3').item.json.input }}",
+              "Summary": "={{ $json.output.summary }}",
+              "Sentiment": "={{ $json.output.score }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Message",
+                "displayName": "Message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Platform",
+                "displayName": "Platform",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Summary",
+                "displayName": "Summary",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Sentiment",
+                "displayName": "Sentiment",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          464,
+          32
+        ],
+        "id": "5953e76e-8961-4a34-953c-b257dca34261",
+        "name": "Append row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "763792e0-3c83-414d-ba66-799ee9aedcc1",
+                "name": "=moving_average",
+                "value": "={{ ($json.Sentiment  +  $('Get row(s) in sheet').item.json.Score) / 2}}  ",
+                "type": "number"
+              },
+              {
+                "id": "a961e245-40de-4d26-8eba-eb6629ccb332",
+                "name": "trend",
+                "value": "={{ $json.Sentiment - $('Get row(s) in sheet').item.json.Score }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          688,
+          32
+        ],
+        "id": "a5fa5423-946b-4cfb-bba8-fa87823c8e49",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "504ee271-02df-4df1-90ff-c157b27e7a4e",
+                "leftValue": "={{ $json.trend }}",
+                "rightValue": -3,
+                "operator": {
+                  "type": "number",
+                  "operation": "lte"
+                }
+              },
+              {
+                "id": "807f7c58-1a8c-4374-b44b-093b266b998a",
+                "leftValue": "={{ $('Get row(s) in sheet').item.json.status }}",
+                "rightValue": "VIP",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          912,
+          32
+        ],
+        "id": "64c5a839-0edd-4ea9-8654-0ffd77387eff",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+              "Trend": "ALARM"
+            },
+            "matchingColumns": [
+              "Client"
+            ],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "input",
+                "displayName": "input",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "identifier",
+                "displayName": "identifier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Score",
+                "displayName": "Score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Average",
+                "displayName": "Average",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Trend",
+                "displayName": "Trend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          1136,
+          -64
+        ],
+        "id": "98d525ca-1117-4e4e-b65b-74f32052f71e",
+        "name": "Append or update row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
+                      "rightValue": -3,
+                      "operator": {
+                        "type": "number",
+                        "operation": "lte"
+                      },
+                      "id": "1bae18ad-4c15-42db-a6c6-66ef76480013"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Oops"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "c89fa265-4262-4184-83d3-8f8aaa1c75ec",
+                      "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
+                      "rightValue": 9,
+                      "operator": {
+                        "type": "number",
+                        "operation": "gte"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                }
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          1136,
+          128
+        ],
+        "id": "d6c19ddb-ef48-40eb-bde4-e8fa32417fc3",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "e0128a5c-7060-4601-a9ca-c0da7fa58566",
+                "name": "input",
+                "value": "whatsapp",
+                "type": "string"
+              },
+              {
+                "id": "d5abd1eb-2b40-4a17-885a-6f5d914eb6cb",
+                "name": "identifier",
+                "value": "=kikychat",
+                "type": "string"
+              },
+              {
+                "id": "28ca58c2-74c8-4128-9e97-3a7c91c4fd5b",
+                "name": "message",
+                "value": "={{ $json.body.Body }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -336,
+          -192
+        ],
+        "id": "647ce0cd-e19e-41b7-a296-3c2baa50acd5",
+        "name": "Edit Fields2"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "7ec4eedf-dfc8-4eca-8527-9178c2f082df",
+                "name": "input",
+                "value": "={{ $json.input }}",
+                "type": "string"
+              },
+              {
+                "id": "f99ade0a-cdc4-4464-a220-d5a0271a64a6",
+                "name": "identifier",
+                "value": "={{ $json.identifier }}",
+                "type": "string"
+              },
+              {
+                "id": "3aaeb028-fe03-48f4-933d-3af2fcfd7d3c",
+                "name": "message",
+                "value": "={{ $json.message }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -144,
+          -64
+        ],
+        "id": "79e0b1c7-2a80-4d29-9078-5d41ae2d7ed5",
+        "name": "Edit Fields3"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "369147d5-5193-4a2a-b2c0-3a6c3affc243",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -560,
+          -192
+        ],
+        "id": "32309565-a552-4cff-b84c-15f435ea05b3",
+        "name": "Webhook",
+        "webhookId": "369147d5-5193-4a2a-b2c0-3a6c3affc243"
+      }
+    ],
+    "connections": {
+      "Telegram Trigger": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s) in sheet": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Structured Output Parser": {
+        "ai_outputParser": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_outputParser",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Append or update row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append or update row in sheet": {
+        "main": [
+          []
+        ]
+      },
+      "Edit Fields2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields3": {
+        "main": [
+          [
+            {
+              "node": "Get row(s) in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "peter aistralis",
+    "name": "Version 8ed04b93",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-14T19:05:01.239Z",
+        "id": 232,
+        "workflowId": "GGKMfqs8T4JrCmMX",
+        "versionId": "8ed04b93-31c6-4027-85bb-d176e4930f5e",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    ]
+  }
+}
