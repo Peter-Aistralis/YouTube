@@ -1,0 +1,733 @@
+{
+  "updatedAt": "2026-03-14T19:15:46.219Z",
+  "createdAt": "2026-03-14T15:26:50.741Z",
+  "id": "zzUhzwC1Ts24oBst",
+  "name": "4.Reporting&Insights",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -368,
+        160
+      ],
+      "id": "24370b0a-e90f-495e-a638-554c7b75c63f",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4",
+          "mode": "list",
+          "cachedResultName": "Reporting Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1154733474,
+          "mode": "list",
+          "cachedResultName": "Master",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit#gid=1154733474"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        544
+      ],
+      "id": "2ba9f3a0-2e25-420d-8822-e36b70151860",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Role: You are a Senior Business Analyst.\n\nTask: Summarize this week's business performance for a Monday morning executive briefing. Use the provided data tables to identify trends, wins, and red flags.\n\nOutput Requirements:\nExecutive Summary: A 2-sentence high-level overview.\nKey Wins: Use bullet points for significant growth.\nAction Items: What should the team focus on today?\nTone: Professional, urgent but encouraging.\nOutput: html-format\n\nData Input:\nCore Metric:  {{ $('Edit Fields').first().json.Master.map(i => JSON.stringify(i)) }}\nMarketing table: {{ $('Edit Fields1').first().json.marketing.map(i => JSON.stringify(i)) }}\nWeekly trends: {{ $('Edit Fields2').first().json.weekly.map(i => JSON.stringify(i)) }}\nOperational: {{ $('Edit Fields3').first().json.operational.map(i => JSON.stringify(i)) }}\nSales table: {{ $('Edit Fields4').first().json.sales.map(i => JSON.stringify(i)) }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        752,
+        160
+      ],
+      "id": "6e632374-028e-48e3-b87f-7cc212550e31",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        704,
+        352
+      ],
+      "id": "5546896d-d41c-4948-876a-ed5b1df2f965",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4",
+          "mode": "list",
+          "cachedResultName": "Reporting Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Marketing",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        352
+      ],
+      "id": "46facf68-f0d3-47ad-95c3-b0ff5e8beb66",
+      "name": "Get row(s) in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4",
+          "mode": "list",
+          "cachedResultName": "Reporting Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1435947140,
+          "mode": "list",
+          "cachedResultName": "Sales",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit#gid=1435947140"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        -224
+      ],
+      "id": "9b23839c-281c-47bf-b461-f48139a5d803",
+      "name": "Get row(s) in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4",
+          "mode": "list",
+          "cachedResultName": "Reporting Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1879694735,
+          "mode": "list",
+          "cachedResultName": "Operational",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit#gid=1879694735"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        -32
+      ],
+      "id": "334c0180-80d1-4352-b011-fc2315452510",
+      "name": "Get row(s) in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4",
+          "mode": "list",
+          "cachedResultName": "Reporting Data",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1359460932,
+          "mode": "list",
+          "cachedResultName": "Weekly",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1kXm3wqVoOPBzXjRcj_hIMy910nmFu6thoJPCcxs6au4/edit#gid=1359460932"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        160
+      ],
+      "id": "9cbbe9d0-76b7-47cc-a8ca-8065a6c90cb0",
+      "name": "Get row(s) in sheet4",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        80,
+        544
+      ],
+      "id": "face27f9-03af-429e-afa6-ccfd716798ea",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e59389f5-597d-4088-9ba3-6acd3229043d",
+              "name": "Master",
+              "value": "={{ $json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        544
+      ],
+      "id": "3d667d12-2efb-4ec2-b577-d49530b07c8b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        80,
+        352
+      ],
+      "id": "a7bd3916-9ebc-489e-9c06-15e56e8a93c0",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "94f727c6-48b4-4f8c-a5ab-c82e1aa568a3",
+              "name": "marketing",
+              "value": "={{ $json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        352
+      ],
+      "id": "2bc5ab87-283e-4207-9ff4-26c48542a1a0",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        80,
+        160
+      ],
+      "id": "e790a0e8-dd49-44ed-89ab-a55b0511ede5",
+      "name": "Aggregate2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "dcb71fa0-26af-42c3-95ad-624289787f2f",
+              "name": "weekly",
+              "value": "={{ $json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        160
+      ],
+      "id": "66bf651b-c818-47dc-8b65-27f3f18c2996",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -32
+      ],
+      "id": "e8fdee6b-911c-4204-b696-c3bbdf23de67",
+      "name": "Aggregate3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "22d3cec0-2ad8-4a3f-8d4c-5420f4d2d2bc",
+              "name": "operational",
+              "value": "={{ $json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        -32
+      ],
+      "id": "ce881fbe-38bc-4670-95df-0ab88b49feb3",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        80,
+        -224
+      ],
+      "id": "adb300fb-9241-49fc-9c02-bb8956027414",
+      "name": "Aggregate4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9a8bbf7d-4fc6-4697-ba8e-9f0d355331fe",
+              "name": "sales",
+              "value": "={{ $json.data }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        304,
+        -224
+      ],
+      "id": "6bfbfa45-e98a-4980-b0cd-4409a2d183cc",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0e255154-915b-4a2f-8285-f2ea826f2b2d",
+              "name": "overall",
+              "value": "x",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        528,
+        160
+      ],
+      "id": "c7a293ec-13c5-4bab-9dfd-0f5b24c73d14",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "Weekly Briefing Topics",
+        "emailType": "html",
+        "message": "={{ $json.output }}",
+        "options": {
+          "sendTo": "peterjawel@gmail.com"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1104,
+        160
+      ],
+      "id": "b7e4c42d-bcb1-41ed-b0ca-39338a471c83",
+      "name": "Create a draft",
+      "webhookId": "1d209035-8be6-47e6-8948-7832962dc195",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet3",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get row(s) in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet2": {
+      "main": [
+        [
+          {
+            "node": "Aggregate4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet3": {
+      "main": [
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet4": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "16ff2844-8437-4bdb-b339-c22b4989fe37",
+  "activeVersionId": null,
+  "versionCounter": 203,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-14T15:26:50.741Z",
+      "createdAt": "2026-03-14T15:26:50.741Z",
+      "role": "workflow:owner",
+      "workflowId": "zzUhzwC1Ts24oBst",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": null
+}
