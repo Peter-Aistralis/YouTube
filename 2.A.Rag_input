@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-14T15:59:31.758Z",
+  "updatedAt": "2026-03-15T05:13:26.095Z",
   "createdAt": "2026-03-14T15:58:23.970Z",
   "id": "ziKD3T18TnRNR9FP",
   "name": "2.A.Rag_input",
@@ -15,17 +15,129 @@
         0,
         0
       ],
-      "id": "5254fced-be71-4ce5-8969-7989a058a45e",
+      "id": "00204fc9-f043-41cc-b036-2c9b2a6b7a21",
       "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        1248,
+        0
+      ],
+      "id": "616618df-51fa-45e4-87a0-4b59525b5dff",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "uR11DW6nxElpCIXq",
+          "name": "Supabase Aistralis"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1256,
+        224
+      ],
+      "id": "2d3bdcb3-b358-423f-bb08-2276e2551a27",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1384,
+        224
+      ],
+      "id": "e754a362-e49f-4976-9bca-e72c3352a8bf",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/1MTEvFV0dOOwNj1dOg8Z--OWlOiFhowazb8iI6N4kbdM/edit?tab=t.0"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "9704c7a2-dd7c-48dc-b250-2c7df353197d",
+      "name": "Get a document",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": " The following text is a series of FAQs. Transform them into a valid JSON array. Each object in the array must have the keys: 'question', 'answer', and 'category'. Return ONLY the JSON, no explanation.\n\nText: {{ $json.text }}\n\nexample output:\n[   { \\\"question\\\": \\\"What are your standard hours of operation?\\\", \\\"answer\\\": \\\"Our help desk is available Monday through Friday, 8:00 AM to 6:00 PM EST. However, for clients on our Premium Tier, we provide 24/7 emergency hotline support for critical server outages.\\\", \\\"category\\\": \\\"Support\\\" },]"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        448,
+        0
+      ],
+      "id": "d07ae867-9723-462b-9b5b-078fdc077589",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "7770717d-dfb2-427a-a2e9-b1542e47109f",
-              "name": "xxx",
-              "value": "xxx",
+              "id": "d8ab91dc-15d7-4db1-ac2b-c7a3b4299480",
+              "name": "faq",
+              "value": "[   { \"question\": \"What are your standard hours of operation?\", \"answer\": \"Our help desk is available Monday through Friday, 8:00 AM to 6:00 PM EST. However, for clients on our Premium Tier, we provide 24/7 emergency hotline support for critical server outages.\", \"category\": \"Support\" },   { \"question\": \"How do you handle password resets?\", \"answer\": \"For security reasons, password resets must be requested via our secure user portal or by calling the help desk. We require multi-factor authentication (MFA) or a secondary security question to verify identity before a reset is performed.\", \"category\": \"Security\" },   { \"question\": \"How long does it take to onboard a new client?\", \"answer\": \"Typical onboarding takes 14 to 30 days. This includes a full audit of your current infrastructure, installation of our monitoring tools, and a security vulnerability assessment.\", \"category\": \"Onboarding\" },   { \"question\": \"Do you support Apple/Mac products?\", \"answer\": \"Yes, we provide full support for both Windows and macOS environments, including MDM (Mobile Device Management) setup for iPhones and iPads.\", \"category\": \"Services\" },   { \"question\": \"What is your policy on hardware upgrades?\", \"answer\": \"We recommend a hardware refresh cycle of 3 to 4 years for laptops and 5 years for servers. We can manage the procurement, imaging, and deployment of new machines as part of our lifecycle management service.\", \"category\": \"Hardware\" },   { \"question\": \"Can you help set up a VPN for my remote employees?\", \"answer\": \"Absolutely. We deploy secure, encrypted VPN solutions (like WireGuard or OpenVPN) and ensure all remote endpoints meet our company’s security compliance standards before connecting to the main network.\", \"category\": \"Remote Work\" },   { \"question\": \"How often is my data backed up?\", \"answer\": \"We perform incremental backups every hour and a full system backup every 24 hours. Backups are stored in an off-site, SOC2-compliant data center with 256-bit encryption.\", \"category\": \"Backups\" },   { \"question\": \"Is there a fee for onsite visits?\", \"answer\": \"Remote support is included in your monthly flat fee. Onsite visits are included for \\\"Critical\\\" (P1) issues; however, non-emergency onsite requests are billed at a discounted hourly rate of $125.\", \"category\": \"Pricing\" } ]",
               "type": "string"
             }
           ]
@@ -35,11 +147,24 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        208,
+        800,
         0
       ],
-      "id": "c1e6026b-d5f0-43a6-a670-e80ae67b78e0",
+      "id": "5558d181-181e-46f0-b116-8d8d15c745b4",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Get the raw string from the input\nlet rawFaqs = $input.all()[0].json.faq;\n\n// 2. Convert that string into a real JavaScript list (array)\nlet faqArray = JSON.parse(rawFaqs);\n\n// 3. Map it to individual n8n items\nreturn faqArray.map(faq => {\n  return {\n    json: faq\n  };\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1024,
+        0
+      ],
+      "id": "888b1735-e63c-4afe-9964-fa23db850295",
+      "name": "Code in JavaScript1"
     }
   ],
   "connections": {
@@ -47,7 +172,73 @@
       "main": [
         [
           {
+            "node": "Get a document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a document": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
             "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store",
             "type": "main",
             "index": 0
           }
@@ -60,10 +251,12 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "meta": null,
-  "versionId": "c701baa5-1cee-4f97-a1b2-2d9f699453e2",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "47367733-d211-443c-b787-2e82536ae3b7",
   "activeVersionId": null,
-  "versionCounter": 4,
+  "versionCounter": 57,
   "triggerCount": 0,
   "shared": [
     {
