@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-14T15:59:14.950Z",
+  "updatedAt": "2026-03-15T06:24:32.929Z",
   "createdAt": "2026-03-14T15:59:01.604Z",
   "id": "2dTY70lddiz0NERk",
   "name": "2.B.RAG_Output",
@@ -8,24 +8,144 @@
   "isArchived": false,
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
-      "typeVersion": 1,
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.question }}",
+        "options": {
+          "systemMessage": "=You are a sweet and helpful assistant named Riri for an IT services company.\n\nCORE RULES:\n\n1. SCOPE CHECK FIRST:\n   - Is this about IT topics? (computers, software, networks, passwords, servers, backups, hours, policies, etc.)\n   - If NO → \"Aww, I'd love to help with that! But I'm actually your IT assistant Riri, so I only know about computers, software, passwords, and tech stuff. Is there an IT issue I can help you with instead?\"\n   - If YES → PROCEED TO STEP 2\n\n2. ALWAYS USE THE 'documents' TOOL FOR EVERY IT QUESTION:\n   - Search the database for relevant information\n   - DO NOT copy-paste the FAQ verbatim - this is important!\n\n3. RESPONSE STYLE - MAKE IT HUMAN:\n   - Read the FAQ information first\n   - Then rewrite it in your own sweet, conversational voice\n   - Add personality and warmth\n   - Sound like a friendly human assistant, not a robot reading a manual\n   - NO EMOJIS - use words to convey warmth instead\n\n4. FORMATTING - USE LINE BREAKS:\n   - Break up your response into short, readable paragraphs\n   - Leave a blank line between paragraphs\n   - Use bullet points for lists when helpful\n   - Use bold for key information like **times**, **dates**, or **important terms**\n   - End with a question to keep the conversation going\n\nEXAMPLES OF GOOD VS BAD:\n\n❌ BAD (one continuous text):\n\"Great question! We're here to help Monday to Friday, 8 AM to 6 PM Eastern Time. And if you're one of our Premium clients having a major server emergency, we've got your back 24/7 with our hotline! What's going on with your tech today?\"\n\n✅ GOOD (with line breaks):\n\"Great question!\n\nWe're here to help **Monday to Friday, 8 AM to 6 PM Eastern Time**.\n\nAnd if you're one of our Premium clients having a major server emergency, we've got your back 24/7 with our hotline!\n\nWhat's going on with your tech today?\"\n\n❌ BAD (robotic, no personality):\n\"We perform incremental backups every hour and a full system backup every 24 hours. Backups are stored in an off-site, SOC2-compliant data center with 256-bit encryption.\"\n\n✅ GOOD (warm, human, with line breaks):\n\"Your data is in great hands with us!\n\nWe actually back everything up **every single hour** - plus a full backup daily. And it's all stored safely in a secure, encrypted off-site facility.\n\nNothing to worry about there! Is there anything else you'd like to know about your data security?\"\n\n5. SPECIFIC HANDLING FOR \"ARE YOU OPEN TODAY\":\n   - Today is {{$now.toFormat('cccc')}}\n   - First, acknowledge what day it is\n   - Then share regular hours\n   - If weekend, also mention the Premium 24/7 emergency option\n   - Format with proper line breaks\n\nRemember: You're Riri, a sweet IT assistant who writes in warm, human language with proper formatting! No emojis, just friendly words and clear structure."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
       "position": [
-        0,
-        0
+        688,
+        -128
       ],
-      "id": "ea9f0bb4-d428-486b-b32c-34bfed193fc9",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "6e508b04-0ede-4416-a558-6cbb39762a0a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        608,
+        96
+      ],
+      "id": "db504c7d-8793-4cfd-a0c9-6653d5d9ef02",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "use this tool to look up data in our database for answering faq's",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        96
+      ],
+      "id": "c124af73-710f-4f43-939b-d35038f4bd82",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "uR11DW6nxElpCIXq",
+          "name": "Supabase Aistralis"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        800,
+        272
+      ],
+      "id": "e2d9dbcd-2ccf-4b63-a8c5-1c2127f3b4f7",
+      "name": "Embeddings OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "12345"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        736,
+        96
+      ],
+      "id": "7a656faa-ae55-41d8-9311-d123e0b40777",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        112,
+        64
+      ],
+      "id": "c1307c59-026c-4901-88a5-08cf630c763b",
+      "name": "Telegram Trigger",
+      "webhookId": "d208acc7-1a15-4952-82b6-686a1f12b9de",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
     },
     {
       "parameters": {
         "assignments": {
           "assignments": [
             {
-              "id": "677b8cb7-c048-4535-8375-0738bb39d2e1",
-              "name": "eee",
-              "value": "eee",
+              "id": "910e4ef2-e264-4e24-af2a-8f66e58cb212",
+              "name": "question",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "e5dd66eb-755f-4bf5-860c-4b2a3fe727ba",
+              "name": "input",
+              "value": "={{ $json.how }}",
               "type": "string"
             }
           ]
@@ -35,19 +155,504 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        208,
-        0
+        512,
+        -128
       ],
-      "id": "29ec32f2-46c3-4944-b1ec-5572ecc0be01",
+      "id": "13850f23-609b-498b-819e-552a92461c10",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "61decc9e-6af8-4f4f-91c5-5f050602ceb2",
+              "name": "text",
+              "value": "={{ $json.message.text }}",
+              "type": "string"
+            },
+            {
+              "id": "fe3ad5a7-501c-4f1c-92ae-5976bd384ef8",
+              "name": "how",
+              "value": "telegram",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        64
+      ],
+      "id": "7175afb8-ffe0-447a-9648-7986c757251d",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Edit Fields').item.json.input }}",
+                    "rightValue": "=telegram",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "c160d899-11e5-4037-b3f6-fe50aa4626b7"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "telegram"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "6a4191d5-718d-428d-aa06-b2186c57f3d3",
+                    "leftValue": "={{ $('Edit Fields').item.json.input }}",
+                    "rightValue": "whatsapp",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "whatsapp"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "0a678c9d-24e4-46de-ac48-06595d0dbdff",
+                    "leftValue": "={{ $('Edit Fields').item.json.input }}",
+                    "rightValue": "email",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "email"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1184,
+        -144
+      ],
+      "id": "7d29b384-8cbe-4428-a747-500d94ccb48f",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1728,
+        -320
+      ],
+      "id": "abbb41b8-c746-49b0-be4c-a08374beaea1",
+      "name": "Send a text message",
+      "webhookId": "a485f13a-c57e-49d5-b9c2-2e91100aa9fe",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "61decc9e-6af8-4f4f-91c5-5f050602ceb2",
+              "name": "text",
+              "value": "={{ $json.body.Body }}",
+              "type": "string"
+            },
+            {
+              "id": "fe3ad5a7-501c-4f1c-92ae-5976bd384ef8",
+              "name": "how",
+              "value": "whatsapp",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        -128
+      ],
+      "id": "18e2b182-6c39-4a5c-8e5b-3fc0c2920f90",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        -320
+      ],
+      "id": "773f7ea8-e47b-4e0b-b212-b2010e311a47",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "61decc9e-6af8-4f4f-91c5-5f050602ceb2",
+              "name": "text",
+              "value": "={{ $json.snippet }}",
+              "type": "string"
+            },
+            {
+              "id": "fe3ad5a7-501c-4f1c-92ae-5976bd384ef8",
+              "name": "how",
+              "value": "email",
+              "type": "string"
+            },
+            {
+              "id": "cb126f37-66a8-4260-8064-9f0edf4320a4",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        288,
+        -320
+      ],
+      "id": "88dea8dd-2a7f-4406-92c6-df1d7b2331d6",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "hey",
+        "message": "={{ $json.output[0].content[0].text }}",
+        "options": {
+          "sendTo": "={{ $('Gmail Trigger').item.json.To }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1728,
+        80
+      ],
+      "id": "2b000864-33fd-41ad-9521-f74a0b76619e",
+      "name": "Create a draft",
+      "webhookId": "d6fd1c1a-400d-40c2-9149-9d20b3886032",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "={{ $json.output }}"
+            },
+            {
+              "role": "system",
+              "content": "=you need to reply to an email.\nThe original text was:  {{ $('Gmail Trigger').item.json.snippet }}\n\ncraft a message with the response given to you by the user in the userprompt\n\nYou start with 'Hi Peter,'\n\nI only need the body, no title/subject"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        1408,
+        80
+      ],
+      "id": "1c13d32c-7f30-4ca2-8e72-e36d6a64c9b9",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "369147d5-5193-4a2a-b2c0-3a6c3affc243",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        112,
+        -128
+      ],
+      "id": "4a270040-c9df-4fc6-8e37-3a3c8c2433bf",
+      "name": "WhatsApp/Twilio",
+      "webhookId": "369147d5-5193-4a2a-b2c0-3a6c3affc243"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "=<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Response>\n    <Message>{{ $json.output }}</Message>\n</Response>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        1728,
+        -128
+      ],
+      "id": "7e210f82-2e83-4177-85e0-05f3ec2b8e18",
+      "name": "Send WhatsApp answer"
     }
   ],
   "connections": {
-    "When clicking ‘Execute workflow’": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
       "main": [
         [
           {
             "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send WhatsApp answer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WhatsApp/Twilio": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
             "type": "main",
             "index": 0
           }
@@ -60,11 +665,13 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "meta": null,
-  "versionId": "35bfe8fd-c9d5-4be3-a020-4a99a5a4313b",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "3b3a8c70-250b-4d08-8b54-2edc2931bc3a",
   "activeVersionId": null,
-  "versionCounter": 4,
-  "triggerCount": 0,
+  "versionCounter": 243,
+  "triggerCount": 3,
   "shared": [
     {
       "updatedAt": "2026-03-14T15:59:01.604Z",
