@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-03-14T19:07:22.545Z",
+  "updatedAt": "2026-03-16T08:05:59.108Z",
   "createdAt": "2026-03-14T14:43:00.716Z",
   "id": "m0HYn1i6T4I63igg",
   "name": "1. Follow_Up",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -21,7 +21,7 @@
       "typeVersion": 1.3,
       "position": [
         -496,
-        32
+        -32
       ],
       "id": "be1d3a7d-f522-4449-9d5f-3960d2009eb9",
       "name": "Schedule Trigger"
@@ -48,7 +48,7 @@
       "typeVersion": 4.7,
       "position": [
         -272,
-        -64
+        -128
       ],
       "id": "e7ee5d50-1587-4ec2-929b-4ee159366e77",
       "name": "Get row(s) in sheet",
@@ -65,7 +65,7 @@
       "typeVersion": 1,
       "position": [
         -496,
-        -160
+        -224
       ],
       "id": "7ef7017c-7638-4c5d-b389-b5b82b68d2ea",
       "name": "When clicking ‘Execute workflow’"
@@ -82,11 +82,20 @@
           "conditions": [
             {
               "id": "03fed44d-9a31-4233-812c-2380d75c9f8b",
-              "leftValue": "={{new Date(\"10-03-2026\".split(\"-\").reverse().join(\"-\"))}}",
-              "rightValue": "2026-03-14T22:58:33",
+              "leftValue": "={{ DateTime.fromFormat($json[\"Date Sent\"], \"dd-MM-yyyy\").plus({ days: 3 }).toISODate() }}",
+              "rightValue": "2026-03-15T15:33:43",
               "operator": {
                 "type": "dateTime",
                 "operation": "before"
+              }
+            },
+            {
+              "id": "27c9ae73-9951-4d3b-af58-88807330a97e",
+              "leftValue": "={{ $json.Status }}",
+              "rightValue": "Sent",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
               }
             }
           ],
@@ -99,7 +108,7 @@
       "typeVersion": 2.3,
       "position": [
         -48,
-        -64
+        -128
       ],
       "id": "a587dc78-eef0-40d4-a252-d5a165048442",
       "name": "If"
@@ -115,7 +124,7 @@
       "typeVersion": 3.1,
       "position": [
         176,
-        -80
+        -144
       ],
       "id": "37155273-c31c-443d-9e66-41a4bb69605f",
       "name": "AI Agent"
@@ -134,8 +143,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        176,
-        160
+        192,
+        96
       ],
       "id": "3bb93719-8706-4447-baf1-acf3d0f1f121",
       "name": "OpenAI Chat Model",
@@ -152,13 +161,15 @@
         "subject": "={{ $json.output.title }}",
         "emailType": "html",
         "message": "={{ $json.output.body }}",
-        "options": {}
+        "options": {
+          "sendTo": "peterjawel@gmail.com"
+        }
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
         528,
-        -80
+        -128
       ],
       "id": "23f9b481-36ee-46b2-bd6f-9e4470e0ec6f",
       "name": "Create a draft",
@@ -178,10 +189,149 @@
       "typeVersion": 1.3,
       "position": [
         320,
-        160
+        96
       ],
       "id": "e1f5af7a-ef23-4c1b-9fef-fa59b67d85a3",
       "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88",
+          "mode": "list",
+          "cachedResultName": "Sent_Invoices",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sent",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Number Invoice": "={{ $('Get row(s) in sheet').item.json['Number Invoice'] }}",
+            "Status": "Reminder 1"
+          },
+          "matchingColumns": [
+            "Number Invoice"
+          ],
+          "schema": [
+            {
+              "id": "Number Invoice",
+              "displayName": "Number Invoice",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name Client",
+              "displayName": "Name Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email Client",
+              "displayName": "Email Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Services",
+              "displayName": "Services",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date Sent",
+              "displayName": "Date Sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Stripe Link",
+              "displayName": "Stripe Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        752,
+        -128
+      ],
+      "id": "3cf9375f-0a79-43fc-938b-f94d0f927a8b",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "connections": {
@@ -261,6 +411,17 @@
           }
         ]
       ]
+    },
+    "Create a draft": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -271,10 +432,10 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "4e889ccd-4288-4ee3-90e7-fc488d42afdb",
-  "activeVersionId": null,
-  "versionCounter": 141,
-  "triggerCount": 0,
+  "versionId": "8e92af0b-9870-4f45-8bfd-e0f961b751c8",
+  "activeVersionId": "e20aed29-83db-422d-be04-83c1797ee97f",
+  "versionCounter": 196,
+  "triggerCount": 1,
   "shared": [
     {
       "updatedAt": "2026-03-14T14:43:00.716Z",
@@ -302,5 +463,440 @@
       "name": "YouTube"
     }
   ],
-  "activeVersion": null
+  "activeVersion": {
+    "updatedAt": "2026-03-15T07:45:26.521Z",
+    "createdAt": "2026-03-15T07:45:20.958Z",
+    "versionId": "e20aed29-83db-422d-be04-83c1797ee97f",
+    "workflowId": "m0HYn1i6T4I63igg",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "triggerAtHour": 8
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -496,
+          -32
+        ],
+        "id": "be1d3a7d-f522-4449-9d5f-3960d2009eb9",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88",
+            "mode": "list",
+            "cachedResultName": "Sent_Invoices",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sent",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88/edit#gid=0"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          -272,
+          -128
+        ],
+        "id": "e7ee5d50-1587-4ec2-929b-4ee159366e77",
+        "name": "Get row(s) in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          -496,
+          -224
+        ],
+        "id": "7ef7017c-7638-4c5d-b389-b5b82b68d2ea",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "03fed44d-9a31-4233-812c-2380d75c9f8b",
+                "leftValue": "={{ DateTime.fromFormat($json[\"Date Sent\"], \"dd-MM-yyyy\").plus({ days: 3 }).toISODate() }}",
+                "rightValue": "2026-03-15T15:33:43",
+                "operator": {
+                  "type": "dateTime",
+                  "operation": "before"
+                }
+              },
+              {
+                "id": "27c9ae73-9951-4d3b-af58-88807330a97e",
+                "leftValue": "={{ $json.Status }}",
+                "rightValue": "Sent",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "looseTypeValidation": true,
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -48,
+          -128
+        ],
+        "id": "a587dc78-eef0-40d4-a252-d5a165048442",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=# Role\nYou are the Executive Assistant to the CFO of Aistralis. Your tone is professional, helpful, and courteous—never aggressive—since maintaining client relationships is a priority.\n\n# Task\nCompose a friendly follow-up email regarding an outstanding invoice. \n\n# Data Points\n- Recipient Name: {{ $json['First Name'] }}\n- Amount Due: {{ $json.Amount }}\n- Services Provided: {{ $json.Services }}\n- Payment Link: {{ $json['Stripe Link'] }}\n\n# Guidelines\n1. Subject Line: Create a clear, professional subject line that includes the company name \"Aistralis\" and a reference to the invoice.\n2. Email Body: \n   - Acknowledge that they are busy and this may have been overlooked.\n   - Mention the specific services ({{ $json.Services }}) to provide context.\n   - Clearly state the amount ({{ $json.Amount }}) and include a Call-to-Action (CTA) button or link using the {{ $json['Stripe Link'] }}.\n   - End with: \"Best regards, Peter\"\n3. Format: The output must be a valid JSON object. The \"body\" value must be formatted in clean HTML (using <p>, <br>, and <a> tags where appropriate).\n\n# Output Format\n{\n  \"title\": \"Insert Subject Line Here\",\n  \"body\": \"<html>Insert HTML Body Here</html>\"\n}",
+          "hasOutputParser": true,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          176,
+          -128
+        ],
+        "id": "37155273-c31c-443d-9e66-41a4bb69605f",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          192,
+          96
+        ],
+        "id": "3bb93719-8706-4447-baf1-acf3d0f1f121",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "TVzP9p8nOtsqZFLa",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "draft",
+          "subject": "={{ $json.output.title }}",
+          "emailType": "html",
+          "message": "={{ $json.output.body }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          528,
+          -128
+        ],
+        "id": "23f9b481-36ee-46b2-bd6f-9e4470e0ec6f",
+        "name": "Create a draft",
+        "webhookId": "96f783c6-fd25-4c41-81a6-aa2508534f1e",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "NJotz0jOs2Osf7BJ",
+            "name": "Gmail account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsonSchemaExample": "{\n\t\"title\": \"hello hello\",\n\t\"body\": \"here comes the text\"\n}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+        "typeVersion": 1.3,
+        "position": [
+          320,
+          96
+        ],
+        "id": "e1f5af7a-ef23-4c1b-9fef-fa59b67d85a3",
+        "name": "Structured Output Parser"
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88",
+            "mode": "list",
+            "cachedResultName": "Sent_Invoices",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Sent",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/15mZOEKLpcCco7xq8pGdt7kw8MBxjNBsIQxLcPSL3k88/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Number Invoice": "={{ $('Get row(s) in sheet').item.json['Number Invoice'] }}",
+              "Status": "Reminder 1"
+            },
+            "matchingColumns": [
+              "Number Invoice"
+            ],
+            "schema": [
+              {
+                "id": "Number Invoice",
+                "displayName": "Number Invoice",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Name Client",
+                "displayName": "Name Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Email Client",
+                "displayName": "Email Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Services",
+                "displayName": "Services",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Amount",
+                "displayName": "Amount",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Status",
+                "displayName": "Status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Date Sent",
+                "displayName": "Date Sent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Stripe Link",
+                "displayName": "Stripe Link",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          752,
+          -128
+        ],
+        "id": "3cf9375f-0a79-43fc-938b-f94d0f927a8b",
+        "name": "Append or update row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Get row(s) in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s) in sheet": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Get row(s) in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Create a draft",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Structured Output Parser": {
+        "ai_outputParser": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_outputParser",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Create a draft": {
+        "main": [
+          [
+            {
+              "node": "Append or update row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "peter aistralis",
+    "name": "Version e20aed29",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-15T07:45:26.518Z",
+        "id": 273,
+        "workflowId": "m0HYn1i6T4I63igg",
+        "versionId": "e20aed29-83db-422d-be04-83c1797ee97f",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    ]
+  }
 }
