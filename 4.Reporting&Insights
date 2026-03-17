@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-14T19:15:46.219Z",
+  "updatedAt": "2026-03-16T08:39:33.868Z",
   "createdAt": "2026-03-14T15:26:50.741Z",
   "id": "zzUhzwC1Ts24oBst",
   "name": "4.Reporting&Insights",
@@ -691,16 +691,18 @@
     }
   },
   "settings": {
-    "executionOrder": "v1",
+    "executionOrder": "v0",
     "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": false,
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner"
   },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "versionId": "16ff2844-8437-4bdb-b339-c22b4989fe37",
   "activeVersionId": null,
-  "versionCounter": 203,
+  "versionCounter": 204,
   "triggerCount": 0,
   "shared": [
     {
