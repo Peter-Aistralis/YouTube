@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-03-16T07:27:58.875Z",
+  "updatedAt": "2026-03-17T18:22:12.395Z",
   "createdAt": "2026-03-14T16:33:19.117Z",
   "id": "GGKMfqs8T4JrCmMX",
   "name": "5.Sentiment_Analysis",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -18,7 +18,7 @@
       "typeVersion": 1.2,
       "position": [
         -560,
-        8
+        16
       ],
       "id": "8f249b60-fd9e-4dde-a9c2-6282b5d35ab3",
       "name": "Telegram Trigger",
@@ -60,7 +60,7 @@
       "typeVersion": 3.4,
       "position": [
         -336,
-        8
+        16
       ],
       "id": "d91390a8-3ddc-4f81-a00d-53d54b40da67",
       "name": "Edit Fields"
@@ -98,8 +98,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        112,
-        -88
+        96,
+        -96
       ],
       "id": "7b520b55-0652-4f64-9aee-178505d6216f",
       "name": "Get row(s) in sheet",
@@ -113,7 +113,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=### ROLE\nYou are a Senior Customer Success Intelligence Agent. Your goal is to analyze customer communications (emails, tickets, messages) and detect hidden churn risks through emotional nuance.\n\n### TASK\nAnalyze the provided {{ $('Edit Fields3').item.json.message }} and return a structured JSON object.\n\n### EMOTION & SCORING RUBRIC\nAssign a \"score\" from 1 to 10 and a \"key_emotion\" based on this exact scale:\n- 10: [Ecstatic] - Explicit praise, mentions of referral, or high satisfaction.\n- 8: [Grateful] - Polite, thankful, relationship is stable.\n- 6: [Neutral] - Transactional, factual, no emotional markers.\n- 4: [Confused] - Onboarding friction, asking \"how-to\" questions repeatedly. \n- 3: [Impatient] - Annoyed by delays, \"following up\" on previous messages.\n- 2: [Frustrated] - Service failure, expressing disappointment or broken trust.\n- 1: [Aggressive] - Mentioning competitors, legal action, or immediate cancellation.\n\n### RULES\n1. NUANCE DETECTION: Look for passive-aggression. (e.g., \"As per my last 3 emails\" = Score 3).\n2. VIP FLAG: If the message mentions \"Manager\", \"CEO\", or \"Urgent\", flag it.\n3. OUTPUT: You must respond ONLY with a valid JSON object. No prose.\n\n### JSON STRUCTURE\n{\n  \"score\": number,\n  \"key_emotion\": \"string (Emoji + Name)\",\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": {{ $('Edit Fields3').item.json.message }},\n  \"action_item\": \"One specific recommendation for the owner\"\n}",
+        "text": "=### ROLE\nYou are a Senior Customer Success Intelligence Agent. Your goal is to analyze customer communications (emails, tickets, messages) and detect hidden churn risks through emotional nuance.\n\n### TASK\nAnalyze the provided {{ $('Edit Fields4').item.json.message }} and return a structured JSON object.\n\n### EMOTION & SCORING RUBRIC\nAssign a \"score\" from 1 to 10 and a \"key_emotion\" based on this exact scale:\n- 10: [Ecstatic] - Explicit praise, mentions of referral, or high satisfaction.\n- 8: [Grateful] - Polite, thankful, relationship is stable.\n- 6: [Neutral] - Transactional, factual, no emotional markers.\n- 5: [Neutral] - A normal, transactional question. \n- 4: [Confused] - Onboarding friction, asking \"how-to\" questions repeatedly. \n- 3: [Impatient] - Annoyed by delays, \"following up\" on previous messages.\n- 2: [Frustrated] - Service failure, expressing disappointment or broken trust.\n- 1: [Aggressive] - Mentioning competitors, legal action, or immediate cancellation.\n\n### RULES\n1. NUANCE DETECTION: Look for passive-aggression. .\n2. VIP FLAG: If the message mentions \"Manager\", \"CEO\", or \"Urgent\", flag it.\n3. OUTPUT: You must respond ONLY with a valid JSON object. No prose.\n\n### JSON STRUCTURE\n{\n  \"score\": number,\n  \"key_emotion\": \"string (Emoji + Name)\",\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": \"Use the EXACT original text from the input: {{ $('Edit Fields4').item.json.message }}\",\n  \"action_item\": \"One specific recommendation for the owner\"\n}",
         "hasOutputParser": true,
         "options": {}
       },
@@ -121,7 +121,7 @@
       "typeVersion": 3.1,
       "position": [
         336,
-        -88
+        -96
       ],
       "id": "f01fe0c3-338c-46b4-a695-c48b1d0990fb",
       "name": "AI Agent"
@@ -135,13 +135,15 @@
           "cachedResultName": "gpt-4o-mini"
         },
         "builtInTools": {},
-        "options": {}
+        "options": {
+          "temperature": 0
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        344,
-        136
+        224,
+        144
       ],
       "id": "4b824bba-aa99-4e50-9a05-6dfbde6a7680",
       "name": "OpenAI Chat Model",
@@ -159,8 +161,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        472,
-        136
+        576,
+        160
       ],
       "id": "2003117e-606a-4c99-bdb2-89173959536e",
       "name": "Structured Output Parser"
@@ -187,7 +189,7 @@
           "value": {
             "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
             "Message": "={{ $json.output.message }}",
-            "Platform": "={{ $('Edit Fields3').item.json.input }}",
+            "Platform": "={{ $('Edit Fields4').item.json.input }}",
             "Summary": "={{ $json.output.summary }}",
             "Sentiment": "={{ $json.output.score }}"
           },
@@ -248,7 +250,7 @@
       "typeVersion": 4.7,
       "position": [
         688,
-        -88
+        -96
       ],
       "id": "5953e76e-8961-4a34-953c-b257dca34261",
       "name": "Append row in sheet",
@@ -266,7 +268,7 @@
             {
               "id": "763792e0-3c83-414d-ba66-799ee9aedcc1",
               "name": "=moving_average",
-              "value": "={{ ($json.Sentiment  +  $('Get row(s) in sheet').item.json.Score) / 2}}  ",
+              "value": "={{ (0.3*$json.Sentiment  +  0.7*$('Get row(s) in sheet').item.json.Score) }}  ",
               "type": "number"
             },
             {
@@ -283,7 +285,7 @@
       "typeVersion": 3.4,
       "position": [
         912,
-        -88
+        -96
       ],
       "id": "a5fa5423-946b-4cfb-bba8-fa87823c8e49",
       "name": "Edit Fields1"
@@ -300,7 +302,7 @@
           "conditions": [
             {
               "id": "504ee271-02df-4df1-90ff-c157b27e7a4e",
-              "leftValue": "={{ $json.trend }}",
+              "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
               "rightValue": -3,
               "operator": {
                 "type": "number",
@@ -324,8 +326,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        1136,
-        -88
+        1552,
+        -96
       ],
       "id": "64c5a839-0edd-4ea9-8654-0ffd77387eff",
       "name": "If"
@@ -351,9 +353,8 @@
           "mappingMode": "defineBelow",
           "value": {
             "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
-            "Trend": "ALARM",
-            "Average": "={{ $json.moving_average }}",
-            "Score": "={{ $('AI Agent').item.json.output.score }}"
+            "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+            "Action": "ALARM!!!!!!!!!!!!!!!"
           },
           "matchingColumns": [
             "Client"
@@ -376,7 +377,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Last Name",
@@ -385,7 +387,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "input",
@@ -394,7 +397,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "identifier",
@@ -403,7 +407,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "status",
@@ -412,7 +417,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Score",
@@ -421,7 +427,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Average",
@@ -430,7 +437,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Trend",
@@ -440,6 +448,16 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -450,8 +468,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1360,
-        -192
+        1744,
+        -400
       ],
       "id": "98d525ca-1117-4e4e-b65b-74f32052f71e",
       "name": "Append or update row in sheet",
@@ -476,8 +494,8 @@
                 },
                 "conditions": [
                   {
-                    "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
-                    "rightValue": -3,
+                    "leftValue": "={{ $('AI Agent').item.json.output.score }}",
+                    "rightValue": 2,
                     "operator": {
                       "type": "number",
                       "operation": "lte"
@@ -500,32 +518,8 @@
                 },
                 "conditions": [
                   {
-                    "id": "c89fa265-4262-4184-83d3-8f8aaa1c75ec",
-                    "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
-                    "rightValue": 6,
-                    "operator": {
-                      "type": "number",
-                      "operation": "gte"
-                    }
-                  }
-                ],
-                "combinator": "and"
-              },
-              "renameOutput": true,
-              "outputKey": "ok"
-            },
-            {
-              "conditions": {
-                "options": {
-                  "caseSensitive": true,
-                  "leftValue": "",
-                  "typeValidation": "strict",
-                  "version": 3
-                },
-                "conditions": [
-                  {
                     "id": "edea491c-2b9d-46c2-bd1e-5d82c3cb89fe",
-                    "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
+                    "leftValue": "={{ $json.Average }}",
                     "rightValue": 8,
                     "operator": {
                       "type": "number",
@@ -537,6 +531,55 @@
               },
               "renameOutput": true,
               "outputKey": "jihaa"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "2abc8e9b-1c24-452b-a6a8-07f7629b312b",
+                    "leftValue": "={{ $json.Average }}",
+                    "rightValue": 3.5,
+                    "operator": {
+                      "type": "number",
+                      "operation": "lte"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "a little attention"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c51dd6cd-f032-4f51-9cbc-e22cb3f8dd0f",
+                    "leftValue": "",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "ok"
             }
           ]
         },
@@ -545,7 +588,7 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        1360,
+        1760,
         0
       ],
       "id": "d6c19ddb-ef48-40eb-bde4-e8fa32417fc3",
@@ -564,7 +607,7 @@
             {
               "id": "d5abd1eb-2b40-4a17-885a-6f5d914eb6cb",
               "name": "identifier",
-              "value": "=kikychat",
+              "value": "=kikyRifki",
               "type": "string"
             },
             {
@@ -581,45 +624,10 @@
       "typeVersion": 3.4,
       "position": [
         -336,
-        -184
+        -192
       ],
       "id": "647ce0cd-e19e-41b7-a296-3c2baa50acd5",
       "name": "Edit Fields2"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "7ec4eedf-dfc8-4eca-8527-9178c2f082df",
-              "name": "input",
-              "value": "={{ $json.input }}",
-              "type": "string"
-            },
-            {
-              "id": "f99ade0a-cdc4-4464-a220-d5a0271a64a6",
-              "name": "identifier",
-              "value": "={{ $json.identifier }}",
-              "type": "string"
-            },
-            {
-              "id": "3aaeb028-fe03-48f4-933d-3af2fcfd7d3c",
-              "name": "message",
-              "value": "={{ $json.message }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        -112,
-        -88
-      ],
-      "id": "79e0b1c7-2a80-4d29-9078-5d41ae2d7ed5",
-      "name": "Edit Fields3"
     },
     {
       "parameters": {
@@ -631,7 +639,7 @@
       "typeVersion": 2.1,
       "position": [
         -560,
-        -184
+        -192
       ],
       "id": "32309565-a552-4cff-b84c-15f435ea05b3",
       "name": "Webhook",
@@ -658,9 +666,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "Client": "={{ $('Append row in sheet').item.json.Client }}",
-            "Trend": "ok",
-            "Average": "={{ $json.moving_average }}",
-            "Score": "={{ $('AI Agent').item.json.output.score }}"
+            "Action": " "
           },
           "matchingColumns": [
             "Client"
@@ -683,7 +689,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Last Name",
@@ -692,7 +699,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "input",
@@ -701,7 +709,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "identifier",
@@ -710,7 +719,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "status",
@@ -719,7 +729,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Score",
@@ -728,7 +739,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Average",
@@ -737,7 +749,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Trend",
@@ -746,7 +759,18 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -757,8 +781,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1584,
-        16
+        2000,
+        784
       ],
       "id": "04a2ca91-1f6b-40bb-812a-948a80f551cd",
       "name": "Append or update row in sheet1",
@@ -790,9 +814,8 @@
           "mappingMode": "defineBelow",
           "value": {
             "Client": "={{ $('Append row in sheet').item.json.Client }}",
-            "Trend": "Warning: Drop detected",
-            "Average": "={{ $json.moving_average }}",
-            "Score": "={{ $('AI Agent').item.json.output.score }}"
+            "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+            "Action": "Drop detected ... Attention"
           },
           "matchingColumns": [
             "Client"
@@ -815,7 +838,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Last Name",
@@ -824,7 +848,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "input",
@@ -833,7 +858,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "identifier",
@@ -842,7 +868,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "status",
@@ -851,7 +878,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Score",
@@ -860,7 +888,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Average",
@@ -869,7 +898,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Trend",
@@ -879,6 +909,16 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             }
           ],
           "attemptToConvertTypes": false,
@@ -889,8 +929,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1584,
-        -176
+        1984,
+        -96
       ],
       "id": "1c59f310-c445-4397-9b60-d643b9370bd5",
       "name": "Append or update row in sheet2",
@@ -922,9 +962,156 @@
           "mappingMode": "defineBelow",
           "value": {
             "Client": "={{ $('Append row in sheet').item.json.Client }}",
-            "Trend": "Try to upsell - happy client",
-            "Average": "={{ $json.moving_average }}",
-            "Score": "={{ $('AI Agent').item.json.output.score }}"
+            "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+            "Action": "Upsell opportunity!!!!!!"
+          },
+          "matchingColumns": [
+            "Client"
+          ],
+          "schema": [
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "input",
+              "displayName": "input",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Average",
+              "displayName": "Average",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trend",
+              "displayName": "Trend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2080,
+        160
+      ],
+      "id": "c2ca83a8-4f01-46ab-bf2c-9b0bb3751374",
+      "name": "Append or update row in sheet3",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+          "mode": "list",
+          "cachedResultName": "Sentiment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+            "Score": "={{ $('AI Agent').item.json.output.score }}",
+            "Average": "={{ $json.moving_average }}"
           },
           "matchingColumns": [
             "Client"
@@ -1010,7 +1197,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             }
           ],
           "attemptToConvertTypes": false,
@@ -1021,17 +1209,200 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1584,
-        208
+        1312,
+        -96
       ],
-      "id": "c2ca83a8-4f01-46ab-bf2c-9b0bb3751374",
-      "name": "Append or update row in sheet3",
+      "id": "673782ef-dbd9-4119-9ea3-48753fd8d6f1",
+      "name": "Append or update row in sheet4",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "XkUcr0YLOP2CkVg1",
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+          "mode": "list",
+          "cachedResultName": "Sentiment",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Client": "={{ $('Append row in sheet').item.json.Client }}",
+            "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+            "Action": "a little bit of attention here ..."
+          },
+          "matchingColumns": [
+            "Client"
+          ],
+          "schema": [
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First Name",
+              "displayName": "First Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Last Name",
+              "displayName": "Last Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "input",
+              "displayName": "input",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "identifier",
+              "displayName": "identifier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Average",
+              "displayName": "Average",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Trend",
+              "displayName": "Trend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2144,
+        448
+      ],
+      "id": "87633e8e-e6b9-44c1-aa98-48f0a35e168e",
+      "name": "Append or update row in sheet6",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7ec4eedf-dfc8-4eca-8527-9178c2f082df",
+              "name": "input",
+              "value": "={{ $json.input }}",
+              "type": "string"
+            },
+            {
+              "id": "f99ade0a-cdc4-4464-a220-d5a0271a64a6",
+              "name": "identifier",
+              "value": "={{ $json.identifier }}",
+              "type": "string"
+            },
+            {
+              "id": "3aaeb028-fe03-48f4-933d-3af2fcfd7d3c",
+              "name": "message",
+              "value": "={{ $json.message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -112,
+        -96
+      ],
+      "id": "0ac7726e-1488-4531-969c-eb64deee28f5",
+      "name": "Edit Fields4"
     }
   ],
   "connections": {
@@ -1050,7 +1421,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields3",
+            "node": "Edit Fields4",
             "type": "main",
             "index": 0
           }
@@ -1116,7 +1487,7 @@
       "main": [
         [
           {
-            "node": "If",
+            "node": "Append or update row in sheet4",
             "type": "main",
             "index": 0
           }
@@ -1150,18 +1521,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields3": {
-      "main": [
-        [
-          {
-            "node": "Get row(s) in sheet",
+            "node": "Edit Fields4",
             "type": "main",
             "index": 0
           }
@@ -1190,14 +1550,43 @@
         ],
         [
           {
-            "node": "Append or update row in sheet1",
+            "node": "Append or update row in sheet3",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Append or update row in sheet3",
+            "node": "Append or update row in sheet6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Append or update row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet4": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
             "type": "main",
             "index": 0
           }
@@ -1213,9 +1602,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "bbfd0860-9494-444f-8c36-76b78a929409",
-  "activeVersionId": null,
-  "versionCounter": 292,
+  "versionId": "1166fd1a-ecd2-423e-b640-9757d239752c",
+  "activeVersionId": "1166fd1a-ecd2-423e-b640-9757d239752c",
+  "versionCounter": 527,
   "triggerCount": 2,
   "shared": [
     {
@@ -1244,5 +1633,1612 @@
       "name": "YouTube"
     }
   ],
-  "activeVersion": null
+  "activeVersion": {
+    "updatedAt": "2026-03-17T18:23:53.668Z",
+    "createdAt": "2026-03-17T18:22:12.397Z",
+    "versionId": "1166fd1a-ecd2-423e-b640-9757d239752c",
+    "workflowId": "GGKMfqs8T4JrCmMX",
+    "nodes": [
+      {
+        "parameters": {
+          "updates": [
+            "message"
+          ],
+          "additionalFields": {}
+        },
+        "type": "n8n-nodes-base.telegramTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          -560,
+          16
+        ],
+        "id": "8f249b60-fd9e-4dde-a9c2-6282b5d35ab3",
+        "name": "Telegram Trigger",
+        "webhookId": "d208acc7-1a15-4952-82b6-686a1f12b9de",
+        "credentials": {
+          "telegramApi": {
+            "id": "P9DL7o9ahJ273F89",
+            "name": "Telegram account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "e0128a5c-7060-4601-a9ca-c0da7fa58566",
+                "name": "input",
+                "value": "telegram",
+                "type": "string"
+              },
+              {
+                "id": "d5abd1eb-2b40-4a17-885a-6f5d914eb6cb",
+                "name": "identifier",
+                "value": "={{ $json.message.from.username }}",
+                "type": "string"
+              },
+              {
+                "id": "28ca58c2-74c8-4128-9e97-3a7c91c4fd5b",
+                "name": "message",
+                "value": "={{ $json.message.text }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -336,
+          16
+        ],
+        "id": "d91390a8-3ddc-4f81-a00d-53d54b40da67",
+        "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "input",
+                "lookupValue": "={{ $json.input }}"
+              },
+              {
+                "lookupColumn": "identifier",
+                "lookupValue": "={{ $json.identifier }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          96,
+          -96
+        ],
+        "id": "7b520b55-0652-4f64-9aee-178505d6216f",
+        "name": "Get row(s) in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=### ROLE\nYou are a Senior Customer Success Intelligence Agent. Your goal is to analyze customer communications (emails, tickets, messages) and detect hidden churn risks through emotional nuance.\n\n### TASK\nAnalyze the provided {{ $('Edit Fields4').item.json.message }} and return a structured JSON object.\n\n### EMOTION & SCORING RUBRIC\nAssign a \"score\" from 1 to 10 and a \"key_emotion\" based on this exact scale:\n- 10: [Ecstatic] - Explicit praise, mentions of referral, or high satisfaction.\n- 8: [Grateful] - Polite, thankful, relationship is stable.\n- 6: [Neutral] - Transactional, factual, no emotional markers.\n- 5: [Neutral] - A normal, transactional question. \n- 4: [Confused] - Onboarding friction, asking \"how-to\" questions repeatedly. \n- 3: [Impatient] - Annoyed by delays, \"following up\" on previous messages.\n- 2: [Frustrated] - Service failure, expressing disappointment or broken trust.\n- 1: [Aggressive] - Mentioning competitors, legal action, or immediate cancellation.\n\n### RULES\n1. NUANCE DETECTION: Look for passive-aggression. .\n2. VIP FLAG: If the message mentions \"Manager\", \"CEO\", or \"Urgent\", flag it.\n3. OUTPUT: You must respond ONLY with a valid JSON object. No prose.\n\n### JSON STRUCTURE\n{\n  \"score\": number,\n  \"key_emotion\": \"string (Emoji + Name)\",\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": \"Use the EXACT original text from the input: {{ $('Edit Fields4').item.json.message }}\",\n  \"action_item\": \"One specific recommendation for the owner\"\n}",
+          "hasOutputParser": true,
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          336,
+          -96
+        ],
+        "id": "f01fe0c3-338c-46b4-a695-c48b1d0990fb",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {
+            "temperature": 0
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          224,
+          144
+        ],
+        "id": "4b824bba-aa99-4e50-9a05-6dfbde6a7680",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "TVzP9p8nOtsqZFLa",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsonSchemaExample": "{\n  \"score\": 12,\n  \"summary\": \"One sentence summary of why they feel this way\",\n  \"message\": \"the original message\",\n  \"action_item\": \"One specific recommendation for the owner\"\n}"
+        },
+        "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+        "typeVersion": 1.3,
+        "position": [
+          576,
+          160
+        ],
+        "id": "2003117e-606a-4c99-bdb2-89173959536e",
+        "name": "Structured Output Parser"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 2011457443,
+            "mode": "list",
+            "cachedResultName": "Entries",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=2011457443"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+              "Message": "={{ $json.output.message }}",
+              "Platform": "={{ $('Edit Fields4').item.json.input }}",
+              "Summary": "={{ $json.output.summary }}",
+              "Sentiment": "={{ $json.output.score }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Message",
+                "displayName": "Message",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Platform",
+                "displayName": "Platform",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Summary",
+                "displayName": "Summary",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Sentiment",
+                "displayName": "Sentiment",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          688,
+          -96
+        ],
+        "id": "5953e76e-8961-4a34-953c-b257dca34261",
+        "name": "Append row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "763792e0-3c83-414d-ba66-799ee9aedcc1",
+                "name": "=moving_average",
+                "value": "={{ (0.3*$json.Sentiment  +  0.7*$('Get row(s) in sheet').item.json.Score) }}  ",
+                "type": "number"
+              },
+              {
+                "id": "a961e245-40de-4d26-8eba-eb6629ccb332",
+                "name": "trend",
+                "value": "={{ $json.Sentiment - $('Get row(s) in sheet').item.json.Score }}",
+                "type": "number"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          912,
+          -96
+        ],
+        "id": "a5fa5423-946b-4cfb-bba8-fa87823c8e49",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "504ee271-02df-4df1-90ff-c157b27e7a4e",
+                "leftValue": "={{ $('Edit Fields1').item.json.trend }}",
+                "rightValue": -3,
+                "operator": {
+                  "type": "number",
+                  "operation": "lte"
+                }
+              },
+              {
+                "id": "807f7c58-1a8c-4374-b44b-093b266b998a",
+                "leftValue": "={{ $('Get row(s) in sheet').item.json.status }}",
+                "rightValue": "VIP",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1552,
+          -96
+        ],
+        "id": "64c5a839-0edd-4ea9-8654-0ffd77387eff",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+              "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+              "Action": "ALARM!!!!!!!!!!!!!!!"
+            },
+            "matchingColumns": [
+              "Client"
+            ],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "input",
+                "displayName": "input",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "identifier",
+                "displayName": "identifier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Score",
+                "displayName": "Score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Average",
+                "displayName": "Average",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Trend",
+                "displayName": "Trend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          1744,
+          -400
+        ],
+        "id": "98d525ca-1117-4e4e-b65b-74f32052f71e",
+        "name": "Append or update row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rules": {
+            "values": [
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "leftValue": "={{ $('AI Agent').item.json.output.score }}",
+                      "rightValue": 2,
+                      "operator": {
+                        "type": "number",
+                        "operation": "lte"
+                      },
+                      "id": "1bae18ad-4c15-42db-a6c6-66ef76480013"
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "Oops"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "edea491c-2b9d-46c2-bd1e-5d82c3cb89fe",
+                      "leftValue": "={{ $json.Average }}",
+                      "rightValue": 8,
+                      "operator": {
+                        "type": "number",
+                        "operation": "gte"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "jihaa"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "2abc8e9b-1c24-452b-a6a8-07f7629b312b",
+                      "leftValue": "={{ $json.Average }}",
+                      "rightValue": 3.5,
+                      "operator": {
+                        "type": "number",
+                        "operation": "lte"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "a little attention"
+              },
+              {
+                "conditions": {
+                  "options": {
+                    "caseSensitive": true,
+                    "leftValue": "",
+                    "typeValidation": "strict",
+                    "version": 3
+                  },
+                  "conditions": [
+                    {
+                      "id": "c51dd6cd-f032-4f51-9cbc-e22cb3f8dd0f",
+                      "leftValue": "",
+                      "rightValue": "",
+                      "operator": {
+                        "type": "string",
+                        "operation": "equals",
+                        "name": "filter.operator.equals"
+                      }
+                    }
+                  ],
+                  "combinator": "and"
+                },
+                "renameOutput": true,
+                "outputKey": "ok"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.switch",
+        "typeVersion": 3.4,
+        "position": [
+          1760,
+          0
+        ],
+        "id": "d6c19ddb-ef48-40eb-bde4-e8fa32417fc3",
+        "name": "Switch"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "e0128a5c-7060-4601-a9ca-c0da7fa58566",
+                "name": "input",
+                "value": "whatsapp",
+                "type": "string"
+              },
+              {
+                "id": "d5abd1eb-2b40-4a17-885a-6f5d914eb6cb",
+                "name": "identifier",
+                "value": "=kikyRifki",
+                "type": "string"
+              },
+              {
+                "id": "28ca58c2-74c8-4128-9e97-3a7c91c4fd5b",
+                "name": "message",
+                "value": "={{ $json.body.Body }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -336,
+          -192
+        ],
+        "id": "647ce0cd-e19e-41b7-a296-3c2baa50acd5",
+        "name": "Edit Fields2"
+      },
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "369147d5-5193-4a2a-b2c0-3a6c3affc243",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -560,
+          -192
+        ],
+        "id": "32309565-a552-4cff-b84c-15f435ea05b3",
+        "name": "Webhook",
+        "webhookId": "369147d5-5193-4a2a-b2c0-3a6c3affc243"
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Append row in sheet').item.json.Client }}",
+              "Action": " "
+            },
+            "matchingColumns": [
+              "Client"
+            ],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "input",
+                "displayName": "input",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "identifier",
+                "displayName": "identifier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Score",
+                "displayName": "Score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Average",
+                "displayName": "Average",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Trend",
+                "displayName": "Trend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          2000,
+          784
+        ],
+        "id": "04a2ca91-1f6b-40bb-812a-948a80f551cd",
+        "name": "Append or update row in sheet1",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Append row in sheet').item.json.Client }}",
+              "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+              "Action": "Drop detected ... Attention"
+            },
+            "matchingColumns": [
+              "Client"
+            ],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "input",
+                "displayName": "input",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "identifier",
+                "displayName": "identifier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Score",
+                "displayName": "Score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Average",
+                "displayName": "Average",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Trend",
+                "displayName": "Trend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          1984,
+          -96
+        ],
+        "id": "1c59f310-c445-4397-9b60-d643b9370bd5",
+        "name": "Append or update row in sheet2",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Append row in sheet').item.json.Client }}",
+              "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+              "Action": "Upsell opportunity!!!!!!"
+            },
+            "matchingColumns": [
+              "Client"
+            ],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "input",
+                "displayName": "input",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "identifier",
+                "displayName": "identifier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Score",
+                "displayName": "Score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Average",
+                "displayName": "Average",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Trend",
+                "displayName": "Trend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          2080,
+          160
+        ],
+        "id": "c2ca83a8-4f01-46ab-bf2c-9b0bb3751374",
+        "name": "Append or update row in sheet3",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Get row(s) in sheet').item.json.Client }}",
+              "Score": "={{ $('AI Agent').item.json.output.score }}",
+              "Average": "={{ $json.moving_average }}"
+            },
+            "matchingColumns": [
+              "Client"
+            ],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "input",
+                "displayName": "input",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "identifier",
+                "displayName": "identifier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Score",
+                "displayName": "Score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Average",
+                "displayName": "Average",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Trend",
+                "displayName": "Trend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          1312,
+          -96
+        ],
+        "id": "673782ef-dbd9-4119-9ea3-48753fd8d6f1",
+        "name": "Append or update row in sheet4",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow",
+            "mode": "list",
+            "cachedResultName": "Sentiment",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Clients",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1O-_AfGQ5v-dNJuP8qK5JaWtzmtgs4Ci-ABVShYKopow/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Client": "={{ $('Append row in sheet').item.json.Client }}",
+              "Trend": "={{ $('Edit Fields1').item.json.trend }}",
+              "Action": "a little bit of attention here ..."
+            },
+            "matchingColumns": [
+              "Client"
+            ],
+            "schema": [
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "First Name",
+                "displayName": "First Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Last Name",
+                "displayName": "Last Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "input",
+                "displayName": "input",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "identifier",
+                "displayName": "identifier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "status",
+                "displayName": "status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Score",
+                "displayName": "Score",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Average",
+                "displayName": "Average",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Trend",
+                "displayName": "Trend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          2144,
+          448
+        ],
+        "id": "87633e8e-e6b9-44c1-aa98-48f0a35e168e",
+        "name": "Append or update row in sheet6",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "7ec4eedf-dfc8-4eca-8527-9178c2f082df",
+                "name": "input",
+                "value": "={{ $json.input }}",
+                "type": "string"
+              },
+              {
+                "id": "f99ade0a-cdc4-4464-a220-d5a0271a64a6",
+                "name": "identifier",
+                "value": "={{ $json.identifier }}",
+                "type": "string"
+              },
+              {
+                "id": "3aaeb028-fe03-48f4-933d-3af2fcfd7d3c",
+                "name": "message",
+                "value": "={{ $json.message }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -112,
+          -96
+        ],
+        "id": "0ac7726e-1488-4531-969c-eb64deee28f5",
+        "name": "Edit Fields4"
+      }
+    ],
+    "connections": {
+      "Telegram Trigger": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get row(s) in sheet": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Structured Output Parser": {
+        "ai_outputParser": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_outputParser",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Append or update row in sheet4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Append or update row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Switch",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append or update row in sheet": {
+        "main": [
+          []
+        ]
+      },
+      "Edit Fields2": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields4",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Switch": {
+        "main": [
+          [
+            {
+              "node": "Append or update row in sheet2",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Append or update row in sheet3",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Append or update row in sheet6",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Append or update row in sheet1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append or update row in sheet4": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields4": {
+        "main": [
+          [
+            {
+              "node": "Get row(s) in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "peter aistralis",
+    "name": "Version 1166fd1a",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-17T18:23:53.664Z",
+        "id": 342,
+        "workflowId": "GGKMfqs8T4JrCmMX",
+        "versionId": "1166fd1a-ecd2-423e-b640-9757d239752c",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    ]
+  }
 }
