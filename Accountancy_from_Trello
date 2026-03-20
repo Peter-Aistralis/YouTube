@@ -1,0 +1,208 @@
+{
+  "updatedAt": "2026-03-20T05:51:11.483Z",
+  "createdAt": "2026-03-19T17:40:50.636Z",
+  "id": "vS1jwbfv50p3y3K4",
+  "name": "Accountancy_from_Trello",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "id": "69ad0ebb1741deeacae63aca"
+      },
+      "type": "n8n-nodes-base.trelloTrigger",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        0
+      ],
+      "id": "dfe22d6f-6605-4dcd-b512-c45318126419",
+      "name": "Trello Trigger",
+      "webhookId": "db7995bb-a9df-48a9-9c58-4aa1dd1c6e71",
+      "credentials": {
+        "trelloApi": {
+          "id": "PsyFp6FXm7MYDa2g",
+          "name": "Trello account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f8b7009-5f8e-4dfd-a2c2-6898e5b478fb",
+              "name": "action",
+              "value": "={{ $json.action.data.card.name }}",
+              "type": "string"
+            },
+            {
+              "id": "87fa0fb3-c577-47b6-8f11-7d7235b99fe4",
+              "name": "Name Client",
+              "value": "={{ $json.action.data.card.name.split('-')[0].trim() }}",
+              "type": "string"
+            },
+            {
+              "id": "d7f44ebe-0703-463f-ab5f-33249ffcf030",
+              "name": "New Stage",
+              "value": "={{ $json.action.data.card.name.split('-')[1].trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        0
+      ],
+      "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "Trello Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "7843348f-7032-461c-be8f-686de505e266",
+  "activeVersionId": "7843348f-7032-461c-be8f-686de505e266",
+  "versionCounter": 22,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-19T17:40:50.636Z",
+      "createdAt": "2026-03-19T17:40:50.636Z",
+      "role": "workflow:owner",
+      "workflowId": "vS1jwbfv50p3y3K4",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-03-20T05:51:18.578Z",
+    "createdAt": "2026-03-20T05:51:11.484Z",
+    "versionId": "7843348f-7032-461c-be8f-686de505e266",
+    "workflowId": "vS1jwbfv50p3y3K4",
+    "nodes": [
+      {
+        "parameters": {
+          "id": "69ad0ebb1741deeacae63aca"
+        },
+        "type": "n8n-nodes-base.trelloTrigger",
+        "typeVersion": 1,
+        "position": [
+          -288,
+          0
+        ],
+        "id": "dfe22d6f-6605-4dcd-b512-c45318126419",
+        "name": "Trello Trigger",
+        "webhookId": "db7995bb-a9df-48a9-9c58-4aa1dd1c6e71",
+        "credentials": {
+          "trelloApi": {
+            "id": "PsyFp6FXm7MYDa2g",
+            "name": "Trello account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9f8b7009-5f8e-4dfd-a2c2-6898e5b478fb",
+                "name": "action",
+                "value": "={{ $json.action.data.card.name }}",
+                "type": "string"
+              },
+              {
+                "id": "87fa0fb3-c577-47b6-8f11-7d7235b99fe4",
+                "name": "Name Client",
+                "value": "={{ $json.action.data.card.name.split('-')[0].trim() }}",
+                "type": "string"
+              },
+              {
+                "id": "d7f44ebe-0703-463f-ab5f-33249ffcf030",
+                "name": "New Stage",
+                "value": "={{ $json.action.data.card.name.split('-')[1].trim() }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -80,
+          0
+        ],
+        "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
+        "name": "Edit Fields"
+      }
+    ],
+    "connections": {
+      "Trello Trigger": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "peter aistralis",
+    "name": "Version 7843348f",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-20T05:51:18.573Z",
+        "id": 366,
+        "workflowId": "vS1jwbfv50p3y3K4",
+        "versionId": "7843348f-7032-461c-be8f-686de505e266",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    ]
+  }
+}
