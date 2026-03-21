@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-20T05:51:11.483Z",
+  "updatedAt": "2026-03-20T18:01:33.192Z",
   "createdAt": "2026-03-19T17:40:50.636Z",
   "id": "vS1jwbfv50p3y3K4",
   "name": "Accountancy_from_Trello",
@@ -45,8 +45,8 @@
             },
             {
               "id": "d7f44ebe-0703-463f-ab5f-33249ffcf030",
-              "name": "New Stage",
-              "value": "={{ $json.action.data.card.name.split('-')[1].trim() }}",
+              "name": "New Status",
+              "value": "={{ $json.action.data.listAfter.name }}",
               "type": "string"
             }
           ]
@@ -61,6 +61,223 @@
       ],
       "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+          "mode": "list",
+          "cachedResultName": "Example Accountant",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Master",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Dossier": "={{ $json['Name Client'] }}",
+            "Status": "={{ $json['New Status'] }}"
+          },
+          "matchingColumns": [
+            "Dossier"
+          ],
+          "schema": [
+            {
+              "id": "Dossier",
+              "displayName": "Dossier",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Type",
+              "displayName": "Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Stage",
+              "displayName": "Stage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last Updated",
+              "displayName": "Last Updated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Deadline",
+              "displayName": "Deadline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Dringend",
+              "displayName": "Dringend",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Notes",
+              "displayName": "Notes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        128,
+        0
+      ],
+      "id": "56679817-f615-4bb1-9c18-31527c0e7cbf",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+          "mode": "list",
+          "cachedResultName": "Example Accountant",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1587559629,
+          "mode": "list",
+          "cachedResultName": "Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=1587559629"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.toFormat('dd-MM-yyyy') }}",
+            "Source": "Trello",
+            "Destination": "Excel",
+            "Client": "={{ $('Edit Fields').item.json['Name Client'] }}",
+            "Action": "=Changed Status to {{ $json.Status }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destination",
+              "displayName": "Destination",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        336,
+        0
+      ],
+      "id": "120d9c0f-287a-402b-afef-d7d3d4070324",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "connections": {
@@ -69,6 +286,28 @@
         [
           {
             "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append or update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
             "type": "main",
             "index": 0
           }
@@ -84,9 +323,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "7843348f-7032-461c-be8f-686de505e266",
-  "activeVersionId": "7843348f-7032-461c-be8f-686de505e266",
-  "versionCounter": 22,
+  "versionId": "561d0823-4efe-4e01-841f-7c0fb9e33999",
+  "activeVersionId": "a09d0136-5a85-48b0-a23a-4ff15650b7bd",
+  "versionCounter": 64,
   "triggerCount": 1,
   "shared": [
     {
@@ -116,9 +355,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-03-20T05:51:18.578Z",
-    "createdAt": "2026-03-20T05:51:11.484Z",
-    "versionId": "7843348f-7032-461c-be8f-686de505e266",
+    "updatedAt": "2026-03-20T18:00:14.455Z",
+    "createdAt": "2026-03-20T18:00:10.458Z",
+    "versionId": "a09d0136-5a85-48b0-a23a-4ff15650b7bd",
     "workflowId": "vS1jwbfv50p3y3K4",
     "nodes": [
       {
@@ -159,8 +398,8 @@
               },
               {
                 "id": "d7f44ebe-0703-463f-ab5f-33249ffcf030",
-                "name": "New Stage",
-                "value": "={{ $json.action.data.card.name.split('-')[1].trim() }}",
+                "name": "New Status",
+                "value": "={{ $json.action.data.list.name }}",
                 "type": "string"
               }
             ]
@@ -175,6 +414,223 @@
         ],
         "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
         "name": "Edit Fields"
+      },
+      {
+        "parameters": {
+          "operation": "appendOrUpdate",
+          "documentId": {
+            "__rl": true,
+            "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+            "mode": "list",
+            "cachedResultName": "Example Accountant",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "Master",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Dossier": "={{ $json['Name Client'] }}",
+              "Status": "={{ $json['New Status'] }}"
+            },
+            "matchingColumns": [
+              "Dossier"
+            ],
+            "schema": [
+              {
+                "id": "Dossier",
+                "displayName": "Dossier",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Type",
+                "displayName": "Type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Stage",
+                "displayName": "Stage",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Status",
+                "displayName": "Status",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Last Updated",
+                "displayName": "Last Updated",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Deadline",
+                "displayName": "Deadline",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Dringend",
+                "displayName": "Dringend",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Notes",
+                "displayName": "Notes",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          128,
+          0
+        ],
+        "id": "56679817-f615-4bb1-9c18-31527c0e7cbf",
+        "name": "Append or update row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+            "mode": "list",
+            "cachedResultName": "Example Accountant",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1587559629,
+            "mode": "list",
+            "cachedResultName": "Logs",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=1587559629"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Date": "={{ $now.toFormat('dd-MM-yyyy') }}",
+              "Source": "Trello",
+              "Destination": "Excel",
+              "Client": "={{ $('Edit Fields').item.json['Name Client'] }}",
+              "Action": "=Changed Status to {{ $json.Status }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Source",
+                "displayName": "Source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destination",
+                "displayName": "Destination",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Date",
+                "displayName": "Date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          336,
+          0
+        ],
+        "id": "120d9c0f-287a-402b-afef-d7d3d4070324",
+        "name": "Append row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
       }
     ],
     "connections": {
@@ -188,18 +644,40 @@
             }
           ]
         ]
+      },
+      "Edit Fields": {
+        "main": [
+          [
+            {
+              "node": "Append or update row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append or update row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
     "authors": "peter aistralis",
-    "name": "Version 7843348f",
+    "name": "Version a09d0136",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-03-20T05:51:18.573Z",
-        "id": 366,
+        "createdAt": "2026-03-20T18:00:14.451Z",
+        "id": 372,
         "workflowId": "vS1jwbfv50p3y3K4",
-        "versionId": "7843348f-7032-461c-be8f-686de505e266",
+        "versionId": "a09d0136-5a85-48b0-a23a-4ff15650b7bd",
         "event": "activated",
         "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
