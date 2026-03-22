@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-20T18:19:03.164Z",
+  "updatedAt": "2026-03-21T12:41:06.291Z",
   "createdAt": "2026-03-08T13:46:36.455Z",
   "id": "VZdrFC077CALDaVH",
   "name": "Accountancy_Changes",
@@ -218,31 +218,6 @@
     },
     {
       "parameters": {
-        "resource": "cardComment",
-        "cardId": {
-          "__rl": true,
-          "value": "={{ $('Update a card').item.json.id }}",
-          "mode": "id"
-        },
-        "text": "Excel"
-      },
-      "type": "n8n-nodes-base.trello",
-      "typeVersion": 1,
-      "position": [
-        1248,
-        -80
-      ],
-      "id": "3d56030d-010d-4c6f-a5ce-45329651d12c",
-      "name": "Create a card comment",
-      "credentials": {
-        "trelloApi": {
-          "id": "PsyFp6FXm7MYDa2g",
-          "name": "Trello account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "conditions": {
           "options": {
             "caseSensitive": true,
@@ -283,7 +258,7 @@
           "mode": "id"
         },
         "updateFields": {
-          "idList": "={{ $('Get row(s)').item.json.List_id }}",
+          "idList": "={{ $json.Id }}",
           "name": "={{ $('Get row(s)1').item.json.Name }} - {{ $('Webhook').item.json.body.rows[0][2] }}"
         }
       },
@@ -399,37 +374,12 @@
     },
     {
       "parameters": {
-        "resource": "cardComment",
-        "cardId": {
-          "__rl": true,
-          "value": "={{ $('Update a card1').item.json.id }}",
-          "mode": "id"
-        },
-        "text": "Excel"
-      },
-      "type": "n8n-nodes-base.trello",
-      "typeVersion": 1,
-      "position": [
-        1376,
-        208
-      ],
-      "id": "62948705-8f1f-4fb5-a675-e518b51780f7",
-      "name": "Create a card comment1",
-      "credentials": {
-        "trelloApi": {
-          "id": "PsyFp6FXm7MYDa2g",
-          "name": "Trello account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "operation": "get",
         "dataTableId": {
           "__rl": true,
           "value": "d3l0lJS58ROZkyzw",
           "mode": "list",
-          "cachedResultName": "Rihanna_Lists",
+          "cachedResultName": "Lists",
           "cachedResultUrl": "/projects/2KiFcKNLK1JyaklJ/datatables/d3l0lJS58ROZkyzw"
         },
         "filters": {
@@ -444,8 +394,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1.1,
       "position": [
-        896,
-        96
+        880,
+        160
       ],
       "id": "f4fe6342-3f9f-4bdd-884a-419a3038c82d",
       "name": "Get row(s)2"
@@ -509,13 +459,7 @@
     },
     "Append row in sheet": {
       "main": [
-        [
-          {
-            "node": "Create a card comment",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "If": {
@@ -549,13 +493,7 @@
     },
     "Append row in sheet1": {
       "main": [
-        [
-          {
-            "node": "Create a card comment1",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Get row(s)2": {
@@ -578,9 +516,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "d9fa6e60-e9c0-4554-88e7-e6e694446b93",
-  "activeVersionId": "d9fa6e60-e9c0-4554-88e7-e6e694446b93",
-  "versionCounter": 131,
+  "versionId": "232226cb-9b19-465d-a723-238b7f020dad",
+  "activeVersionId": "232226cb-9b19-465d-a723-238b7f020dad",
+  "versionCounter": 148,
   "triggerCount": 1,
   "shared": [
     {
@@ -610,9 +548,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-03-20T18:19:48.592Z",
-    "createdAt": "2026-03-20T18:19:03.165Z",
-    "versionId": "d9fa6e60-e9c0-4554-88e7-e6e694446b93",
+    "updatedAt": "2026-03-21T12:41:09.206Z",
+    "createdAt": "2026-03-21T12:41:06.292Z",
+    "versionId": "232226cb-9b19-465d-a723-238b7f020dad",
     "workflowId": "VZdrFC077CALDaVH",
     "nodes": [
       {
@@ -826,31 +764,6 @@
       },
       {
         "parameters": {
-          "resource": "cardComment",
-          "cardId": {
-            "__rl": true,
-            "value": "={{ $('Update a card').item.json.id }}",
-            "mode": "id"
-          },
-          "text": "Excel"
-        },
-        "type": "n8n-nodes-base.trello",
-        "typeVersion": 1,
-        "position": [
-          1248,
-          -80
-        ],
-        "id": "3d56030d-010d-4c6f-a5ce-45329651d12c",
-        "name": "Create a card comment",
-        "credentials": {
-          "trelloApi": {
-            "id": "PsyFp6FXm7MYDa2g",
-            "name": "Trello account"
-          }
-        }
-      },
-      {
-        "parameters": {
           "conditions": {
             "options": {
               "caseSensitive": true,
@@ -891,7 +804,7 @@
             "mode": "id"
           },
           "updateFields": {
-            "idList": "={{ $('Get row(s)').item.json.List_id }}",
+            "idList": "={{ $json.Id }}",
             "name": "={{ $('Get row(s)1').item.json.Name }} - {{ $('Webhook').item.json.body.rows[0][2] }}"
           }
         },
@@ -1007,37 +920,12 @@
       },
       {
         "parameters": {
-          "resource": "cardComment",
-          "cardId": {
-            "__rl": true,
-            "value": "={{ $('Update a card1').item.json.id }}",
-            "mode": "id"
-          },
-          "text": "Excel"
-        },
-        "type": "n8n-nodes-base.trello",
-        "typeVersion": 1,
-        "position": [
-          1376,
-          208
-        ],
-        "id": "62948705-8f1f-4fb5-a675-e518b51780f7",
-        "name": "Create a card comment1",
-        "credentials": {
-          "trelloApi": {
-            "id": "PsyFp6FXm7MYDa2g",
-            "name": "Trello account"
-          }
-        }
-      },
-      {
-        "parameters": {
           "operation": "get",
           "dataTableId": {
             "__rl": true,
             "value": "d3l0lJS58ROZkyzw",
             "mode": "list",
-            "cachedResultName": "Rihanna_Lists",
+            "cachedResultName": "Lists",
             "cachedResultUrl": "/projects/2KiFcKNLK1JyaklJ/datatables/d3l0lJS58ROZkyzw"
           },
           "filters": {
@@ -1052,8 +940,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1.1,
         "position": [
-          896,
-          96
+          880,
+          160
         ],
         "id": "f4fe6342-3f9f-4bdd-884a-419a3038c82d",
         "name": "Get row(s)2"
@@ -1117,13 +1005,7 @@
       },
       "Append row in sheet": {
         "main": [
-          [
-            {
-              "node": "Create a card comment",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "If": {
@@ -1157,13 +1039,7 @@
       },
       "Append row in sheet1": {
         "main": [
-          [
-            {
-              "node": "Create a card comment1",
-              "type": "main",
-              "index": 0
-            }
-          ]
+          []
         ]
       },
       "Get row(s)2": {
@@ -1179,15 +1055,15 @@
       }
     },
     "authors": "peter aistralis",
-    "name": "Version d9fa6e60",
+    "name": "Version 232226cb",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-03-20T18:19:48.590Z",
-        "id": 376,
+        "createdAt": "2026-03-21T12:41:09.204Z",
+        "id": 396,
         "workflowId": "VZdrFC077CALDaVH",
-        "versionId": "d9fa6e60-e9c0-4554-88e7-e6e694446b93",
+        "versionId": "232226cb-9b19-465d-a723-238b7f020dad",
         "event": "activated",
         "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
