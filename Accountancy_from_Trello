@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-20T18:01:33.192Z",
+  "updatedAt": "2026-03-21T12:35:20.638Z",
   "createdAt": "2026-03-19T17:40:50.636Z",
   "id": "vS1jwbfv50p3y3K4",
   "name": "Accountancy_from_Trello",
@@ -14,7 +14,7 @@
       "type": "n8n-nodes-base.trelloTrigger",
       "typeVersion": 1,
       "position": [
-        -288,
+        -352,
         0
       ],
       "id": "dfe22d6f-6605-4dcd-b512-c45318126419",
@@ -56,8 +56,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -80,
-        0
+        80,
+        -80
       ],
       "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
       "name": "Edit Fields"
@@ -82,16 +82,16 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "Dossier": "={{ $json['Name Client'] }}",
-            "Status": "={{ $json['New Status'] }}"
+            "Status": "={{ $json['New Status'] }}",
+            "Client": "={{ $json['Name Client'] }}"
           },
           "matchingColumns": [
-            "Dossier"
+            "Client"
           ],
           "schema": [
             {
-              "id": "Dossier",
-              "displayName": "Dossier",
+              "id": "Client",
+              "displayName": "Client",
               "required": false,
               "defaultMatch": false,
               "display": true,
@@ -173,8 +173,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        128,
-        0
+        320,
+        -80
       ],
       "id": "56679817-f615-4bb1-9c18-31527c0e7cbf",
       "name": "Append or update row in sheet",
@@ -267,8 +267,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        336,
-        0
+        512,
+        -80
       ],
       "id": "120d9c0f-287a-402b-afef-d7d3d4070324",
       "name": "Append row in sheet",
@@ -278,6 +278,50 @@
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "7059819e-192c-4941-aca9-9a0a6cdc5e5c",
+              "leftValue": "={{ $json.action.display.translationKey }}",
+              "rightValue": "action_move_card_from_list_to_list",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            },
+            {
+              "id": "6ca6f8e6-5ace-4ffd-a720-e2d300d9a57f",
+              "leftValue": "={{ $json.action.appCreator.id }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "30ee11b1-477d-4388-bccb-b60851485725",
+      "name": "If"
     }
   ],
   "connections": {
@@ -285,7 +329,7 @@
       "main": [
         [
           {
-            "node": "Edit Fields",
+            "node": "If",
             "type": "main",
             "index": 0
           }
@@ -313,6 +357,18 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
     }
   },
   "settings": {
@@ -323,9 +379,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "561d0823-4efe-4e01-841f-7c0fb9e33999",
-  "activeVersionId": "a09d0136-5a85-48b0-a23a-4ff15650b7bd",
-  "versionCounter": 64,
+  "versionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
+  "activeVersionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
+  "versionCounter": 110,
   "triggerCount": 1,
   "shared": [
     {
@@ -355,9 +411,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-03-20T18:00:14.455Z",
-    "createdAt": "2026-03-20T18:00:10.458Z",
-    "versionId": "a09d0136-5a85-48b0-a23a-4ff15650b7bd",
+    "updatedAt": "2026-03-21T12:35:27.279Z",
+    "createdAt": "2026-03-21T12:35:20.639Z",
+    "versionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
     "workflowId": "vS1jwbfv50p3y3K4",
     "nodes": [
       {
@@ -367,7 +423,7 @@
         "type": "n8n-nodes-base.trelloTrigger",
         "typeVersion": 1,
         "position": [
-          -288,
+          -352,
           0
         ],
         "id": "dfe22d6f-6605-4dcd-b512-c45318126419",
@@ -399,7 +455,7 @@
               {
                 "id": "d7f44ebe-0703-463f-ab5f-33249ffcf030",
                 "name": "New Status",
-                "value": "={{ $json.action.data.list.name }}",
+                "value": "={{ $json.action.data.listAfter.name }}",
                 "type": "string"
               }
             ]
@@ -409,8 +465,8 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          -80,
-          0
+          80,
+          -80
         ],
         "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
         "name": "Edit Fields"
@@ -435,16 +491,16 @@
           "columns": {
             "mappingMode": "defineBelow",
             "value": {
-              "Dossier": "={{ $json['Name Client'] }}",
-              "Status": "={{ $json['New Status'] }}"
+              "Status": "={{ $json['New Status'] }}",
+              "Client": "={{ $json['Name Client'] }}"
             },
             "matchingColumns": [
-              "Dossier"
+              "Client"
             ],
             "schema": [
               {
-                "id": "Dossier",
-                "displayName": "Dossier",
+                "id": "Client",
+                "displayName": "Client",
                 "required": false,
                 "defaultMatch": false,
                 "display": true,
@@ -526,8 +582,8 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.7,
         "position": [
-          128,
-          0
+          320,
+          -80
         ],
         "id": "56679817-f615-4bb1-9c18-31527c0e7cbf",
         "name": "Append or update row in sheet",
@@ -620,8 +676,8 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.7,
         "position": [
-          336,
-          0
+          512,
+          -80
         ],
         "id": "120d9c0f-287a-402b-afef-d7d3d4070324",
         "name": "Append row in sheet",
@@ -631,6 +687,50 @@
             "name": "Google Sheets account"
           }
         }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "7059819e-192c-4941-aca9-9a0a6cdc5e5c",
+                "leftValue": "={{ $json.action.display.translationKey }}",
+                "rightValue": "action_move_card_from_list_to_list",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              },
+              {
+                "id": "6ca6f8e6-5ace-4ffd-a720-e2d300d9a57f",
+                "leftValue": "={{ $json.action.appCreator.id }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notExists",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -160,
+          0
+        ],
+        "id": "30ee11b1-477d-4388-bccb-b60851485725",
+        "name": "If"
       }
     ],
     "connections": {
@@ -638,7 +738,7 @@
         "main": [
           [
             {
-              "node": "Edit Fields",
+              "node": "If",
               "type": "main",
               "index": 0
             }
@@ -666,18 +766,30 @@
             }
           ]
         ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
       }
     },
     "authors": "peter aistralis",
-    "name": "Version a09d0136",
+    "name": "Version 7a2644b4",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-03-20T18:00:14.451Z",
-        "id": 372,
+        "createdAt": "2026-03-21T12:35:27.277Z",
+        "id": 394,
         "workflowId": "vS1jwbfv50p3y3K4",
-        "versionId": "a09d0136-5a85-48b0-a23a-4ff15650b7bd",
+        "versionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
         "event": "activated",
         "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
