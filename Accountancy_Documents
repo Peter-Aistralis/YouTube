@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-21T15:04:33.918Z",
+  "updatedAt": "2026-03-22T17:44:44.283Z",
   "createdAt": "2026-03-21T12:45:25.090Z",
   "id": "UHJS5v3jlOaboeuv",
   "name": "Accountancy_Documents",
@@ -8,18 +8,600 @@
   "isArchived": false,
   "nodes": [
     {
-      "parameters": {},
-      "type": "n8n-nodes-base.manualTrigger",
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "32a6c00e-9719-8061-a341-c82b31d60127",
+          "mode": "list",
+          "cachedResultName": "2026",
+          "cachedResultUrl": "https://www.notion.so/32a6c00e97198061a341c82b31d60127"
+        },
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "Email|email",
+              "condition": "equals",
+              "emailValue": "={{ $('Get a message').item.json.from.value[0].address }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        880,
+        -96
+      ],
+      "id": "16747117-ce50-436c-a2dc-19d26bf5a121",
+      "name": "Get many database pages",
+      "credentials": {
+        "notionApi": {
+          "id": "AziN0Uk3Q10Fbsfr",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "richText": true,
+              "text": {
+                "text": [
+                  {
+                    "text": "={{ $now.toFormat('dd-MM-yyyy') }}: Document sent by Email \nType: {{ $('AI Agent').item.json.output.type }}\nSummary: {{ $('AI Agent').item.json.output.summary }} \n",
+                    "annotationUi": {}
+                  },
+                  {
+                    "text": "=Link to document",
+                    "isLink": true,
+                    "textLink": "=https://docs.google.com/document/d/{{ $('Move file').item.json.id }}",
+                    "annotationUi": {}
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        -96
+      ],
+      "id": "d0a4e6c3-b8fe-4166-a506-66f2c242eed8",
+      "name": "Append a block",
+      "credentials": {
+        "notionApi": {
+          "id": "AziN0Uk3Q10Fbsfr",
+          "name": "Notion account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=you are the secretary of an high end accountancy firm and you analyze the incoming document ({{ $('Get a document1').item.json.content }}) and tell me what kind of document it is (invoice, PO, ...) and you also give a short summary of the document.\nFor the summary, you dont start with 'this document'. Just tell in short the summary\n\noutput:\ntype: 1 or 2 words\nsummary: 1 or 2 sentences",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        560,
+        -96
+      ],
+      "id": "7603f773-6d03-4ef0-9b2c-49339eb6af96",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -480,
+        -96
+      ],
+      "id": "9e049e6c-bcda-40af-af74-ca4a8ce7a1c8",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": "=",
+        "options": {
+          "dataPropertyAttachmentsPrefixName": "attachment_",
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -304,
+        -96
+      ],
+      "id": "76edba1b-0c81-4537-8c7e-c0a9c920374b",
+      "name": "Get a message",
+      "webhookId": "f8ecdc3b-bba7-45f1-b9d5-89d6c2a661e9",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "NJotz0jOs2Osf7BJ",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputDataFieldName": "attachment_0",
+        "name": "zxc",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -144,
+        -96
+      ],
+      "id": "3a1c2161-e491-4ed5-b3eb-a90357cfe096",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://www.googleapis.com/drive/v2/files/{{ $json.id }}/copy?convert=true&supportsAllDrives=true",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        32,
+        -96
+      ],
+      "id": "d466e6d7-e948-42b2-96a7-17741125b440",
+      "name": "HTTP Request1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "={{ $json.id }}"
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        208,
+        -96
+      ],
+      "id": "6ddf6c9b-3d51-47cf-9fa7-7abf2b657558",
+      "name": "Get a document1",
+      "credentials": {
+        "googleDocsOAuth2Api": {
+          "id": "WHeRY1hw2tRHjuCJ",
+          "name": "Google Docs account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"type\": \"California\",\n\t\"summary\": \"a one or 2 line summary\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        736,
+        144
+      ],
+      "id": "6c933df9-7813-4b73-8785-0fcaa4e3fb48",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        176
+      ],
+      "id": "3fa0699b-48d8-4a8b-b307-88329c6ee8bc",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "move",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.documentId }}",
+          "mode": "id"
+        },
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1XI8-DRTgmPridiP2wM1-iPTgXz73n8F2",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        384,
+        -96
+      ],
+      "id": "d66b2b17-08d7-4419-98c1-b955fbe48c9b",
+      "name": "Move file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+          "mode": "list",
+          "cachedResultName": "Example Accountant",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1587559629,
+          "mode": "list",
+          "cachedResultName": "Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=1587559629"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Destination": "Notion",
+            "Date": "={{ $now.toFormat('dd-MM-yyyy') }}",
+            "Client": "={{ $('Get many database pages').item.json.name }}",
+            "Action": "=Document uploaded (g-drive) + added Link in Notion",
+            "Source": "Email"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destination",
+              "displayName": "Destination",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1248,
+        -96
+      ],
+      "id": "89af7491-ca5c-4020-9f65-a8d5ca355399",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "UGkPp2JsYJ17J6KL",
+          "mode": "list",
+          "cachedResultName": "Clients",
+          "cachedResultUrl": "/projects/2KiFcKNLK1JyaklJ/datatables/UGkPp2JsYJ17J6KL"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Name",
+              "keyValue": "=Square Two"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        1376,
+        -96
+      ],
+      "id": "a4b8aae9-e2d4-4d6c-9fe4-073d5fbb0554",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "resource": "cardComment",
+        "cardId": {
+          "__rl": true,
+          "value": "={{ $json.Card_id }}",
+          "mode": "id"
+        },
+        "text": "=Document Uploaded ({{ $('AI Agent').item.json.output.type }})"
+      },
+      "type": "n8n-nodes-base.trello",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        1024,
+        160
       ],
-      "id": "4ac95355-ea4d-4187-ab4a-32cefbd36e9d",
-      "name": "When clicking ‘Execute workflow’"
+      "id": "7c7ce1a5-023e-48cf-9df7-be42c5f9d720",
+      "name": "Create a card comment",
+      "credentials": {
+        "trelloApi": {
+          "id": "PsyFp6FXm7MYDa2g",
+          "name": "Trello account"
+        }
+      }
     }
   ],
-  "connections": {},
+  "connections": {
+    "Get many database pages": {
+      "main": [
+        [
+          {
+            "node": "Append a block",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Get many database pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append a block": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a message": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Get a document1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a document1": {
+      "main": [
+        [
+          {
+            "node": "Move file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move file": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Create a card comment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
@@ -28,10 +610,10 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "7a1f31f7-5ebb-4838-889d-6b0e1a97ea7a",
+  "versionId": "04a28b1f-9310-4914-9980-dceba3a1f1eb",
   "activeVersionId": null,
-  "versionCounter": 8,
-  "triggerCount": 0,
+  "versionCounter": 455,
+  "triggerCount": 1,
   "shared": [
     {
       "updatedAt": "2026-03-21T12:45:25.090Z",
