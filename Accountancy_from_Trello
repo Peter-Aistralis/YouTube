@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-21T12:35:20.638Z",
+  "updatedAt": "2026-03-22T17:28:13.229Z",
   "createdAt": "2026-03-19T17:40:50.636Z",
   "id": "vS1jwbfv50p3y3K4",
   "name": "Accountancy_from_Trello",
@@ -15,7 +15,7 @@
       "typeVersion": 1,
       "position": [
         -352,
-        0
+        112
       ],
       "id": "dfe22d6f-6605-4dcd-b512-c45318126419",
       "name": "Trello Trigger",
@@ -56,7 +56,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        80,
+        96,
         -80
       ],
       "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
@@ -267,7 +267,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        512,
+        544,
         -80
       ],
       "id": "120d9c0f-287a-402b-afef-d7d3d4070324",
@@ -317,11 +317,291 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -160,
-        0
+        -128,
+        112
       ],
       "id": "30ee11b1-477d-4388-bccb-b60851485725",
       "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+          "mode": "list",
+          "cachedResultName": "Example Accountant",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1587559629,
+          "mode": "list",
+          "cachedResultName": "Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=1587559629"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.toFormat('dd-MM-yyyy') }}",
+            "Source": "Trello",
+            "Client": "={{ $json['Name Client'] }}",
+            "Action": "=Removed comment"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destination",
+              "displayName": "Destination",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        544,
+        112
+      ],
+      "id": "29696565-51cc-4bef-9a6a-d25611f20252",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "944ef4a0-eb85-4e5c-aae1-e5a64ca2da69",
+              "leftValue": "={{ $json.action.type }}",
+              "rightValue": "deleteComment",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        96,
+        208
+      ],
+      "id": "ae02e7d0-29a8-4b98-a54a-0a8fcaf85b3a",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f8b7009-5f8e-4dfd-a2c2-6898e5b478fb",
+              "name": "action",
+              "value": "={{ $json.action.data.card.name }}",
+              "type": "string"
+            },
+            {
+              "id": "87fa0fb3-c577-47b6-8f11-7d7235b99fe4",
+              "name": "Name Client",
+              "value": "={{ $json.action.data.card.name.split('-')[0].trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        112
+      ],
+      "id": "c1bb56e3-4945-45c0-8cc8-b2f25327d073",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+          "mode": "list",
+          "cachedResultName": "Example Accountant",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1587559629,
+          "mode": "list",
+          "cachedResultName": "Logs",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=1587559629"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.toFormat('dd-MM-yyyy') }}",
+            "Source": "Trello",
+            "Client": "={{ $json['Name Client'] }}",
+            "Action": "=Changed order"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Source",
+              "displayName": "Source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destination",
+              "displayName": "Destination",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Client",
+              "displayName": "Client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Action",
+              "displayName": "Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        544,
+        304
+      ],
+      "id": "8a8e8d43-2431-44b8-8ccd-cb5fc761929a",
+      "name": "Append row in sheet2",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f8b7009-5f8e-4dfd-a2c2-6898e5b478fb",
+              "name": "action",
+              "value": "={{ $json.action.data.card.name }}",
+              "type": "string"
+            },
+            {
+              "id": "87fa0fb3-c577-47b6-8f11-7d7235b99fe4",
+              "name": "Name Client",
+              "value": "={{ $json.action.data.card.name.split('-')[0].trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        304
+      ],
+      "id": "ac35fb30-fe5f-41ba-8edb-04eb3a8a1437",
+      "name": "Edit Fields2"
     }
   ],
   "connections": {
@@ -367,7 +647,53 @@
             "index": 0
           }
         ],
-        []
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet2",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     }
   },
@@ -379,9 +705,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
-  "activeVersionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
-  "versionCounter": 110,
+  "versionId": "018f1027-1bfb-4e67-a0d0-a3fd480f84d1",
+  "activeVersionId": "018f1027-1bfb-4e67-a0d0-a3fd480f84d1",
+  "versionCounter": 154,
   "triggerCount": 1,
   "shared": [
     {
@@ -411,9 +737,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-03-21T12:35:27.279Z",
-    "createdAt": "2026-03-21T12:35:20.639Z",
-    "versionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
+    "updatedAt": "2026-03-22T17:28:17.642Z",
+    "createdAt": "2026-03-22T17:28:13.230Z",
+    "versionId": "018f1027-1bfb-4e67-a0d0-a3fd480f84d1",
     "workflowId": "vS1jwbfv50p3y3K4",
     "nodes": [
       {
@@ -424,7 +750,7 @@
         "typeVersion": 1,
         "position": [
           -352,
-          0
+          112
         ],
         "id": "dfe22d6f-6605-4dcd-b512-c45318126419",
         "name": "Trello Trigger",
@@ -465,7 +791,7 @@
         "type": "n8n-nodes-base.set",
         "typeVersion": 3.4,
         "position": [
-          80,
+          96,
           -80
         ],
         "id": "9e542044-269a-4c78-941e-a99e7a29bc25",
@@ -676,7 +1002,7 @@
         "type": "n8n-nodes-base.googleSheets",
         "typeVersion": 4.7,
         "position": [
-          512,
+          544,
           -80
         ],
         "id": "120d9c0f-287a-402b-afef-d7d3d4070324",
@@ -726,11 +1052,291 @@
         "type": "n8n-nodes-base.if",
         "typeVersion": 2.3,
         "position": [
-          -160,
-          0
+          -128,
+          112
         ],
         "id": "30ee11b1-477d-4388-bccb-b60851485725",
         "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+            "mode": "list",
+            "cachedResultName": "Example Accountant",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1587559629,
+            "mode": "list",
+            "cachedResultName": "Logs",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=1587559629"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Date": "={{ $now.toFormat('dd-MM-yyyy') }}",
+              "Source": "Trello",
+              "Client": "={{ $json['Name Client'] }}",
+              "Action": "=Removed comment"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Source",
+                "displayName": "Source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destination",
+                "displayName": "Destination",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Date",
+                "displayName": "Date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          544,
+          112
+        ],
+        "id": "29696565-51cc-4bef-9a6a-d25611f20252",
+        "name": "Append row in sheet1",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "944ef4a0-eb85-4e5c-aae1-e5a64ca2da69",
+                "leftValue": "={{ $json.action.type }}",
+                "rightValue": "deleteComment",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals",
+                  "name": "filter.operator.equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          96,
+          208
+        ],
+        "id": "ae02e7d0-29a8-4b98-a54a-0a8fcaf85b3a",
+        "name": "If1"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9f8b7009-5f8e-4dfd-a2c2-6898e5b478fb",
+                "name": "action",
+                "value": "={{ $json.action.data.card.name }}",
+                "type": "string"
+              },
+              {
+                "id": "87fa0fb3-c577-47b6-8f11-7d7235b99fe4",
+                "name": "Name Client",
+                "value": "={{ $json.action.data.card.name.split('-')[0].trim() }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          320,
+          112
+        ],
+        "id": "c1bb56e3-4945-45c0-8cc8-b2f25327d073",
+        "name": "Edit Fields1"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM",
+            "mode": "list",
+            "cachedResultName": "Example Accountant",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": 1587559629,
+            "mode": "list",
+            "cachedResultName": "Logs",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14UsKI5FQv6SoB2cFKxcxda-BNGnMAoTtd-kqHKxbejM/edit#gid=1587559629"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Date": "={{ $now.toFormat('dd-MM-yyyy') }}",
+              "Source": "Trello",
+              "Client": "={{ $json['Name Client'] }}",
+              "Action": "=Changed order"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "Source",
+                "displayName": "Source",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destination",
+                "displayName": "Destination",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "Date",
+                "displayName": "Date",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Client",
+                "displayName": "Client",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Action",
+                "displayName": "Action",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          544,
+          304
+        ],
+        "id": "8a8e8d43-2431-44b8-8ccd-cb5fc761929a",
+        "name": "Append row in sheet2",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "XkUcr0YLOP2CkVg1",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "9f8b7009-5f8e-4dfd-a2c2-6898e5b478fb",
+                "name": "action",
+                "value": "={{ $json.action.data.card.name }}",
+                "type": "string"
+              },
+              {
+                "id": "87fa0fb3-c577-47b6-8f11-7d7235b99fe4",
+                "name": "Name Client",
+                "value": "={{ $json.action.data.card.name.split('-')[0].trim() }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          320,
+          304
+        ],
+        "id": "ac35fb30-fe5f-41ba-8edb-04eb3a8a1437",
+        "name": "Edit Fields2"
       }
     ],
     "connections": {
@@ -776,20 +1382,66 @@
               "index": 0
             }
           ],
-          []
+          [
+            {
+              "node": "If1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If1": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields1",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Edit Fields2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields1": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Edit Fields2": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet2",
+              "type": "main",
+              "index": 0
+            }
+          ]
         ]
       }
     },
     "authors": "peter aistralis",
-    "name": "Version 7a2644b4",
+    "name": "Version 018f1027",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-03-21T12:35:27.277Z",
-        "id": 394,
+        "createdAt": "2026-03-22T17:28:17.639Z",
+        "id": 416,
         "workflowId": "vS1jwbfv50p3y3K4",
-        "versionId": "7a2644b4-470d-4061-b5d3-76bb28d6ec83",
+        "versionId": "018f1027-1bfb-4e67-a0d0-a3fd480f84d1",
         "event": "activated",
         "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
