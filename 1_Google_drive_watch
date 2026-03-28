@@ -1,0 +1,137 @@
+{
+  "updatedAt": "2026-03-27T07:33:56.926Z",
+  "createdAt": "2026-03-27T02:58:27.827Z",
+  "id": "UIXEqSs6yNJklaBA",
+  "name": "1_Google_drive_watch",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "fd3e83fe-91d9-4f60-b520-0a80655344da",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://www.googleapis.com/drive/v3/files/{{ $json.folder_id }}/watch ",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleDriveOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n\"id\": \"n8n-drive-{{ $now.toFormat('yyyy-MM-dd_HH-mm') }}\", \n\"type\": \"web_hook\",  \n\"address\": \"https://workflows.zeriobox.com/webhook/1d89a976-e93f-4511-bdb2-88f0cae47332\",\n\"expiration\": \"{{ $now.plus({hours: 23}).toMillis() }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "56cef2eb-4a80-4197-9404-9ab36dc46c23",
+      "name": "HTTP Request",
+      "credentials": {
+        "googleOAuth2Api": {
+          "id": "KkjaUt9pPtIAZIZ7",
+          "name": "Google account"
+        },
+        "googleDriveOAuth2Api": {
+          "id": "NWUCua83MqPAIJF7",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7faa94d0-8efd-4019-a73c-c0b4ab71da2e",
+              "name": "folder_id",
+              "value": "1zBb_X7XhED9fENZ54CzcgIjopR5nRJyz",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        32,
+        0
+      ],
+      "id": "a6d4e008-706f-4021-a737-80ef824fdd60",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": null,
+  "versionId": "3636f8ea-fb5d-4dcd-8741-55f909b7cc70",
+  "activeVersionId": null,
+  "versionCounter": 73,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-03-27T02:58:27.827Z",
+      "createdAt": "2026-03-27T02:58:27.827Z",
+      "role": "workflow:owner",
+      "workflowId": "UIXEqSs6yNJklaBA",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": null
+}
