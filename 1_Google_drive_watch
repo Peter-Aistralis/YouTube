@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-27T07:33:56.926Z",
+  "updatedAt": "2026-03-29T15:53:09.474Z",
   "createdAt": "2026-03-27T02:58:27.827Z",
   "id": "UIXEqSs6yNJklaBA",
   "name": "1_Google_drive_watch",
@@ -70,6 +70,37 @@
       ],
       "id": "a6d4e008-706f-4021-a737-80ef824fdd60",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        96,
+        -160
+      ],
+      "id": "0631cad4-e789-43e8-80e5-45329425f370",
+      "name": "Google Drive Trigger",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NWUCua83MqPAIJF7",
+          "name": "Google Drive account 2"
+        }
+      }
     }
   ],
   "connections": {
@@ -101,10 +132,12 @@
     "binaryMode": "separate",
     "availableInMCP": false
   },
-  "meta": null,
-  "versionId": "3636f8ea-fb5d-4dcd-8741-55f909b7cc70",
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "113db7f9-06d5-4d90-8e58-378d5d657ba9",
   "activeVersionId": null,
-  "versionCounter": 73,
+  "versionCounter": 74,
   "triggerCount": 0,
   "shared": [
     {
