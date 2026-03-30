@@ -1,0 +1,143 @@
+{
+  "updatedAt": "2026-03-30T02:10:05.074Z",
+  "createdAt": "2026-03-27T07:48:43.873Z",
+  "id": "etswkiiIqI18KsyF",
+  "name": "1.Google_sheets",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "b9a28208-ea51-483b-bdc4-6b0eeecc8657",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "4ca3a908-828c-47cd-8ab1-cda72aaa069b",
+      "name": "Webhook",
+      "webhookId": "b9a28208-ea51-483b-bdc4-6b0eeecc8657"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "66847121-83d3-4510-bcc7-273490ca7de3",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "NWUCua83MqPAIJF7",
+          "name": "Google Drive account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "5dc0bbc5-98d5-4113-82cb-1b9d2641c749",
+  "activeVersionId": "5b4f8d90-c572-4ca7-9d5d-fbe8ab85a61e",
+  "versionCounter": 9,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-27T07:48:43.873Z",
+      "createdAt": "2026-03-27T07:48:43.873Z",
+      "role": "workflow:owner",
+      "workflowId": "etswkiiIqI18KsyF",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-03-27T07:48:57.473Z",
+    "createdAt": "2026-03-27T07:48:54.248Z",
+    "versionId": "5b4f8d90-c572-4ca7-9d5d-fbe8ab85a61e",
+    "workflowId": "etswkiiIqI18KsyF",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "b9a28208-ea51-483b-bdc4-6b0eeecc8657",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          0,
+          0
+        ],
+        "id": "4ca3a908-828c-47cd-8ab1-cda72aaa069b",
+        "name": "Webhook",
+        "webhookId": "b9a28208-ea51-483b-bdc4-6b0eeecc8657"
+      }
+    ],
+    "connections": {},
+    "authors": "peter aistralis",
+    "name": "Version 5b4f8d90",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-27T07:48:57.469Z",
+        "id": 441,
+        "workflowId": "etswkiiIqI18KsyF",
+        "versionId": "5b4f8d90-c572-4ca7-9d5d-fbe8ab85a61e",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    ]
+  }
+}
