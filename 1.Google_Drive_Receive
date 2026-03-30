@@ -1,28 +1,12 @@
 {
-  "updatedAt": "2026-03-29T06:17:21.797Z",
+  "updatedAt": "2026-03-30T08:01:26.839Z",
   "createdAt": "2026-03-27T03:28:39.498Z",
   "id": "AMNyyUh3dFXCxATO",
   "name": "1.Google_Drive_Receive",
   "description": null,
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
-    {
-      "parameters": {
-        "httpMethod": "POST",
-        "path": "1d89a976-e93f-4511-bdb2-88f0cae47332",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
-      "position": [
-        -400,
-        -32
-      ],
-      "id": "175e49ed-0384-49b3-a19f-b1f192be3fd8",
-      "name": "Webhook",
-      "webhookId": "1d89a976-e93f-4511-bdb2-88f0cae47332"
-    },
     {
       "parameters": {
         "url": "https://usable-puma-86861.upstash.io/set/lock:drive/1/nx/ex/3",
@@ -33,7 +17,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.4,
       "position": [
-        -176,
+        -80,
         -32
       ],
       "id": "f9f4f09f-bae8-49cf-b36f-3f2d587885b6",
@@ -116,7 +100,7 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        48,
+        96,
         -32
       ],
       "id": "ef6f7339-058e-4922-b33f-eba6c3bf8359",
@@ -146,20 +130,32 @@
           "name": "Google Drive account 2"
         }
       }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7faa94d0-8efd-4019-a73c-c0b4ab71da2e",
+              "name": "folder_id",
+              "value": "1zBb_X7XhED9fENZ54CzcgIjopR5nRJyz",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        -192
+      ],
+      "id": "804a95a8-3c36-436f-ae02-3b19321f5fee",
+      "name": "Edit Fields"
     }
   ],
   "connections": {
-    "Webhook": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "HTTP Request2": {
       "main": [
         [
@@ -175,7 +171,7 @@
       "main": [
         [
           {
-            "node": "HTTP Request3",
+            "node": "Edit Fields",
             "type": "main",
             "index": 0
           }
@@ -192,6 +188,17 @@
           }
         ]
       ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -202,9 +209,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "e0265d44-3e3f-4313-a707-249b78af673b",
-  "activeVersionId": "e0265d44-3e3f-4313-a707-249b78af673b",
-  "versionCounter": 224,
+  "versionId": "1beb982a-7a77-4abc-b6cf-0c7f97fcc1b2",
+  "activeVersionId": null,
+  "versionCounter": 233,
   "triggerCount": 1,
   "shared": [
     {
@@ -233,212 +240,5 @@
       "name": "YouTube"
     }
   ],
-  "activeVersion": {
-    "updatedAt": "2026-03-29T06:17:25.740Z",
-    "createdAt": "2026-03-29T06:17:21.799Z",
-    "versionId": "e0265d44-3e3f-4313-a707-249b78af673b",
-    "workflowId": "AMNyyUh3dFXCxATO",
-    "nodes": [
-      {
-        "parameters": {
-          "httpMethod": "POST",
-          "path": "1d89a976-e93f-4511-bdb2-88f0cae47332",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2.1,
-        "position": [
-          -400,
-          -32
-        ],
-        "id": "175e49ed-0384-49b3-a19f-b1f192be3fd8",
-        "name": "Webhook",
-        "webhookId": "1d89a976-e93f-4511-bdb2-88f0cae47332"
-      },
-      {
-        "parameters": {
-          "url": "https://usable-puma-86861.upstash.io/set/lock:drive/1/nx/ex/3",
-          "authentication": "genericCredentialType",
-          "genericAuthType": "httpHeaderAuth",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.4,
-        "position": [
-          -176,
-          -32
-        ],
-        "id": "f9f4f09f-bae8-49cf-b36f-3f2d587885b6",
-        "name": "HTTP Request2",
-        "credentials": {
-          "httpHeaderAuth": {
-            "id": "5VAaR562In7qyR5F",
-            "name": "Upstash"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "url": "=https://www.googleapis.com/drive/v3/files",
-          "authentication": "predefinedCredentialType",
-          "nodeCredentialType": "googleDriveOAuth2Api",
-          "sendQuery": true,
-          "queryParameters": {
-            "parameters": [
-              {
-                "name": "q",
-                "value": "='1zBb_X7XhED9fENZ54CzcgIjopR5nRJyz' in parents and trashed=false and createdTime > '{{ new Date(Date.now() - 120000).toISOString() }}'"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.httpRequest",
-        "typeVersion": 4.4,
-        "position": [
-          368,
-          -128
-        ],
-        "id": "e3916415-1a0c-4000-8dd6-7e0d09e57812",
-        "name": "HTTP Request3",
-        "credentials": {
-          "googleOAuth2Api": {
-            "id": "KkjaUt9pPtIAZIZ7",
-            "name": "Google account"
-          },
-          "googleDriveOAuth2Api": {
-            "id": "NWUCua83MqPAIJF7",
-            "name": "Google Drive account 2"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": true,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 3
-            },
-            "conditions": [
-              {
-                "id": "0e41b6d2-987c-46d0-833a-fb48eadb72a6",
-                "leftValue": "={{ $json.result }}",
-                "rightValue": "OK",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals"
-                }
-              },
-              {
-                "id": "6aac9a89-f633-41c4-8a99-19954e7730c4",
-                "leftValue": "={{ $('Webhook').item.json.headers['x-goog-resource-state'] }}",
-                "rightValue": "trash",
-                "operator": {
-                  "type": "string",
-                  "operation": "notEquals"
-                }
-              }
-            ],
-            "combinator": "and"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2.3,
-        "position": [
-          48,
-          -32
-        ],
-        "id": "ef6f7339-058e-4922-b33f-eba6c3bf8359",
-        "name": "If"
-      },
-      {
-        "parameters": {
-          "operation": "download",
-          "fileId": {
-            "__rl": true,
-            "value": "={{ $json.files[0].id }}",
-            "mode": "id"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleDrive",
-        "typeVersion": 3,
-        "position": [
-          512,
-          -128
-        ],
-        "id": "9d968785-5e7a-4dec-aee4-83b58e5e012c",
-        "name": "Download file",
-        "credentials": {
-          "googleDriveOAuth2Api": {
-            "id": "NWUCua83MqPAIJF7",
-            "name": "Google Drive account 2"
-          }
-        }
-      }
-    ],
-    "connections": {
-      "Webhook": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request2": {
-        "main": [
-          [
-            {
-              "node": "If",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "If": {
-        "main": [
-          [
-            {
-              "node": "HTTP Request3",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "HTTP Request3": {
-        "main": [
-          [
-            {
-              "node": "Download file",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "authors": "peter aistralis",
-    "name": "Version e0265d44",
-    "description": "",
-    "autosaved": true,
-    "workflowPublishHistory": [
-      {
-        "createdAt": "2026-03-29T06:17:25.736Z",
-        "id": 469,
-        "workflowId": "AMNyyUh3dFXCxATO",
-        "versionId": "e0265d44-3e3f-4313-a707-249b78af673b",
-        "event": "activated",
-        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
-      }
-    ]
-  }
+  "activeVersion": null
 }
