@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-11T11:16:59.763Z",
+  "updatedAt": "2026-04-01T09:24:49.158Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
@@ -157,7 +157,7 @@
     },
     {
       "parameters": {
-        "amount": 2
+        "amount": 2.2
       },
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
@@ -1255,9 +1255,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "bf0b91c1-1575-49d8-a4df-86e535c62949",
-  "activeVersionId": "bf0b91c1-1575-49d8-a4df-86e535c62949",
-  "versionCounter": 165,
+  "versionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
+  "activeVersionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
+  "versionCounter": 191,
   "triggerCount": 1,
   "shared": [
     {
@@ -1287,9 +1287,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-03-11T11:17:04.715Z",
-    "createdAt": "2026-03-11T11:16:59.765Z",
-    "versionId": "bf0b91c1-1575-49d8-a4df-86e535c62949",
+    "updatedAt": "2026-04-01T09:25:04.534Z",
+    "createdAt": "2026-04-01T09:24:49.160Z",
+    "versionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
     "workflowId": "2wGj4UwRo2mb42YJ",
     "nodes": [
       {
@@ -1442,7 +1442,7 @@
       },
       {
         "parameters": {
-          "amount": 2
+          "amount": 2.2
         },
         "type": "n8n-nodes-base.wait",
         "typeVersion": 1.1,
@@ -2532,15 +2532,15 @@
       }
     },
     "authors": "peter aistralis",
-    "name": "Version bf0b91c1",
+    "name": "Version 179b79b7",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-03-11T11:17:04.707Z",
-        "id": 155,
+        "createdAt": "2026-04-01T09:25:04.531Z",
+        "id": 495,
         "workflowId": "2wGj4UwRo2mb42YJ",
-        "versionId": "bf0b91c1-1575-49d8-a4df-86e535c62949",
+        "versionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
         "event": "activated",
         "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
