@@ -9,7 +9,7 @@
   "nodes": [
     {
       "parameters": {
-        "url": "https://usable-puma-86861.upstash.io/set/lock:drive/1/nx/ex/3",
+        "url": "https://xxxuma-.upstash.io/set/lock:drive/1/nx/ex/3",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
         "options": {}
