@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-04-10T07:41:09.917Z",
+  "updatedAt": "2026-04-11T08:27:13.434Z",
   "createdAt": "2026-04-10T05:25:20.335Z",
   "id": "ZSypPyWac8lUTd6Q",
   "name": "Telegram_Group_Chat",
   "description": null,
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
@@ -33,8 +33,10 @@
     {
       "parameters": {
         "chatId": "={{ $json.message.chat.id }}",
-        "text": "helloooooooo from n8n",
-        "additionalFields": {}
+        "text": "Hello from N8N - to Bot",
+        "additionalFields": {
+          "appendAttribution": false
+        }
       },
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
@@ -42,9 +44,44 @@
         208,
         0
       ],
-      "id": "5233b110-c51a-4cbb-86ad-78749976d859",
+      "id": "11c90009-d35a-4948-9c09-37e25bed5e2c",
       "name": "Send a text message",
-      "webhookId": "4f79bb7e-c547-4fbc-8af4-982135be830e",
+      "webhookId": "9bfc7bc6-672d-41a3-a1b1-b9cf3ac2c026",
+      "credentials": {
+        "telegramApi": {
+          "id": "P9DL7o9ahJ273F89",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -32,
+        -192
+      ],
+      "id": "8759d214-bc48-4a03-b886-f4fa340d0c7c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "chatId": "-1003825087138",
+        "text": "Only Sending - Type the message you want to spread",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        -192
+      ],
+      "id": "5acf8172-8be8-49a4-855b-2413091ce6f7",
+      "name": "Send a text message1",
+      "webhookId": "9bfc7bc6-672d-41a3-a1b1-b9cf3ac2c026",
       "credentials": {
         "telegramApi": {
           "id": "P9DL7o9ahJ273F89",
@@ -64,6 +101,17 @@
           }
         ]
       ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -74,9 +122,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "c2400775-85ac-411f-8503-45469aaa8fdc",
-  "activeVersionId": "c2400775-85ac-411f-8503-45469aaa8fdc",
-  "versionCounter": 13,
+  "versionId": "56dac1cd-c6ea-4413-9411-0fe959263e48",
+  "activeVersionId": null,
+  "versionCounter": 47,
   "triggerCount": 1,
   "shared": [
     {
@@ -105,84 +153,5 @@
       "name": "YouTube"
     }
   ],
-  "activeVersion": {
-    "updatedAt": "2026-04-10T07:46:15.597Z",
-    "createdAt": "2026-04-10T07:41:09.918Z",
-    "versionId": "c2400775-85ac-411f-8503-45469aaa8fdc",
-    "workflowId": "ZSypPyWac8lUTd6Q",
-    "nodes": [
-      {
-        "parameters": {
-          "updates": [
-            "message"
-          ],
-          "additionalFields": {}
-        },
-        "type": "n8n-nodes-base.telegramTrigger",
-        "typeVersion": 1.2,
-        "position": [
-          0,
-          0
-        ],
-        "id": "13b73f3d-a33e-4e27-8e18-bb555861da2a",
-        "name": "Telegram Trigger",
-        "webhookId": "0476ce63-bbbd-4086-91e8-9f745223fec1",
-        "credentials": {
-          "telegramApi": {
-            "id": "P9DL7o9ahJ273F89",
-            "name": "Telegram account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "chatId": "={{ $json.message.chat.id }}",
-          "text": "helloooooooo from n8n",
-          "additionalFields": {}
-        },
-        "type": "n8n-nodes-base.telegram",
-        "typeVersion": 1.2,
-        "position": [
-          208,
-          0
-        ],
-        "id": "5233b110-c51a-4cbb-86ad-78749976d859",
-        "name": "Send a text message",
-        "webhookId": "4f79bb7e-c547-4fbc-8af4-982135be830e",
-        "credentials": {
-          "telegramApi": {
-            "id": "P9DL7o9ahJ273F89",
-            "name": "Telegram account"
-          }
-        }
-      }
-    ],
-    "connections": {
-      "Telegram Trigger": {
-        "main": [
-          [
-            {
-              "node": "Send a text message",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      }
-    },
-    "authors": "peter aistralis",
-    "name": "Version c2400775",
-    "description": "",
-    "autosaved": true,
-    "workflowPublishHistory": [
-      {
-        "createdAt": "2026-04-10T07:46:15.592Z",
-        "id": 517,
-        "workflowId": "ZSypPyWac8lUTd6Q",
-        "versionId": "c2400775-85ac-411f-8503-45469aaa8fdc",
-        "event": "activated",
-        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
-      }
-    ]
-  }
+  "activeVersion": null
 }
