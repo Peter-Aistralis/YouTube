@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-11T08:27:13.434Z",
+  "updatedAt": "2026-04-15T01:42:27.050Z",
   "createdAt": "2026-04-10T05:25:20.335Z",
   "id": "ZSypPyWac8lUTd6Q",
   "name": "Telegram_Group_Chat",
@@ -76,8 +76,8 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        208,
-        -192
+        288,
+        -160
       ],
       "id": "5acf8172-8be8-49a4-855b-2413091ce6f7",
       "name": "Send a text message1",
@@ -88,6 +88,20 @@
           "name": "Telegram account"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "https://www.flextender.nl/opdracht/?aanvraagnr=29151",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        176,
+        -192
+      ],
+      "id": "14c9a04c-237b-4ad5-8cef-5c998c6bf2dd",
+      "name": "HTTP Request"
     }
   ],
   "connections": {
@@ -106,7 +120,7 @@
       "main": [
         [
           {
-            "node": "Send a text message1",
+            "node": "HTTP Request",
             "type": "main",
             "index": 0
           }
@@ -122,9 +136,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "56dac1cd-c6ea-4413-9411-0fe959263e48",
+  "versionId": "73acfd97-eeaf-4f48-919b-76e8d8d0144b",
   "activeVersionId": null,
-  "versionCounter": 47,
+  "versionCounter": 50,
   "triggerCount": 1,
   "shared": [
     {
