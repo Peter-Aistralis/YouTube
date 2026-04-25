@@ -1,0 +1,367 @@
+{
+  "updatedAt": "2026-04-19T12:04:08.396Z",
+  "createdAt": "2026-04-17T16:14:09.557Z",
+  "id": "Uel6mK9kd4LRVbGy",
+  "name": "Webhooks",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e9540b81-85b8-420a-b995-c6043c4893f6",
+        "authentication": "basicAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -288,
+        -48
+      ],
+      "id": "ba47b188-66f9-46f1-befa-1148681fc4d3",
+      "name": "Webhook",
+      "webhookId": "e9540b81-85b8-420a-b995-c6043c4893f6",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "lWnGLr7qEaDKPAnW",
+          "name": "Unnamed credential"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "hello",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -48,
+        -48
+      ],
+      "id": "ea55841f-6305-4190-862f-0640ec97a897",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -48,
+        128
+      ],
+      "id": "a60b4cfd-c8b8-48c0-8045-f8377babd2c6",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "use this tool",
+        "workflowId": {
+          "__rl": true,
+          "value": "HMGqPBgK7ERcmECt",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/HMGqPBgK7ERcmECt",
+          "cachedResultName": "Embedding"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        96,
+        128
+      ],
+      "id": "f753172c-d4ff-48a1-a2bf-ced84a662464",
+      "name": "Call 'Embedding'"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        304,
+        -48
+      ],
+      "id": "7b260417-ae96-4912-83f5-123d546da1bc",
+      "name": "Respond to Webhook"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call 'Embedding'": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "bfcaa778-17c8-446a-a98b-2b2a8062b7d1",
+  "activeVersionId": "e7924a66-cad2-4788-9087-32eb15f3dc1c",
+  "versionCounter": 65,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-04-17T16:14:09.557Z",
+      "createdAt": "2026-04-17T16:14:09.557Z",
+      "role": "workflow:owner",
+      "workflowId": "Uel6mK9kd4LRVbGy",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-04-19T08:53:32.813Z",
+    "createdAt": "2026-04-19T08:52:56.173Z",
+    "versionId": "e7924a66-cad2-4788-9087-32eb15f3dc1c",
+    "workflowId": "Uel6mK9kd4LRVbGy",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "e9540b81-85b8-420a-b995-c6043c4893f6",
+          "authentication": "basicAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -288,
+          -48
+        ],
+        "id": "ba47b188-66f9-46f1-befa-1148681fc4d3",
+        "name": "Webhook",
+        "webhookId": "e9540b81-85b8-420a-b995-c6043c4893f6",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "lWnGLr7qEaDKPAnW",
+            "name": "Unnamed credential"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "hello",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          -48,
+          -48
+        ],
+        "id": "ea55841f-6305-4190-862f-0640ec97a897",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          -80,
+          128
+        ],
+        "id": "a60b4cfd-c8b8-48c0-8045-f8377babd2c6",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "TVzP9p8nOtsqZFLa",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "description": "use this tool",
+          "workflowId": {
+            "__rl": true,
+            "value": "sIozdGRq5siA705z",
+            "mode": "list",
+            "cachedResultUrl": "/workflow/sIozdGRq5siA705z",
+            "cachedResultName": "parallel_subworkflow"
+          },
+          "workflowInputs": {
+            "mappingMode": "defineBelow",
+            "value": {},
+            "matchingColumns": [
+              "Name"
+            ],
+            "schema": [
+              {
+                "id": "Name",
+                "displayName": "Name",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "typeVersion": 2.2,
+        "position": [
+          112,
+          128
+        ],
+        "id": "f753172c-d4ff-48a1-a2bf-ced84a662464",
+        "name": "Call 'parallel_subworkflow'"
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Call 'parallel_subworkflow'": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          []
+        ]
+      }
+    },
+    "authors": "peter aistralis",
+    "name": "Version e7924a66",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-04-19T08:53:32.802Z",
+        "id": 545,
+        "workflowId": "Uel6mK9kd4LRVbGy",
+        "versionId": "e7924a66-cad2-4788-9087-32eb15f3dc1c",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    ]
+  }
+}
