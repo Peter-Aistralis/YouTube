@@ -1,49 +1,60 @@
 {
-  "updatedAt": "2026-04-19T12:04:08.396Z",
+  "updatedAt": "2026-04-25T16:29:42.842Z",
   "createdAt": "2026-04-17T16:14:09.557Z",
   "id": "Uel6mK9kd4LRVbGy",
   "name": "Webhooks",
   "description": null,
-  "active": true,
+  "active": false,
   "isArchived": false,
   "nodes": [
     {
       "parameters": {
-        "httpMethod": "POST",
-        "path": "e9540b81-85b8-420a-b995-c6043c4893f6",
-        "authentication": "basicAuth",
+        "url": "={{ $json.link }}",
         "options": {}
       },
-      "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
       "position": [
-        -288,
-        -48
+        -2896,
+        -752
       ],
-      "id": "ba47b188-66f9-46f1-befa-1148681fc4d3",
-      "name": "Webhook",
-      "webhookId": "e9540b81-85b8-420a-b995-c6043c4893f6",
-      "credentials": {
-        "httpBasicAuth": {
-          "id": "lWnGLr7qEaDKPAnW",
-          "name": "Unnamed credential"
-        }
-      }
+      "id": "2d060961-1370-4df8-8334-b1adc1bc281f",
+      "name": "Inhoud opdracht ophalen"
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "hello",
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "opgekuist",
+              "cssSelector": "body"
+            }
+          ]
+        },
         "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 3.1,
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
       "position": [
-        -48,
-        -48
+        -2736,
+        -752
       ],
-      "id": "ea55841f-6305-4190-862f-0640ec97a897",
-      "name": "AI Agent"
+      "id": "e5bcb798-2932-4d7b-b246-5afb3000220f",
+      "name": "HTML -> Text2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst output = [];\n\nfor (let item of items) {\n  let text = item.json.opgekuist || \"\";\n\n  // VERBETERING: Definieer postNavText en lines BINNEN de loop\n  const postNavText = text.split(/FAQ\\s*\\[.*?\\]/i).pop() || \"\";\n  const lines = postNavText.trim().split('\\n').map(l => l.trim()).filter(l => l.length > 0);\n\n  const extract = (regex, source) => {\n    const match = source.match(regex);\n    return match ? match[1].trim() : null;\n  };\n\n  const cleanGarbage = (rawText) => {\n    let cleaned = rawText;\n    cleaned = cleaned.replace(/\\[https?:\\/\\/[^\\]]+\\]/g, '');\n    const navTerms = /Home|Opdrachten|Professionals|Zzp’ers|Leveranciers|Opdrachtgevers|Over ons|Werken bij|Diensten|Verzekeringen|Kennis|CAO wijziging|Wet DBA|Nieuws|Webinars|Contact|FAQ|Inschrijven|Login|Inloggen|Stel een vraag|Reageer op deze opdracht/gi;\n    \n    return cleaned.split('\\n')\n      .filter(line => !navTerms.test(line.trim()))\n      .filter(line => line.trim().length > 0)\n      .join('\\n');\n  };\n\n  const fullyCleanedText = cleanGarbage(text);\n\n  const extractSection = (startLabel, endLabel, source) => {\n    const regex = new RegExp(`(?:^|\\\\n)(?:${startLabel})[^\\\\n]*\\\\s*(?:\\\\n|$)([\\\\s\\\\S]*?)(?=(?:^|\\\\n)(?:${endLabel})|$)`, 'i');\n    const match = source.match(regex);\n    if (match && match[1]) {\n      return match[1].trim();\n    }\n    return null;\n  };\n\n  const functieschaal = extractSection(\"Functieschaal|Schaal\", \"Fee Flextender|Benodigd aantal|CV-eisen\", text) || \"Niet vermeld\";\n  const feeFlextender = extractSection(\"Fee Flextender\", \"Benodigd aantal|CV-eisen|Planning\", text) || \"Niet vermeld\";\n\n  const org = extractSection(\"Organisatie\", \"Opdracht\", fullyCleanedText) || \"\";\n  const opdracht = extractSection(\"Opdracht\", \"Projecten en Werkzaamheden\", fullyCleanedText) || \"\";\n  const werkzaamheden = extractSection(\"Projecten en Werkzaamheden\", \"Vereisten\", fullyCleanedText) || \"\";\n  \n  let aantalProfessionals = null;\n  const benodigdIndex = text.search(/Benodigd aantal professionals/i);\n  if (benodigdIndex !== -1) {\n    const substring = text.substring(benodigdIndex, benodigdIndex + 100);\n    const getalMatch = substring.match(/(\\d+)/);\n    if (getalMatch) {\n      aantalProfessionals = parseInt(getalMatch[1]);\n    }\n  }\n  const uitvoeringsvoorwaardeMatch = text.match(/Uitvoeringsvoorwaarde\\s*\\n([\\s\\S]*?)(?=\\n\\n[A-Z]|\\nOrganisatie)/i);\nconst uitvoeringsvoorwaarde = uitvoeringsvoorwaardeMatch ? uitvoeringsvoorwaardeMatch[1].trim() : \"\";\n\nconst aiText = `UITVOERINGSWOORWAARDE:\\n${uitvoeringsvoorwaarde}\\n\\nORGANISATIE:\\n${org}\\n\\nOPDRACHT:\\n${opdracht}\\n\\nWERKZAAMHEDEN & RESULTATEN:\\n${werkzaamheden}\\n\\nTARIEF INFO:\\n${functieschaal}`;\n\n  output.push({\n    json: {\n      // Gebruik de lijnen die we bovenaan de loop hebben bepaald\n      title: item.json.title || lines[0],\n      locatie: item.json.locatie || lines[1],\n      details: {\n        aanvraagnummer: extract(/Aanvraagnummer\\s+(\\d+)/, text),\n        duur: extract(/Duur\\s+(.*?)\\n/, text),\n        opties_verlenging: extract(/Opties verlenging\\s+(.*?)\\n/, text),\n        uren_per_week: extract(/Uren per week\\s+(.*?)\\n/, text),\n        das_opdracht: extract(/DAS opdracht\\s+(.*?)\\n/, text),\n        start: extract(/Start\\s+(.*?)\\n/, text),\n        opleidingsniveau: extract(/Opleidingsniveau\\s+(.*?)\\n/, text),\n        regio: extract(/Regio\\s+(.*?)\\n/, text),\n        einde_inschrijfdatum: extract(/Einde inschrijfdatum\\s+(.*?)(?:\\s+agenda|$)/, text)\n      },\n      secties: {\n        aantal_professionals: aantalProfessionals,\n        vereisten: extractSection(\"Vereisten / knock-outcriteria\", \"Gunningscriteria\", text),\n        gunningscriteria: extractSection(\"Gunningscriteria\", \"Geef in het cv duidelijk aan|Competenties\", text),\n        competenties: extractSection(\"Competenties\", \"Beoordeling|Benodigd aantal\", text),\n        cv_eisen: extractSection(\"(?:CV-eisen|Offerte eisen)\", \"Werkdagen|Planning|Overige informatie\", text),\n        planning: extractSection(\"Planning\", \"Overige informatie|Meer informatie\", text),\n        Functieschaal: functieschaal,\n        Fee_Flextender: feeFlextender \n      },\n      formatted_text_voor_ai: aiText.trim()\n    }\n  });\n}\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2576,
+        -752
+      ],
+      "id": "3656995c-784c-4670-ae6e-10560cb84790",
+      "name": "Text opkuisen + Details"
     },
     {
       "parameters": {
@@ -54,15 +65,17 @@
           "cachedResultName": "gpt-4o-mini"
         },
         "builtInTools": {},
-        "options": {}
+        "options": {
+          "temperature": 0.2
+        }
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        -48,
-        128
+        -2336,
+        -480
       ],
-      "id": "a60b4cfd-c8b8-48c0-8045-f8377babd2c6",
+      "id": "6b91cc3f-3cbc-471c-ad93-0ea6a11ff5d5",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -73,52 +86,697 @@
     },
     {
       "parameters": {
-        "description": "use this tool",
-        "workflowId": {
-          "__rl": true,
-          "value": "HMGqPBgK7ERcmECt",
-          "mode": "list",
-          "cachedResultUrl": "/workflow/HMGqPBgK7ERcmECt",
-          "cachedResultName": "Embedding"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {},
-          "matchingColumns": [],
-          "schema": [],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": false
-        }
+        "jsCode": "const rawOutput = $input.first().json.output;\n\n// Deze regex zoekt de eerste '{' en pakt alles tot de laatste '}'\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n\nif (!jsonMatch) {\n  throw new Error(\"Geen geldige JSON gevonden in de output\");\n}\n\nconst cleanJson = jsonMatch[0];\nreturn JSON.parse(cleanJson);"
       },
-      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-      "typeVersion": 2.2,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
-        96,
-        128
+        -1264,
+        -800
       ],
-      "id": "f753172c-d4ff-48a1-a2bf-ced84a662464",
-      "name": "Call 'Embedding'"
+      "id": "d6076181-4c98-4729-83d4-d6f326910141",
+      "name": "Code in JavaScript"
     },
     {
       "parameters": {
+        "operation": "update",
+        "tableId": "Flextender",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "link",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop Over Items').item.json.link }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ \"NO GO - Verloning te laag \"}}"
+            },
+            {
+              "fieldId": "analyze",
+              "fieldValue": "={{ $json.reden || \"Verloning te laag\"}}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Text opkuisen + Details').item.json.title }}"
+            },
+            {
+              "fieldId": "FTE's",
+              "fieldValue": "={{ $('Text opkuisen + Details').item.json.secties.aantal_professionals }}"
+            },
+            {
+              "fieldId": "verloning",
+              "fieldValue": "={{ $json.uurloon }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1664,
+        -336
+      ],
+      "id": "eec87566-20a9-48f9-8578-86f8eb9051cc",
+      "name": "Update a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f3ff865-372a-4247-99ca-d6a2a6b48b22",
+              "name": "uurloon",
+              "value": "={{ $json.output.uurloon - $json.output.fee - 100}}",
+              "type": "number"
+            }
+          ]
+        },
         "options": {}
       },
-      "type": "n8n-nodes-base.respondToWebhook",
-      "typeVersion": 1.5,
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        304,
-        -48
+        -2048,
+        -784
       ],
-      "id": "7b260417-ae96-4912-83f5-123d546da1bc",
-      "name": "Respond to Webhook"
+      "id": "f86e14fa-afbe-46fb-bdf3-c20a1dc8657a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"uurloon\": \"gain\",\n\"fee\": \"fee\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -2160,
+        -480
+      ],
+      "id": "42773a8d-e8e9-40c1-a8f4-c39f53e57691",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8a998836-3107-40c6-8896-cd2af1e8d140",
+              "leftValue": "={{ $json.uurloon }}",
+              "rightValue": 25,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1840,
+        -784
+      ],
+      "id": "8433936f-343f-46c9-af24-e05125d65fd2",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Flextender",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "link",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop Over Items').item.json.link }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.status }} - {{ $json.classification }}"
+            },
+            {
+              "fieldId": "analyze",
+              "fieldValue": "={{ $json.final_reason }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Text opkuisen + Details').item.json.title }}"
+            },
+            {
+              "fieldId": "FTE's",
+              "fieldValue": "={{ $('Text opkuisen + Details').item.json.secties.aantal_professionals }}"
+            },
+            {
+              "fieldId": "verloning",
+              "fieldValue": "={{ $('Edit Fields').item.json.uurloon }}"
+            },
+            {
+              "fieldId": "reden autonomue",
+              "fieldValue": "={{ $json.reasoning.why_autonomy }}"
+            },
+            {
+              "fieldId": "reden inhoud",
+              "fieldValue": "={{ $json.reasoning.why_content }}"
+            },
+            {
+              "fieldId": "reden classificatie",
+              "fieldValue": "={{ $json.reasoning.classification_reason }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -944,
+        -320
+      ],
+      "id": "831b2043-077c-4d3a-84fd-464b5753b6bf",
+      "name": "Update a row1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "27b5b4c0-11a6-4279-af06-ea74d1bae865",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "=GO",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "4f42d0be-376b-4d5b-9f28-0ff9df2023fe",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "TWIJFEL",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1088,
+        -800
+      ],
+      "id": "2e33f6fc-d946-4417-857d-f68ce2fc8f70",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "Flextender",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "link",
+              "condition": "eq",
+              "keyValue": "={{ $('Loop Over Items').item.json.link }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.conclusie }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Text opkuisen + Details').item.json.title }}"
+            },
+            {
+              "fieldId": "FTE's",
+              "fieldValue": "={{ $('Text opkuisen + Details').item.json.secties.aantal_professionals }}"
+            },
+            {
+              "fieldId": "verloning",
+              "fieldValue": "={{ $('Edit Fields').item.json.uurloon }}"
+            },
+            {
+              "fieldId": "fit",
+              "fieldValue": "={{ $json.scores.fit }}"
+            },
+            {
+              "fieldId": "fun",
+              "fieldValue": "={{ $json.scores.fun }}"
+            },
+            {
+              "fieldId": "winstkans",
+              "fieldValue": "={{ $json.scores.winkans }}"
+            },
+            {
+              "fieldId": "win",
+              "fieldValue": "={{ $json.scores.winstkans }}"
+            },
+            {
+              "fieldId": "inspnning",
+              "fieldValue": "={{ $json.scores.inspanning }}"
+            },
+            {
+              "fieldId": "fit analyse",
+              "fieldValue": "={{ $json.analyse.fit }}"
+            },
+            {
+              "fieldId": "fun analyse",
+              "fieldValue": "={{ $json.analyse.fun }}"
+            },
+            {
+              "fieldId": "win analyse",
+              "fieldValue": "={{ $json.analyse.winkans }}"
+            },
+            {
+              "fieldId": "winstkans analyse",
+              "fieldValue": "={{ $json.analyse.winstkans }}"
+            },
+            {
+              "fieldId": "risico",
+              "fieldValue": "={{ $json.analyse.risico }}"
+            },
+            {
+              "fieldId": "achterliggende vraag",
+              "fieldValue": "={{ $json.strategisch_inzicht.achterliggende_vraag }}"
+            },
+            {
+              "fieldId": "alternatief voorstel",
+              "fieldValue": "={{ $json.strategisch_inzicht.alternatief_voorstel }}"
+            },
+            {
+              "fieldId": "toegang tot klant",
+              "fieldValue": "={{ $json.strategisch_inzicht.toegang_tot_klant }}"
+            },
+            {
+              "fieldId": "team suggestie",
+              "fieldValue": "={{ $json.team_suggestie }}"
+            },
+            {
+              "fieldId": "vervolgstappem",
+              "fieldValue": "={{ $json.vervolgstappen }}"
+            },
+            {
+              "fieldId": "samenvatting",
+              "fieldValue": "={{ $json.samenvatting }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -368
+      ],
+      "id": "371231b3-cf77-4420-9212-e1fd186866fc",
+      "name": "Update a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1600,
+        -608
+      ],
+      "id": "e533b940-9663-4dee-85f6-54368bb4b327",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -864,
+        -640
+      ],
+      "id": "a30631ea-e7dc-49fb-9db3-770f1c876999",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawOutput = $input.first().json.output;\n\n// Zoek de JSON\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\nif (!jsonMatch) {\n  throw new Error(\"Geen geldige JSON gevonden in de output\");\n}\n\nconst cleanJson = jsonMatch[0];\nconst parsed = JSON.parse(cleanJson);\n\n// Converteer samenvatting array naar string met bullet points\nif (parsed.samenvatting && Array.isArray(parsed.samenvatting)) {\n  parsed.samenvatting = parsed.samenvatting.map(bullet => `• ${bullet}`).join('\\n');\n}\n\nreturn parsed;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -528,
+        -816
+      ],
+      "id": "88dc3363-0c8c-4b83-8e63-91dc013848b9",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=je taak bestaat uit het analyseren van teksten\n\n1.\n\ninput:{{ $json.secties.Functieschaal }}\nof\n{{ $json.secties.vereisten }}\nof {{ $json.formatted_text_voor_ai }} en {{ $json.secties.gunningscriteria }}(deze enkel gebruiken als er geen uur-tarief od tarief-schaal te vinden is in de eeerste 2)\n\n- Indien er er maximum uurbedrag vermeld is, dan output je dit bedrag als 'gain'\n\n- Indien er enkel een schaal gegeven wordt, dan bekijk je het nummer van de schaal en geef er een bedrag aan volgens volgende criteria:\nschaal 9 -> 90\nschaal 10 -> 105\nschaal 11 -> 115\nschaal 12 -> 135\nschaal 13 -> 148\nschaal 14 -> 160\nen output dit als 'gain'\n\nAls je nergens een maximum uurloon vindt, of er is geen schaal opgegeven, dan is 'gain' gelijk aan 9999. Maar enkel en alleen in het geval er geen maximum uurloon of schaal gevonden is\n\n2. haal uit {{ $json.secties.Fee_Flextender }} hoeveel euro fee er gevraagd wordt per uur en ouput deze als 'fee'\n\n\n\nOutput uitsluitend de rauwe JSON. Begin direct met { en eindig met }. Gebruik geen markdown formatting (dus geen ```json), geen verklarende tekst en geen omhullende objecten.\n\n{\n\"uurloon\": 12345,\n\"fee\": 12.34\n}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -2352,
+        -784
+      ],
+      "id": "a0e44093-935c-4a07-adc3-c09334750bcb",
+      "name": "Check voor verloning"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=dit is de inkomende tekst die je moet ontleden\n{{ $('Text opkuisen + Details').item.json.formatted_text_voor_ai }}",
+        "options": {
+          "systemMessage": "Rol: Je bent 'De VAR', de strategische auditor van adviesbureau De Selectie.\n\nJouw taak is uitsluitend: bepalen of een opdracht NO GO, GO of TWIJFEL is.\n\nJe bent een GATEKEEPER systeem:\n- je optimaliseert voor het voorkomen van verkeerde GO’s\n- interpretatie is toegestaan, maar beslissing is strikt gereguleerd\n\nJe werkt in 3 lagen:\n1. Semantische interpretatie (begrijpen wat de rol echt is)\n2. Veto detectie (uitsluiting op basis van inhoud)\n3. Beslissingslogica (deterministisch)\n\n**LET OP: Autonomie (zoals 'direct leiding en toezicht') wordt NIET in Agent 1 beoordeeld. Dit signaal gaat naar Agent 2 voor een notitie en eventuele penalty.**\n\n---\n\n# =========================\n# LAYER 1 — SEMANTISCHE INTERPRETATIE\n# =========================\n\nLees de opdracht en bepaal eerst het type werk:\n\nCLASSIFICATIE:\n\nA. STRATEGISCH / ADVISEREND\n- richt zich op verandering van A → B\n- ontwerp van visie, beleid, organisatie of strategie\n- complexe stakeholder- of veranderopgave\n- ontwerpen én implementeren van nieuwe werkwijzen, structuren of governance\n\nB. ROL / INBEDDING (INTERIM / UITVOERING)\n- invulling van een functie binnen organisatie\n- meedraaien in bestaande teams of processen\n- operationele taken, casemanagement, beheer of coördinatie\n- focus op continuïteit i.p.v. verandering\n\nC. HYBRIDE\n- mix van A en B\n\n**BELANGRIJK:** \n- Een functietitel (zoals \"Beleidsadviseur\", \"Adviseur\", \"Specialist\") is NIET automatisch bepalend voor de classificatie.\n- Kijk altijd naar de inhoud van de opdracht.\n- Als de opdracht bestuurlijke advisering, herijking van visies, regionale samenwerking, of strategische beleidsontwikkeling bevat, classificeer dan als HYBRIDE of STRATEGISCH (niet als ROL).\n---\n\n# =========================\n# LAYER 2 — VETO LOGICA\n# =========================\n\n## INHOUD VETO (NO GO als TRUE)\n\nINHOUD_VETO = JA als:\n\n- de opdracht primair bestaat uit operationele uitvoering binnen bestaande processen\n- de rol gericht is op continu functioneren (beheer, casemanagement, coördinatie)\n- er geen duidelijke veranderopgave (A → B) aanwezig is\n- de output bestaat uit operationele deliverables (dossiers, registraties, beheeractiviteiten)\n\nINHOUD_VETO = NEE als:\n\n- de opdracht bestaat uit het ontwerpen EN implementeren van een nieuwe werkwijze, structuur of organisatie\n- implementatie onderdeel is van een veranderopgave (A → B)\n- de opdrachtnemer verantwoordelijk is voor inrichting, verbetering of transformatie\n\n\n\n## IMPLEMENTATIE REGEL (CRUCIAAL)\n\nImplementatie van een nieuwe structuur, werkwijze of organisatie = STRATEGISCH (en dus GEEN operationele uitvoering)\n\n**AUTONOMIE WORDT NIET IN AGENT 1 BEOORDEELD. Dit gaat naar Agent 2 voor een notitie en eventuele penalty.**\n\n---\n\n# =========================\n# DEFINITIE TWIJFEL\n# =========================\n\nTWIJFEL = wanneer:\n\n- zowel strategische als uitvoerende signalen aanwezig zijn zonder duidelijke dominantie\n- de opdracht lijkt op functievervulling maar bevat beperkte adviescomponent\n- de veranderopgave niet expliciet of zwak geformuleerd is\n- er twijfel bestaat over de classificatie\n\n---\n\n# =========================\n# LAYER 3 — BESLISLOGICA\n# =========================\n\nREGELS (HARD):\n\n1. Als INHOUD_VETO = JA → NO GO\n\n2. Als CLASSIFICATIE = STRATEGISCH en INHOUD_VETO = NEE → GO\n\n3. Als CLASSIFICATIE = HYBRIDE of er sprake is van twijfel (volgens definitie) → TWIJFEL\n\n4. In alle andere gevallen (CLASSIFICATIE = ROL en INHOUD_VETO = NEE) → NO GO (want geen strategische veranderopgave)\n\n**LET OP:** Alleen bij duidelijke strategische veranderopgave én geen inhoudelijk veto wordt GO gegeven.\n\n---\n\n# =========================\n# OUTPUT FORMAT (STRICT JSON)\n# =========================\n\n{\n  \"title\": \"\",\n  \"status\": \"GO | NO GO | TWIJFEL\",\n  \"classification\": \"STRATEGISCH | ROL | HYBRIDE\",\n  \"veto\": {\n    \"inhoud_veto\": true/false\n  },\n  \"reasoning\": {\n  \"why_content\": \"1 zin met tekstueel bewijs. **Vermeld expliciet of er een strategische veranderopgave (A→B) aanwezig is of niet.**\",\n  \"classification_reason\": \"1 zin uitleg. **Vermeld of de rol valt onder STRATEGISCH, ROL, of HYBRIDE en waarom.**\"\n},\n  \"final_reason\": \"Korte eindconclusie waarom deze status\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -1600,
+        -800
+      ],
+      "id": "d68549bb-86a6-4c2a-b4b9-4429ce25066c",
+      "name": "Inhoud / Rol Logica"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyseer de volgende data:\n\nOMSCHRIJVING:\n{{ $('Text opkuisen + Details').item.json.formatted_text_voor_ai }}\n\nVEREISTEN:\n{{ $('Text opkuisen + Details').item.json.secties.vereisten }}\n\nGUNNINGSCRITERIA:\n{{ $('Text opkuisen + Details').item.json.secties.gunningscriteria }}\n\n(winst)marge:\n{{ $('Edit Fields').item.json.uurloon }}\n\nAantal personeel nodig: {{ $('Text opkuisen + Details').item.json.secties.aantal_professionals }}\n\n",
+        "options": {
+          "systemMessage": "=Rol: Je bent 'De VAR', de strategische auditor van adviesbureau De Selectie. Jouw taak is om opdrachten te scoren en analyseren die AL door de veto-check zijn gekomen. Je doet GEEN veto-checks meer.\n\n**BELANGRIJK: Je verzint geen voorbeelden, bedrijven, of situaties die niet in de opdracht staan.**\n\n---\n\n### STAP 1: AUTONOMIE SIGNALEN (PENALTY & NOTITIE)\n\nCheck de tekst op de volgende signalen:\n\n**Autonomie-signalen (verlagen de fun-score):**\n- functionele inbedding (vaste aanwezigheid, bereikbaarheid, werkstructuren)\n- structurele samenwerking alsof het een interne medewerker is\n- zich moeten voegen naar interne processen, ritmes of evaluatiecycli\n- verplichte rapportage of directe operationele inpassing in teams\n- functievervulling i.p.v. externe adviesrol\n- LETTERLIJKE zin \"direct leiding en toezicht\" (ook in uitvoeringsvoorwaarde)\n\n**Regel:**\n- Tel het aantal aanwezige signalen (max 3)\n- Verlaag de `fun` score met **0,5 punt per signaal** (in plaats van 1) - max -1,5\n- Voeg in `samenvatting` een bullet toe: \"Let op: opdracht bevat autonomie-signalen ([korte samenvatting])\"\n\n**Dit is een signaal, geen veto.** De opdracht kan nog steeds interessant zijn.\n\n---\n\n### STAP 2: SCORING\n\n**Fit (1-10):** \n- Scoor 8-10 voor strategische 'Van-A-naar-B' veranderopgaven\n- Scoor 6-7 voor strategische opdrachten met een uitvoerende functietitel (bv. projectleider) maar strategische inhoud\n- Scoor 5 voor opdrachten met een mix van strategie en uitvoering\n- Scoor 1-4 voor puur uitvoerende rollen\n\nExtra pluspunten voor Fit:\n- Opdracht vereist integrale blik (meerdere disciplines/afdelingen) → +1\n- Opdracht heeft duidelijke participatie-/stakeholdercomponent → +1\n\n**LET OP: Een functietitel als 'projectleider' maakt de opdracht niet automatisch uitvoerend. Kijk naar de inhoud.**\n\n**Fun (1-10):** Hoe leuk is deze opdracht voor De Selectie?\n\nStart met een basis-score (0-10). Pas daarna correcties toe:\n\nPluspunten (verhogen score):\n- Fixed fee of resultaatverplichting\n- Strategie of plan maken (ipv uitvoering)\n- Complexe veranderopgave met stakeholders\n- Maatschappelijk relevant vraagstuk\n- Participatie of omgevingsmanagement\n- Integrale vraagstukken (meerdere domeinen)\n- Praktische, no-nonsense aanpak mogelijk\n\nMinpunten (verlagen score):\n- Interim-opdracht of inhuuropdracht (DAS)\n- Uitvoeringsklus\n- Uurtje-factuurtje\n- Vooraf bepaalde processen en uitkomsten\n- Papieren werkelijkheid (alleen rapporten, geen actie)\n- Buzzwords en blabla zonder concrete betekenis\n- **Autonomie-signalen → -1 per signaal (max -3) - toegepast in STAP 1**\n\n**Winkans (1-10):** Hoe groot is de kans dat we winnen?\n\nFactoren die winkans VERHOGEN:\n- Gunningscriteria wegen kwaliteit zwaarder dan prijs (>50%)\n- Wij voldoen aan alle knock-outcriteria\n- Ruimte voor eigen visie/aanpak\n\nFactoren die winkans VERLAGEN:\n- Knock-outcriteria waar we niet aan voldoen\n- 80-100% van punten op specifieke jaren ervaring → maximale winkans = 5\n- Prijs weegt zwaar (>40%)\n- Uurtarief doorslaggevend bij gelijke score\n\n**Winstkans (1-10) - HARD: gebruik de meegegeven marge**\n\n(winst)marge:\n{{ $('Edit Fields').item.json.uurloon }} \nGebruik **uitsluitend** dat bedrag. Je rekent zelf niets uit.\n\nPas de tabel toe:\n\n| Marge bereik | Score |\n|--------------|-------|\n| Marge > €50 | 10 |\n| Marge €40 - €50 | 7 |\n| Marge €30 - €40 | 4 |\n| Marge < €30 | 1 |\n\n**VOORBEELD:** Marge = €25 → valt in `< €30` → score = 1  \n**VOORBEELD:** Marge = €35 → valt in `€30-€40` → score = 4  \n**VOORBEELD:** Marge = €45 → valt in `€40-€50` → score = 7  \n**VOORBEELD:** Marge = €55 → valt in `> €50` → score = 10\n\nJE MAG HIER NIET VAN AFWIJKEN.\nZet de score in `scores.winstkans` en herhaal de score in `analyse.winstkans` als volgt:  \n`\"Marge = €X → score Y (categorie ...)\"`\n\n**Inspanning (1-10):** Hoeveel werk zit er in de offerte?\nHoe absurder de eisen, hoe lager de score\n- Score 8-10: Weinig eisen (alleen CV, korte motivatie, 1 gespreksronde)\n- Score 5-7: Gemiddelde eisen (CV + vragenlijst, 2-3 gespreksrondes)\n- Score 1-4: Veel eisen (uitgebreid plan van aanpak, 4+ gespreksrondes, veel documentatie)\n\n**LET OP: Een hoge score is gunstig (weinig inspanning). Een lage score is ongunstig (veel inspanning).**\n\n---\n\n### STAP 3: SAMENVATTING\n\n**LET OP: VERZIN NIETS.** Gebruik alleen wat letterlijk in de tekst staat.\n\nGenereer 3-5 korte bullets:\n1. Het belangrijkste doel van de opdracht\n2. De belangrijkste werkzaamheden\n3. **Alleen als er letterlijk \"geen hiërarchische aansturing\", \"zelfstandige uitvoering\" of \"niet ingebed in lijnorganisatie\" staat:** \"Zelfstandige uitvoering, geen hiërarchische aansturing\"\n4. **Alleen als er letterlijk \"direct leiding en toezicht\" staat:** \"Let op: werkt onder direct leiding en toezicht\"\n5. **VERPLICHT:** Als `Aantal personeel nodig` = 1: \"Opdracht vraagt om 1 persoon\"\n\n**Verboden:** Zelf dingen verzinnen of toevoegen die niet in de tekst staan.\n\n**VOORBEELD van goede samenvatting:**\n- Oprichten en aansturen van een nieuwe werkgroep die zich bezig houdt met de renovatie van het historisch centrum.\n- opstarten, coördineren, begeleiden en stimuleren van projecten, adviseren en voorbereiden van de stuurgroep\n- Zelfstandige uitvoering, geen hiërarchische aansturing\n- Opdracht vraagt om 1 persoon\n---\n\n### STAP 4: STRATEGISCHE ADVIEZEN\n\nBeantwoord in de JSON onder \"strategisch_inzicht\" de volgende drie vragen:\n- **achterliggende_vraag:** Zit er een fundamenteler probleem achter deze opdracht? (Geen verzinsels, baseer op tekst)\n\n**alternatief_voorstel:** \n- Alleen invullen als er een **echt** beter voorstel mogelijk is op basis van de tekst.\n- Standaard \"fixed fee\" is geen goed alternatief. Denk aan:\n  - Een bredere scope dan gevraagd (bv. team i.p.v. 1 persoon)\n  - Een andere fasering (bv. eerst analyse, dan uitvoering)\n  - Een combinatie met andere expertises (bv. participatie toevoegen)\n- Als er geen beter voorstel mogelijk is, zet dan \"Geen\"\n\n**toegang_tot_klant:** \n- Is de opdrachtgever strategisch interessant? Is de opdrachtgever toegankelijk? ...(Waarom wel/niet)\n\n---\n\n### STAP 5: CONCLUSIE-LOGICA\n**REGEL 1:** Fit-score ≤ 4 → NO-GO\n**REGEL 2 (Gewogen gemiddelde):** \nGebruik de volgende formule:\n`gewogen_gemiddelde = (fit × 2 + fun × 2 + winkans × 2 + inspanning × 2 + winstkans × 1) / 9`\n\n**LET OP:** \n- fit, fun, winkans, inspanning tellen **dubbel** (gewicht 2)\n- winstkans telt **enkel** (gewicht 1)\n\n**REGEL 3:** \n- Als gewogen_gemiddelde ≥ 6 EN winkans ≥ 5 → GO\n- Als gewogen_gemiddelde 4-5 → TWIJFEL\n- Als gewogen_gemiddelde < 4 → NO-GO\n\n---\n### STAP 5: Vervolgstappen\n**vervolgstappen:** \nGenereer een **concrete actie** op basis van de conclusie en de inhoud van de opdracht.\n\n- **Bij GO:** \n  - \"Check beschikbaarheid van kandidaat met [specifieke ervaring uit de opdracht]\"\n  - \"Bereid offerte voor met focus op [specifiek thema uit de opdracht]\"\n  - \"Stel tijdens vragenronde (voor [datum]) vraag over [specifiek onderwerp]\"\n\n- **Bij TWIJFEL:** \n  - \"Overweeg offerte, maar weeg af of [specifiek risico] acceptabel is\"\n  - \"Check of er een kandidaat beschikbaar is met [specifieke ervaring]\"\n\n- **Bij NO-GO:** \n  - \"Niet doen\"\n\n**Voorbeeld:** \n- \"Check beschikbaarheid van kandidaat met ervaring in regiodeal en gebiedsontwikkeling\"\n- \"Bereid offerte voor met focus op de integrale aanpak van natuur en landschap\"\n\n### STAP 7: OUTPUT\n\n```json\n{\n  \"title\": \"Functietitel\",\n  \"samenvatting\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\", \"Bullet 4\"],\n  \"scores\": {\n    \"fit\": 0,\n    \"fun\": 0,\n    \"winkans\": 0,\n    \"winstkans\": 0,\n    \"inspanning\": 0\n  },\n  \"analyse\": {\n    \"fit\": \"Uitleg waarom deze fit-score (incl. integrale blik, participatie)\",\n    \"fun\": \"Uitleg waarom deze fun-score (incl. autonomie-penalty, no-nonsense, fixed fee, etc.)\",\n    \"winkans\": \"Uitleg over winkans (o.b.v. gunningscriteria en ervaringseisen)\",\n    \"winstkans\": \"Marge = €X → score Y (categorie ...)\",\n    \"risico\": \"Grootste risico van deze opdracht\"\n  },\n  \"conclusie\": \"GO | TWIJFEL | NO-GO\",\n  \"strategisch_inzicht\": {\n    \"achterliggende_vraag\": \"\",\n    \"alternatief_voorstel\": \"\",\n    \"toegang_tot_klant\": \"\"\n  },\n  \"harde_eisen\": {\n    \"deadline\": \"\",\n    \"cv_eisen\": \"\",\n    \"planning\": \"\"\n  },\n  \"vervolgstappen\": \"Korte actie (bijv. 'Bereid offerte voor' of 'Niet doen')\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -880,
+        -816
+      ],
+      "id": "913ab36d-bc1e-4ff6-b2a6-295938ec9ac6",
+      "name": "Scoring"
+    },
+    {
+      "parameters": {
+        "path": "9599026d-68ee-40ac-b328-b3118e19220a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -3168,
+        -624
+      ],
+      "id": "079d66a6-0bce-4f5b-b8f8-91c70e845c2d",
+      "name": "Webhook1",
+      "webhookId": "9599026d-68ee-40ac-b328-b3118e19220a"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Ca4LVO4q1MnAH2aA",
+          "mode": "list",
+          "cachedResultName": "De_Selectie",
+          "cachedResultUrl": "/projects/2KiFcKNLK1JyaklJ/datatables/Ca4LVO4q1MnAH2aA"
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        48,
+        48
+      ],
+      "id": "0493b4db-14b1-4a9e-9f1b-affc1036eb6a",
+      "name": "Get row(s)"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        272,
+        48
+      ],
+      "id": "16717d61-c432-4e8e-9685-0e75f5b59c6e",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=dit is de binnenkomende opdracht:\nDe Opdracht:\n{{ $('Text opkuisen + Details').item.json.secties.vereisten }}\n{{ $('Text opkuisen + Details').item.json.secties.competenties }}\n{{ $('Text opkuisen + Details').item.json.secties.planning }}\n{{ $('Text opkuisen + Details').item.json.formatted_text_voor_ai }}",
+        "options": {
+          "systemMessage": "=Je bent een strategische match-maker. Je krijgt een lijst met beschikbare experts en een specifieke opdracht.\n\nSTAP 1: Analyseer de Opdracht\nBepaal de 'Core Discipline' van de opdracht. Is het:\n\nExtern gericht (Omgeving, burgers, stakeholders)?\n\nMensgericht (Cultuur, gedrag, coaching, team)?\n\nProcesgericht (Strategie, financiën, structuur, contracten)?\n\nSTAP 2: \nBekijk de lijst met beschikbare Kapiteins hieronder.\n{{ $json.data.map(k => `KAPITEIN: ${k.Naam}\\nEXPERTISE: ${k.Expertise}`).join('\\n\\n---\\n\\n') }}\nsectoren waarin ze uitblinken:\n{{ $json.data.map(k => `KAPITEIN: ${k.Naam}\\nSectoren: ${k.Sectoren}`).join('\\n\\n---\\n\\n') }}\nen indien nodig, keywords:\n{{ $json.data.map(k => `KAPITEIN: ${k.Naam}\\nKeywords: ${k.Keywords}`).join('\\n\\n---\\n\\n') }}\n\n\nSTAP 3: De Match\nSelecteer de expert wiens 'Expertise' en 'Keywords' de dichtste overlap hebben met de 'Core Discipline' van de ingegeven opdracht.\n\n\nOutput Formaat (Strikt JSON):\n{\n\"gekozen_kapitein\": \"Naam\",\n\"match_score\": \"0-100\",\n\"argumentatie\": \"Leg uit in 2 zinnen waarom de expertise van deze specifieke persoon de beste match is voor de discipline van deze opdracht.\",\n\"focus_punten\": \"Wat is het belangrijkste aandachtspunt?\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        496,
+        48
+      ],
+      "id": "53ae12a8-121b-4de0-ba9a-552534a32502",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5027468830",
+        "groupId": "new_group29179",
+        "name": "={{ $('Text opkuisen + Details').item.json.title }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        48
+      ],
+      "id": "14eb87a9-50eb-4ab7-9969-662e0bc15135",
+      "name": "Create an item in a board's group",
+      "credentials": {
+        "mondayComApi": {
+          "id": "ji3snyIAdNQN5ZFf",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeColumnValue",
+        "boardId": "5027468830",
+        "itemId": "={{ $json.id }}",
+        "columnId": "project_owner",
+        "value": "{\n  \"personsAndTeams\": [\n    {\n      \"id\": \"101500997\",\n      \"kind\": \"person\"\n    }\n  ]\n}"
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1296,
+        48
+      ],
+      "id": "8026390a-7271-4e2b-b418-6e43bc3cf81e",
+      "name": "Change a column value for a board item",
+      "credentials": {
+        "mondayComApi": {
+          "id": "ji3snyIAdNQN5ZFf",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeColumnValue",
+        "boardId": "5027468830",
+        "itemId": "={{ $('Create an item in a board\\'s group').item.json.id }}",
+        "columnId": "date",
+        "value": "={\n  \"date\": \"{{ $json.date }}\"\n}"
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        1744,
+        48
+      ],
+      "id": "e2eebc05-3425-4057-86e5-d01de1fbf488",
+      "name": "Change a column value for a board item1",
+      "credentials": {
+        "mondayComApi": {
+          "id": "ji3snyIAdNQN5ZFf",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        576,
+        272
+      ],
+      "id": "c16593df-e4a5-4e47-a06d-5eea9061140e",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let rawOutput = $input.item.json.output || \"\";\n\ntry {\n  let jsonString = rawOutput;\n\n  // 1. Zoek het gedeelte tussen de eerste { en de laatste }\n  // Dit negeert alle inleidende en afsluitende tekst van de AI.\n  const jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n  \n  if (jsonMatch) {\n    jsonString = jsonMatch[0];\n  } else {\n    throw new Error(\"Geen JSON-object gevonden in de tekst.\");\n  }\n\n  // 2. Probeer de gevonden string te parsen\n  const parsed = JSON.parse(jsonString);\n\n  // 3. Geef de velden gestructureerd terug\n  return {\n    gekozen_kapitein: parsed.gekozen_kapitein,\n    match_score: parseInt(parsed.match_score) || 0,\n    argumentatie: parsed.argumentatie,\n    focus_punten: parsed.focus_punten\n  };\n\n} catch (error) {\n  // 4. Als het echt niet lukt, stuur de foutmelding terug voor debugging\n  return {\n    error: \"Parsing mislukt\",\n    fout_details: error.message,\n    ontvangen_tekst: rawOutput\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        48
+      ],
+      "id": "bb5f249e-a6df-4813-81f6-b35e4f0814f2",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Haal de datumstring op\nconst dateStr = $('Text opkuisen + Details').first().json.details.einde_inschrijfdatum; // \"7 mei 2026\"\n\n// Nederlandse maandnamen naar nummers (1-12)\nconst maanden = {\n  'januari': 1, 'februari': 2, 'maart': 3, 'april': 4, 'mei': 5, 'juni': 6,\n  'juli': 7, 'augustus': 8, 'september': 9, 'oktober': 10, 'november': 11, 'december': 12\n};\n\n// Parse \"7 mei 2026\"\nconst delen = dateStr.split(' ');\nconst dag = parseInt(delen[0], 10);\nconst maandNaam = delen[1].toLowerCase();\nconst jaar = parseInt(delen[2], 10);\nconst maand = maanden[maandNaam];\n\n// Maak Date-object (maand is 0-indexed in JS, dus -1)\nconst datum = new Date(jaar, maand - 1, dag);\n\n// Format naar YYYY-MM-DD\nconst jaarNum = datum.getFullYear();\nconst maandNum = String(datum.getMonth() + 1).padStart(2, '0');\nconst dagNum = String(datum.getDate()).padStart(2, '0');\nconst geformatteerdeDatum = `${jaarNum}-${maandNum}-${dagNum}`;\n\n// Output\nreturn [{\n  ...items[0].json,\n  date: geformatteerdeDatum\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1520,
+        48
+      ],
+      "id": "700189c3-9fad-4cf8-a7ca-b723332f37eb",
+      "name": "Code in JavaScript3"
     }
   ],
   "connections": {
-    "Webhook": {
+    "Inhoud opdracht ophalen": {
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "HTML -> Text2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML -> Text2": {
+      "main": [
+        [
+          {
+            "node": "Text opkuisen + Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text opkuisen + Details": {
+      "main": [
+        [
+          {
+            "node": "Check voor verloning",
             "type": "main",
             "index": 0
           }
@@ -129,8 +787,197 @@
       "ai_languageModel": [
         [
           {
-            "node": "AI Agent",
+            "node": "Check voor verloning",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Check voor verloning",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Inhoud / Rol Logica",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row1": {
+      "main": [
+        []
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Scoring",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update a row1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a row2": {
+      "main": [
+        [
+          {
+            "node": "Get row(s)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Inhoud / Rol Logica",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Scoring",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Update a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check voor verloning": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Inhoud / Rol Logica": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scoring": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Inhoud opdracht ophalen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s)": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
             "index": 0
           }
         ]
@@ -140,19 +987,63 @@
       "main": [
         [
           {
-            "node": "Respond to Webhook",
+            "node": "Code in JavaScript2",
             "type": "main",
             "index": 0
           }
         ]
       ]
     },
-    "Call 'Embedding'": {
-      "ai_tool": [
+    "Create an item in a board's group": {
+      "main": [
+        [
+          {
+            "node": "Change a column value for a board item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Change a column value for a board item": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
         [
           {
             "node": "AI Agent",
-            "type": "ai_tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Create an item in a board's group",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript3": {
+      "main": [
+        [
+          {
+            "node": "Change a column value for a board item1",
+            "type": "main",
             "index": 0
           }
         ]
@@ -167,9 +1058,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "bfcaa778-17c8-446a-a98b-2b2a8062b7d1",
-  "activeVersionId": "e7924a66-cad2-4788-9087-32eb15f3dc1c",
-  "versionCounter": 65,
+  "versionId": "386caea2-b5b8-4603-8961-9e468b2ad33a",
+  "activeVersionId": null,
+  "versionCounter": 83,
   "triggerCount": 1,
   "shared": [
     {
@@ -198,170 +1089,5 @@
       "name": "YouTube"
     }
   ],
-  "activeVersion": {
-    "updatedAt": "2026-04-19T08:53:32.813Z",
-    "createdAt": "2026-04-19T08:52:56.173Z",
-    "versionId": "e7924a66-cad2-4788-9087-32eb15f3dc1c",
-    "workflowId": "Uel6mK9kd4LRVbGy",
-    "nodes": [
-      {
-        "parameters": {
-          "httpMethod": "POST",
-          "path": "e9540b81-85b8-420a-b995-c6043c4893f6",
-          "authentication": "basicAuth",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.webhook",
-        "typeVersion": 2.1,
-        "position": [
-          -288,
-          -48
-        ],
-        "id": "ba47b188-66f9-46f1-befa-1148681fc4d3",
-        "name": "Webhook",
-        "webhookId": "e9540b81-85b8-420a-b995-c6043c4893f6",
-        "credentials": {
-          "httpBasicAuth": {
-            "id": "lWnGLr7qEaDKPAnW",
-            "name": "Unnamed credential"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "hello",
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 3.1,
-        "position": [
-          -48,
-          -48
-        ],
-        "id": "ea55841f-6305-4190-862f-0640ec97a897",
-        "name": "AI Agent"
-      },
-      {
-        "parameters": {
-          "model": {
-            "__rl": true,
-            "value": "gpt-4o-mini",
-            "mode": "list",
-            "cachedResultName": "gpt-4o-mini"
-          },
-          "builtInTools": {},
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-        "typeVersion": 1.3,
-        "position": [
-          -80,
-          128
-        ],
-        "id": "a60b4cfd-c8b8-48c0-8045-f8377babd2c6",
-        "name": "OpenAI Chat Model",
-        "credentials": {
-          "openAiApi": {
-            "id": "TVzP9p8nOtsqZFLa",
-            "name": "OpenAi account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "description": "use this tool",
-          "workflowId": {
-            "__rl": true,
-            "value": "sIozdGRq5siA705z",
-            "mode": "list",
-            "cachedResultUrl": "/workflow/sIozdGRq5siA705z",
-            "cachedResultName": "parallel_subworkflow"
-          },
-          "workflowInputs": {
-            "mappingMode": "defineBelow",
-            "value": {},
-            "matchingColumns": [
-              "Name"
-            ],
-            "schema": [
-              {
-                "id": "Name",
-                "displayName": "Name",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "canBeUsedToMatch": true,
-                "removed": false
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
-        "typeVersion": 2.2,
-        "position": [
-          112,
-          128
-        ],
-        "id": "f753172c-d4ff-48a1-a2bf-ced84a662464",
-        "name": "Call 'parallel_subworkflow'"
-      }
-    ],
-    "connections": {
-      "Webhook": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "OpenAI Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Call 'parallel_subworkflow'": {
-        "ai_tool": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "AI Agent": {
-        "main": [
-          []
-        ]
-      }
-    },
-    "authors": "peter aistralis",
-    "name": "Version e7924a66",
-    "description": "",
-    "autosaved": true,
-    "workflowPublishHistory": [
-      {
-        "createdAt": "2026-04-19T08:53:32.802Z",
-        "id": 545,
-        "workflowId": "Uel6mK9kd4LRVbGy",
-        "versionId": "e7924a66-cad2-4788-9087-32eb15f3dc1c",
-        "event": "activated",
-        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
-      }
-    ]
-  }
+  "activeVersion": null
 }
