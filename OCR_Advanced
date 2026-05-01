@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-03-01T07:51:58.845Z",
+  "updatedAt": "2026-05-01T13:09:02.600Z",
   "createdAt": "2026-02-19T07:56:12.781Z",
   "id": "oRF3tz6U0TcimYnt",
   "name": "OCR_Advanced",
@@ -12,10 +12,10 @@
         "operation": "download",
         "fileId": {
           "__rl": true,
-          "value": "15HMJFVbMREJOETe-g9xSjP9R5tZBvPw0",
+          "value": "1WsJ33ixEOlrfwYRaY3rbNYaFd46Oskdm",
           "mode": "list",
-          "cachedResultName": "My_writing.jpeg",
-          "cachedResultUrl": "https://drive.google.com/file/d/15HMJFVbMREJOETe-g9xSjP9R5tZBvPw0/view?usp=drivesdk"
+          "cachedResultName": "test_1.jpeg",
+          "cachedResultUrl": "https://drive.google.com/file/d/1WsJ33ixEOlrfwYRaY3rbNYaFd46Oskdm/view?usp=drivesdk"
         },
         "options": {}
       },
@@ -321,19 +321,12 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "staticData": null,
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "When clicking ‘Execute workflow’": [
-      {
-        "json": {}
-      }
-    ]
-  },
-  "versionId": "a98e9ced-9cd6-4507-9700-13597daac08c",
-  "versionCounter": 28,
+  "versionId": "f5562ca0-b294-48ee-81cf-a10cdaf60f82",
+  "activeVersionId": null,
+  "versionCounter": 29,
   "triggerCount": 0,
   "shared": [
     {
@@ -350,45 +343,7 @@
         "type": "personal",
         "icon": null,
         "description": null,
-        "projectRelations": [
-          {
-            "updatedAt": "2025-07-05T04:34:00.267Z",
-            "createdAt": "2025-07-05T04:34:00.267Z",
-            "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
-            "projectId": "2KiFcKNLK1JyaklJ",
-            "user": {
-              "updatedAt": "2026-03-02T00:00:12.439Z",
-              "createdAt": "2025-07-05T04:33:38.764Z",
-              "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
-              "email": "peterjawel@gmail.com",
-              "firstName": "peter",
-              "lastName": "aistralis",
-              "personalizationAnswers": {
-                "version": "v4",
-                "personalization_survey_submitted_at": "2025-07-05T04:35:25.871Z",
-                "personalization_survey_n8n_version": "1.100.1",
-                "companySize": "<20",
-                "companyType": "saas",
-                "role": "business-owner",
-                "reportedSource": "youtube"
-              },
-              "settings": {
-                "userActivated": true,
-                "easyAIWorkflowOnboarded": true,
-                "firstSuccessfulWorkflowId": "FAkXhJwuAslD2JDu",
-                "userActivatedAt": 1751716484498,
-                "npsSurvey": {
-                  "responded": true,
-                  "lastShownAt": 1769850829423
-                }
-              },
-              "disabled": false,
-              "mfaEnabled": false,
-              "lastActiveAt": "2026-03-01",
-              "isPending": false
-            }
-          }
-        ]
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
     }
   ],
@@ -399,5 +354,6 @@
       "id": "94UYKbs3nzwYCJqO",
       "name": "YouTube"
     }
-  ]
+  ],
+  "activeVersion": null
 }
