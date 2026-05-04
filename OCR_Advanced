@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-01T13:09:02.600Z",
+  "updatedAt": "2026-05-03T09:30:03.787Z",
   "createdAt": "2026-02-19T07:56:12.781Z",
   "id": "oRF3tz6U0TcimYnt",
   "name": "OCR_Advanced",
@@ -140,8 +140,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        752,
-        160
+        832,
+        0
       ],
       "id": "bf014df8-98fd-4f2f-8f50-a27f5bf06430",
       "name": "Append row in sheet",
@@ -179,8 +179,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
       "position": [
-        688,
-        -32
+        656,
+        -16
       ],
       "id": "0bf4bafc-4caa-461c-b9df-715b80e70e01",
       "name": "If"
@@ -286,13 +286,7 @@
     "If": {
       "main": [
         [],
-        [
-          {
-            "node": "Append row in sheet",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "Append row in sheet": {
@@ -324,9 +318,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "f5562ca0-b294-48ee-81cf-a10cdaf60f82",
+  "versionId": "81f8f1a8-de72-4445-9829-7671d7f0d5c5",
   "activeVersionId": null,
-  "versionCounter": 29,
+  "versionCounter": 33,
   "triggerCount": 0,
   "shared": [
     {
