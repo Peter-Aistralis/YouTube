@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-14T14:11:21.426Z",
+  "updatedAt": "2026-05-14T17:04:17.413Z",
   "createdAt": "2026-05-12T02:22:26.186Z",
   "id": "SFOtlDfpLhwqIgDk",
   "name": "Staffing_Consulting",
@@ -732,6 +732,32 @@
           "name": "Monday.com account"
         }
       }
+    },
+    {
+      "parameters": {
+        "tool": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "parameters": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClient",
+      "typeVersion": 1,
+      "position": [
+        624,
+        1008
+      ],
+      "id": "73251524-c406-47ba-9f07-9c2aca1c0fbd",
+      "name": "MCP Client"
     }
   ],
   "connections": {
@@ -1045,6 +1071,17 @@
           }
         ]
       ]
+    },
+    "Create a row3": {
+      "main": [
+        [
+          {
+            "node": "MCP Client",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1055,9 +1092,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "e713b4a8-887c-49de-9a8c-4ee021dbb311",
+  "versionId": "31df28d0-7afb-4c5b-9876-969d62dbc85b",
   "activeVersionId": null,
-  "versionCounter": 346,
+  "versionCounter": 347,
   "triggerCount": 0,
   "shared": [
     {
