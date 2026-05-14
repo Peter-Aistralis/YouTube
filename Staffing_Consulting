@@ -1,0 +1,1090 @@
+{
+  "updatedAt": "2026-05-14T14:11:21.426Z",
+  "createdAt": "2026-05-12T02:22:26.186Z",
+  "id": "SFOtlDfpLhwqIgDk",
+  "name": "Staffing_Consulting",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d02cc1ea-5ce1-471c-8616-74455105ada7",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -880,
+        80
+      ],
+      "id": "198385a4-589f-447f-9a21-918ff5ca79cc",
+      "name": "Inkomende mails",
+      "webhookId": "d02cc1ea-5ce1-471c-8616-74455105ada7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5b68719b-677a-4a8b-bef8-00af76311e96",
+              "name": "From",
+              "value": "={{ $json.body.from }}",
+              "type": "string"
+            },
+            {
+              "id": "3f3a7038-a0ec-4847-96f7-53286177dd40",
+              "name": "Title",
+              "value": "={{ $json.body.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "dc9e3477-18f4-4491-80ac-8251ffaa4af7",
+              "name": "Body",
+              "value": "={{ $json.body.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -704,
+        80
+      ],
+      "id": "29b6d0c2-b7ee-449c-a231-de285b7a416e",
+      "name": "Extract Data"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "dataPropertyName": "Body",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "Clean_text",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        80
+      ],
+      "id": "2bfef00e-4b5f-42cc-a278-3422c6ad569b",
+      "name": "HTML -> Text"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "ee4f63fb-2ac4-4c61-9df3-18517b2208a1",
+              "leftValue": "={{ $json.Opdracht_URL }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -80,
+        80
+      ],
+      "id": "502690b6-0a51-449d-98a1-974298d132fe",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "opgekuist",
+              "cssSelector": "body"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        336,
+        64
+      ],
+      "id": "c4ed40ef-c460-4264-8b77-590f4a2dbfc5",
+      "name": "HTML -> Text2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        640
+      ],
+      "id": "63854d1b-158b-4b77-b4eb-9d052c076952",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawOutput = $input.first().json.output;\n\n// Deze regex zoekt de eerste '{' en pakt alles tot de laatste '}'\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n\nif (!jsonMatch) {\n  throw new Error(\"Geen geldige JSON gevonden in de output\");\n}\n\nconst cleanJson = jsonMatch[0];\nreturn JSON.parse(cleanJson);"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -16,
+        384
+      ],
+      "id": "e99b976a-9be4-421b-8a09-2c7a4bdb8165",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8f3ff865-372a-4247-99ca-d6a2a6b48b22",
+              "name": "per_hour",
+              "value": "={{ $json.output.hourly - $json.output.fee - 100}}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {
+          "ignoreConversionErrors": true
+        }
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -704,
+        400
+      ],
+      "id": "79c25602-b1e7-40dd-993a-4cb553450f7a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"hourly\": \"gain\",\n\"fee\": \"fee\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -816,
+        624
+      ],
+      "id": "e7c19fd3-ae4e-46c9-a819-5d5d3fcf7dd9",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "27b5b4c0-11a6-4279-af06-ea74d1bae865",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "=GO",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "4f42d0be-376b-4d5b-9f28-0ff9df2023fe",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "TWIJFEL",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        160,
+        384
+      ],
+      "id": "efbaf6b1-c28a-465b-9a55-c1bb2935f3f0",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -368,
+        624
+      ],
+      "id": "68d6ef42-efa7-4e86-89fc-1bc552c376ca",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        624
+      ],
+      "id": "869e7cb5-0ced-42d9-abc6-29c8d479346f",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawOutput = $input.first().json.output;\n\n// Zoek de JSON\nconst jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\nif (!jsonMatch) {\n  throw new Error(\"Geen geldige JSON gevonden in de output\");\n}\n\nconst cleanJson = jsonMatch[0];\nconst parsed = JSON.parse(cleanJson);\n\n// Converteer samenvatting array naar string met bullet points\nif (parsed.samenvatting && Array.isArray(parsed.samenvatting)) {\n  parsed.samenvatting = parsed.samenvatting.map(bullet => `• ${bullet}`).join('\\n');\n}\n\nreturn parsed;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        368
+      ],
+      "id": "9b127942-226e-440b-9bc9-2b584a6501b4",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze following data:\n\nDescription:\n{{ $('Clean Text + Details').item.json.formatted_text_voor_ai }}\n\nNeeded:\n{{ $('Clean Text + Details').item.json.secties.vereisten }}\n\nRequirements:\n{{ $('Clean Text + Details').item.json.secties.gunningscriteria }}\n\n(profit)margin:\n{{ $('Edit Fields').item.json.per_hour }}\n\nPeople Needed: {{ $('Clean Text + Details').item.json.secties.aantal_professionals }}\n\n",
+        "options": {
+          "systemMessage": "=This one too:Role: You are 'The Referee', the strategic auditor of consultancy firm The Best Twelve. \nYour task is to score and analyze assignments that have ALREADY passed the veto check. \nYou NO LONGER perform veto checks.\nIMPORTANT: Do not invent examples, companies, or situations that are not in the assignment.\n\n----\nSTEP 1: AUTONOMY SIGNALS (PENALTY & NOTE)\n\nCheck the text for the following signals:\n*** Autonomy signals (lower the fun score) ***\n-Functional embedding (fixed presence, availability, work structures)\n- Structural collaboration as if an internal employee\n-Having to conform to internal processes, rhythms, or evaluation cycles\n-Mandatory reporting or direct operational integration into teams\n- Job fulfillment instead of an external advisory role\n- The LITERAL phrase \"direct management and supervision\" (also in execution conditions)\n\n** Rule ** \n- Count the number of signals present (max 3)\n- Decrease the fun score by 0.5 points per signal (instead of 1) - max -1.5\n- Add a bullet in the summary: \"Note: assignment contains autonomy signals ([short summary])\n\n** This is a signal, not a veto ** The assignment can still be interesting.\n\n----\nSTEP 2: SCORING\n\n** Fit (1-10): ***\n- Score 8-10 for strategic 'From-A-to-B' change assignments\n- Score 6-7 for strategic assignments with an executive job title (e.g., project leader) but strategic content\n- Score 5 for assignments with a mix of strategy and execution\n- Score 1-4 for purely executive roles\n\nExtra plus points for Fit:\n- Assignment requires an integrated perspective (multiple disciplines/departments) → +1\n- Assignment has a clear participation/stakeholder component → +1\n\n**- CRITICAL - STRATEGIC VS OPERATIONAL **:\n- If the candidate is responsible for DAILY management of employees → max fit = 5\n- If the assignment is a REPLACEMENT of an absent manager → max fit = 4\n- If more than 50% of the activities consist of \"management\", \"continuity\", \"daily steering\" → NO 8-10\n\n** NOTE: A job title like 'project leader' does not automatically make the assignment operational. Look at the content. **\n\n** Fun (1-10): How fun is this assignment for The Best Twelve?**\n\nStart with a base score (0-10). \n\nThen apply corrections:\nPlus points (increase score):\n- Fixed fee or result commitmentCreating a strategy or plan (instead of execution)\n- Complex change assignment with stakeholders\n- Socially relevant issue\n- Participation or environment management\n- Integrated issues (multiple domains)\n- Practical, no-nonsense approach possible\n\nMinus points (decrease score):\n- Interim assignment or hiring assignment (DAS)\n- Execution job\n- Hourly billing (uurtje-factuurtje)\n- Pre-determined processes and outcomes\n- \"Paper reality\" (reports only, no action)\n- Buzzwords and \"blah blah\" without concrete meaningDaily management of a team → -2\n- No room for own agenda (works within existing structure) → -1\n- Autonomy signals → -1 per signal (max -3) - applied in STEP 1\n\n** GENERAL RULE for FUN **:\nAn assignment where you act as if you are employed (fixed hours, line responsibility, functional embedding) is NEVER higher than fun = 4.\n\n** Win Chance (1-10): How likely are we to win? ***\n\nFactors that INCREASE win chance:\n- Award criteria weigh quality more heavily than price (>50%)\n- We meet all knock-out criteria\n- Room for own vision/approach\n\nFactors that DECREASE win chance:\n- Knock-out criteria that we do not meet\n- 80-100% of points on specific years of experience → maximum win chance = 5\n- Price weighs heavily (>40%)\n- Hourly rate is decisive in the event of an equal score\n\n** Profit Chance (1-10) - HARD **: \nuse the provided margin(Profit) margin:{{ $('Edit Fields').item.json.per_hour }}\nUse exclusively that amount. \nDo not calculate anything yourself.\n\nApply the table:\nMargin Range      Score\nMargin > €50      10\nMargin €40 - €50  7\nMargin €30 - €40  4\nMargin < €30      1\n\nEXAMPLE: Margin = €25 → falls into < €30 → score = 1\nEXAMPLE: Margin = €35 → falls into €30-€40 → score = 4\nEXAMPLE: Margin = €45 → falls into €40-€50 → score = 7\nEXAMPLE: Margin = €55 → falls into > €50 → score = 10\n\nYOU MUST NOT DEVIATE FROM THIS.Put the score in scores.winstkans and repeat the score in analyse.\nwinstkans as follows:\"Margin = €X → score Y (category ...)\"\n\n** Effort (1-10): How much work is involved in the proposal? ** \n\nThe more absurd the requirements, the lower the score.S\ncore 8-10: Few requirements (only CV, short motivation, 1 interview round)\nScore 5-7: Average requirements (CV + questionnaire, 2-3 interview rounds)\nScore 1-4: High requirements (extensive plan of approach, 4+ interview rounds, much documentation)\n\nNOTE: A high score is favorable (low effort). A low score is unfavorable (high effort).\n\n------\nSTEP 3: \n\n** SUMMARY ** \nNOTE: DO NOT INVENT ANYTHING. \nUse only what is literally in the text.\n\nGenerate 3-5 short bullets:\n- The main goal of the assignment\n- The main activities\n- Only if it literally states \"no hierarchical management\", \"independent execution\", or \"not embedded in line organization\": \"Independent execution, no hierarchical management\"\n- Only if it literally states \"direct management and supervision\": \"Note: works under direct management and supervision\"\n- MANDATORY: If Number of personnel needed = 1: \"Assignment requires 1 person\"\n\nForbidden: Inventing or adding things yourself that are not in the text.\n\n-----\n\nSTEP 4: \n** STRATEGIC ADVICE **\n\nIn the JSON under \"strategic_insights\", answer the following three questions:\n** achterliggende_vraag (underlying question) **: \n\nIs there a more fundamental problem behind this assignment? (No inventions, base on text)\n\n** alternatief_voorstel (alternative proposal)**:\nOnly fill this in if a genuinely better proposal is possible based on the text.\nA standard \"fixed fee\" is not a good alternative. \nThink of:A broader scope than requested (e.g., team instead of 1 person)A different phasing (e.g., analysis first, then execution)A combination with other expertise (e.g., adding participation)\nIf no better proposal is possible, put \"None\" (Geen).\n\n** toegang_tot_klant (access to client)**:\nIs the client strategically interesting? \nIs the client accessible? (Why/why not)\n\n-------\nSTEP 5: \n\n** CONCLUSION **\n\nLOGIC\nRULE 1: Fit score ≤ 4 → NO-GO\nRULE 2 (Weighted Average):Use the following formula:weighted_average = (fit × 2 + fun × 2 + win_chance × 2 + effort × 2 + profit_chance × 1) / 9\n\nNOTE:fit, fun, win_chance, effort count double (weight 2)\nprofit_chance counts once (weight 1)\n\nRULE 3:\nIf weighted_average ≥ 6 AND win_chance ≥ 5 → GOIf weighted_average 4-5 → DOUBT (TWIJFEL)If weighted_average < 4 → NO-GO\n\n------\nSTEP 6: \n\n** Next Steps (vervolgstappen) ** :\nGenerate a concrete action based on the conclusion and the content of the assignment.\n**For GO**:\n- \"Check availability of candidate with [specific experience from the assignment]\"\n- \"Prepare proposal with focus on [specific theme from the assignment]\"\n- \"Ask question during the Q&A round (before [date]) about [specific subject]\"\n\n\n** For DOUBT (TWIJFEL)**:\n- \"Consider proposal, but weigh whether [specific risk] is acceptable\"\n- \"Check if a candidate is available with [specific experience]\"\n\n** For NO-GO **:\n- \"Do not proceed\" (Niet doen)\n\n------\nSTEP 7: \nOutput should be in English\n** OUTPUT **\nJSON{\n  \"title\": \"Job Title\",\n  \"samenvatting\": [\"Bullet 1\", \"Bullet 2\", \"Bullet 3\", \"Bullet 4\"],\n  \"scores\": {\n    \"fit\": 0,\n    \"fun\": 0,\n    \"winkans\": 0,\n    \"winstkans\": 0,\n    \"inspanning\": 0\n  },\n  \"analyse\": {\n    \"fit\": \"Explanation of this fit score (incl. integrated view, participation)\",\n    \"fun\": \"Explanation of this fun score (incl. autonomy penalty, no-nonsense, fixed fee, etc.)\",\n    \"winkans\": \"Explanation of win chance (based on award criteria and experience requirements)\",\n    \"winstkans\": \"Margin = €X → score Y (category ...)\",\n    \"risico\": \"Biggest risk of this assignment\"\n  },\n  \"conclusie\": \"GO | TWIJFEL | NO-GO\",\n  \"strategic_insights\": {\n    \"achterliggende_vraag\": \"\",\n    \"alternatief_voorstel\": \"\",\n    \"toegang_tot_klant\": \"\"\n  },\n  \"harde_eisen\": {\n    \"deadline\": \"\",\n    \"cv_eisen\": \"\",\n    \"planning\": \"\"\n  },\n  \"vervolgstappen\": \"Short action (e.g., 'Prepare proposal' or 'Do not proceed')\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        352,
+        368
+      ],
+      "id": "0ca9aa00-0a50-4f0b-926a-b49094022664",
+      "name": "Scoring"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "8a998836-3107-40c6-8896-cd2af1e8d140",
+              "leftValue": "={{ $json.per_hour }}",
+              "rightValue": 25,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -528,
+        400
+      ],
+      "id": "9b43fa84-0700-4b22-b9d4-d98dae955c62",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "tableId": "visitors",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Name",
+              "fieldValue": "={{ \"NO GO - Verloning te laag \"}}"
+            },
+            {
+              "fieldId": "analyze",
+              "fieldValue": "={{ $json.reden || \"Verloning te laag\"}}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Clean Text + Details').item.json.title }}"
+            },
+            {
+              "fieldId": "FTE's",
+              "fieldValue": "={{ $('Clean Text + Details').item.json.secties.aantal_professionals }}"
+            },
+            {
+              "fieldId": "verloning",
+              "fieldValue": "={{ $json.uurloon }}"
+            },
+            {
+              "fieldId": "link",
+              "fieldValue": "={{ $('Cleaning Text + Search Link').item.json.Opdracht_URL }}"
+            },
+            {
+              "fieldId": "flextender_id",
+              "fieldValue": "={{ $('Clean Text + Details').item.json.details.aanvraagnummer }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -576,
+        624
+      ],
+      "id": "27032089-82ea-4683-b59e-2ad8ff56e64a",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "GQjFgszwAePxsdHI",
+          "name": "LeadGenration"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "Flextender",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "={{ $json.status }} - {{ $json.classification }}"
+            },
+            {
+              "fieldId": "analyze",
+              "fieldValue": "={{ $json.final_reason }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Clean Text + Details').item.json.title }}"
+            },
+            {
+              "fieldId": "FTE's",
+              "fieldValue": "={{ $('Clean Text + Details').item.json.secties.aantal_professionals }}"
+            },
+            {
+              "fieldId": "verloning",
+              "fieldValue": "={{ $('Edit Fields').item.json.uurloon }}"
+            },
+            {
+              "fieldId": "reden inhoud",
+              "fieldValue": "={{ $json.reasoning.why_content }}"
+            },
+            {
+              "fieldId": "reden classificatie",
+              "fieldValue": "={{ $json.reasoning.classification_reason }}"
+            },
+            {
+              "fieldId": "created_at",
+              "fieldValue": "={{ $now }}"
+            },
+            {
+              "fieldId": "link",
+              "fieldValue": "={{ $('Cleaning Text + Search Link').item.json.Opdracht_URL }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        32,
+        624
+      ],
+      "id": "fe54a8e4-9208-4c40-a7e6-8d486b10d74b",
+      "name": "Create a row2",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -528,
+        1200
+      ],
+      "id": "3027813d-883a-4856-a58e-59a1e32ddadd",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "TVzP9p8nOtsqZFLa",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "let rawOutput = $input.item.json.output || \"\";\n\ntry {\n  let jsonString = rawOutput;\n\n  // 1. Zoek het gedeelte tussen de eerste { en de laatste }\n  // Dit negeert alle inleidende en afsluitende tekst van de AI.\n  const jsonMatch = rawOutput.match(/\\{[\\s\\S]*\\}/);\n  \n  if (jsonMatch) {\n    jsonString = jsonMatch[0];\n  } else {\n    throw new Error(\"Geen JSON-object gevonden in de tekst.\");\n  }\n\n  // 2. Probeer de gevonden string te parsen\n  const parsed = JSON.parse(jsonString);\n\n  // 3. Geef de velden gestructureerd terug\n  return {\n    chosen_captain: parsed.chosen_captain,\n    match_score: parseInt(parsed.match_score) || 0,\n    argumentation: parsed.argumentation,\n    focus_points: parsed.focus_points\n  };\n\n} catch (error) {\n  // 4. Als het echt niet lukt, stuur de foutmelding terug voor debugging\n  return {\n    error: \"Parsing mislukt\",\n    fout_details: error.message,\n    ontvangen_tekst: rawOutput\n  };\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        1008
+      ],
+      "id": "1f9cbd10-166e-4fd7-8548-cf904a6bc1bc",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "5027468830",
+        "groupId": "new_group29179",
+        "name": "={{ $('Clean Text + Details').item.json.details.regio }} - {{ $('Clean Text + Details').item.json.title }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        32,
+        1008
+      ],
+      "id": "6669477f-5b81-4db9-848f-164bac828060",
+      "name": "Create an item in a board's group",
+      "credentials": {
+        "mondayComApi": {
+          "id": "ji3snyIAdNQN5ZFf",
+          "name": "Monday.com account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "tableId": "monday",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Code in JavaScript1').item.json.title }}"
+            },
+            {
+              "fieldId": "monday_item_id",
+              "fieldValue": "={{ $json.id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        416,
+        1008
+      ],
+      "id": "772fbf2f-0943-4abd-a8c4-70cc4dbcdc7d",
+      "name": "Create a row3",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Your task consists of analyzing texts.\n\ninput: {{ $json.secties.Functieschaal }}\nor\n{{ $json.secties.vereisten }}\nor {{ $json.formatted_text_voor_ai }} and {{ $json.secties.gunningscriteria }} (only use these if no hourly rate or salary scale can be found in the first two)\n\nIf a maximum hourly amount is mentioned, output this amount as 'gain' and proceed to step 2!\n\nIf only a scale is given, look at the scale number and assign an amount according to the following criteria:\n\nScale 8 -> 80\n\nScale 9 -> 90\n\nScale 10 -> 105\n\nScale 11 -> 115\n\nScale 12 -> 135\n\nScale 13 -> 148\n\nScale 14 -> 160\nand output this as 'gain'.\n\nIf you cannot find a maximum hourly wage anywhere, or no scale is specified, then 'gain' is equal to 9999. But only and exclusively in the case that no maximum hourly wage or scale is found.\n\nExtract from {{ $json.secties.Fee_Flextender }} how many euros of fee are requested per hour and output this as 'fee'.\n\nIf a comma is used in a number, change it to a period (example: 12,34 becomes 12.34).\n\nNOTE: If there is a maximum hourly rate that is lower than the scale indication, use the maximum hourly rate. The scale is an indication; the maximum is binding.\n\nOutput exclusively the raw JSON. Start directly with { and end with }. Do not use markdown formatting (so no ```json), no explanatory text, and no wrapping objects.\n\n{\n\"hourly\": 12345,\n\"fee\": 12.34\n}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -992,
+        400
+      ],
+      "id": "61c5b4b5-303b-4b6d-a157-4776e99d2a55",
+      "name": "Check hourly rate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=This is the incoming text you must analyze:\n{{ $('Clean Text + Details').item.json.formatted_text_voor_ai }}",
+        "options": {
+          "systemMessage": "Role: You are 'The Referee', the strategic auditor of consultancy firm The Best Twelve.\n\nYour sole task: determine whether an assignment is NO GO, GO, or DOUBT (TWIJFEL).\n\nYou are a GATEKEEPER system:\n\nYou optimize for preventing incorrect GOs.\n\nInterpretation is allowed, but the decision is strictly regulated.\n\nYou work in 3 layers:\n\nSemantic interpretation (understanding what the role truly is).\n\nVeto detection (exclusion based on content).\n\nDecision logic (deterministic).\n\nNOTE: Autonomy (such as 'direct management and supervision') is NOT assessed in Agent 1. This signal goes to Agent 2 for a note and potential penalty.\n\n=========================\nLAYER 1 — SEMANTIC INTERPRETATION\n=========================\nIMPORTANT EXCEPTION FOR CLASSIFICATION:\n\nEven if an assignment contains operational words (managing, organizing, supporting), classify it as STRATEGIC if:\n\nThe job title contains \"advisor\", \"strategic advisor\", or \"developer\" AND\n\nThe activities consist of analyzing, advising, designing, or further developing AND\n\nThe goal is improvement or transformation (e.g., Learning & Development, organizational development).\n\nRead the assignment and first determine the type of work:\n\nCLASSIFICATION:\n\nA. STRATEGIC / ADVISORY\n\nFocuses on change from A → B.\n\nDesign of vision, policy, organization, or strategy.\n\nComplex stakeholder or change assignment.\n\nDesigning and implementing new working methods, structures, or governance.\n\nAdvisory roles involving analysis/advice/design fall under this category.\n\nB. ROLE / EMBEDDING (INTERIM / EXECUTION)\n\nFilling a position within the organization.\n\nParticipating in existing teams or processes.\n\nOnly operational tasks without an advisory component.\n\nFocus on continuity instead of change.\n\n=========================\nLAYER 2 — VETO LOGIC\n=========================\nCONTENT VETO (NO GO if TRUE)\nCONTENT_VETO = YES if:\n\nThe assignment primarily consists of operational execution within existing processes.\n\nThe role is aimed at continuous functioning (management, case management, coordination).\n\nNo clear change assignment (A → B) is present.\n\nThe output consists of operational deliverables (files, registrations, management activities).\n\nThe assignment primarily consists of operational process guidance instead of strategic advice.\n\nThe role is a \"broker\", \"connector\", \"facilitator\", or \"coordinator\" without personal responsibility for policy development.\n\nThe activities consist of: maintaining oversight, signaling obstacles, creating coupling opportunities, inventorying initiatives (instead of advising on strategic choices).\n\nThe job title contains \"Area Broker\", \"Developer\", \"Process Facilitator\" (unless explicitly strategic).\n\nThe assignment is DIRECTLY a NO GO (without exception) if it contains ONE of the following:\n\n\"leading a team\" + \"daily management\"\n\n\"replacement of an absent manager\"\n\n\"continuity in management\" + \"operational steering\"\n\nFilling a job position rather than an external advisory role.\n\nCONTENT_VETO = NO if:\n\nThe assignment consists of designing AND implementing a new working method, structure, or organization.\n\nImplementation is part of a change assignment (A → B).\n\nThe contractor is responsible for setup, improvement, or transformation.\n\nIMPLEMENTATION RULE (CRITICAL)\nImplementation of a new structure, working method, or organization = STRATEGIC (and therefore NOT operational execution).\n\nAUTONOMY IS NOT ASSESSED IN AGENT 1. This goes to Agent 2 for a note and potential penalty.\n\n=========================\nDEFINITION OF DOUBT (TWIJFEL)\n=========================\nDOUBT = when:\n\nBoth strategic and executive signals are present without clear dominance.\n\nThe assignment resembles job fulfillment but contains a limited advisory component.\n\nThe change assignment is not explicit or is weakly formulated.\n\nDoubt exists regarding the classification.\n\n=========================\nLAYER 3 — DECISION LOGIC\n=========================\nRULES (HARD):\n\nIf CONTENT_VETO = YES → NO GO\n\nIf CLASSIFICATION = STRATEGIC and CONTENT_VETO = NO → GO\n\nIf CLASSIFICATION = HYBRID or there is a case of doubt (according to definition) → DOUBT (TWIJFEL)\n\nIn all other cases (CLASSIFICATION = ROLE and CONTENT_VETO = NO) → NO GO (because there is no strategic change assignment)\n\nNOTE: A GO is only given in the case of a clear strategic change assignment and no content veto.\n\n=========================\nOUTPUT FORMAT (STRICT JSON)\n=========================\nJSON\n{\n  \"title\": \"\",\n  \"status\": \"GO | NO GO | TWIJFEL\",\n  \"classification\": \"STRATEGISCH | ROL | HYBRIDE\",\n  \"veto\": {\n    \"inhoud_veto\": true/false\n  },\n  \"reasoning\": {\n    \"why_content\": \"1 sentence with textual evidence. **Explicitly state whether a strategic change assignment (A→B) is present or not.**\",\n    \"classification_reason\": \"1 sentence explanation. **State whether the role falls under STRATEGIC, ROLE, or HYBRID and why.**\"\n  },\n  \"final_reason\": \"Short final conclusion as to why this status was chosen.\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -304,
+        384
+      ],
+      "id": "8633c9e6-7709-49d9-b9c2-63d6064cc9e7",
+      "name": "Check Strategic/Autonomy"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst output = [];\n\nfor (let item of items) {\n  let text = item.json.Clean_text || \"\";\n\n  // 1. URL Extractie (Regex zoekt naar de link na de specifieke zin)\n  const urlRegex = /Reageer via deze link op de opdracht:\\s*(https?:\\/\\/[^\\s]+)/i;\n  const match = text.match(urlRegex);\n  const opdrachtUrl = match ? match[1].replace(/[.\\]]$/, '') : null;\n\n  // 2. Schoonmaken van de tekst (zoals voorheen)\n  text = text.replace(/\\[.*?\\]/g, '');\n  \n  // Verwijder headers/socials\n  const headerGarbage = [\n    /info@flextender\\.nl/gi,\n    /https:\\/\\/www\\.youtube\\.com\\/[^\\n]+/gi,\n    /https:\\/\\/www\\.linkedin\\.com\\/[^\\n]+/gi,\n    /http:\\/\\/www\\.flextender\\.nl/gi\n  ];\n  headerGarbage.forEach(regex => { text = text.replace(regex, ''); });\n\n  const labels = [\n    \"Aanvraagnummer:\", \"Functietitel:\", \"Opdrachtgever:\", \"Duur:\", \n    \"Optie tot verlenging:\", \"Uren per week:\", \"Aanvang:\", \n    \"Opleidingsniveau:\", \"Regio:\", \"Verloopt op:\"\n  ];\n\n  labels.forEach(label => {\n    const regex = new RegExp(`([^\\\\n])(${label})`, 'g');\n    text = text.replace(regex, '$1\\n$2'); \n    text = text.replace(new RegExp(`${label}\\\\s*`, 'g'), `${label} `);\n  });\n\n  // Specifieke plak-fixes\n  text = text.replace(/([a-z])(Verloopt op:)/gi, '$1\\n$2');\n  text = text.replace(/([a-z])(Uren per week:)/gi, '$1\\n$2');\n\n  // 3. Output opbouwen (Enkel de gevraagde velden)\n  output.push({\n    json: {\n      Formatted_Text: text.trim(),\n      Opdracht_URL: opdrachtUrl\n    }\n  });\n}\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -320,
+        80
+      ],
+      "id": "0e9cbc94-2b67-4806-bbc0-3d0f31e1dd93",
+      "name": "Cleaning Text + Search Link"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Cleaning Text + Search Link').item.json.Opdracht_URL }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        128,
+        64
+      ],
+      "id": "635092f4-8e18-497f-92a2-9b75b262a8b1",
+      "name": "Get Job Offer",
+      "retryOnFail": true,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst output = [];\n\nfor (let item of items) {\n  let text = item.json.opgekuist || \"\";\n\n  const postNavText = text.split(/FAQ\\s*\\[.*?\\]/i).pop() || \"\";\n  const lines = postNavText.trim().split('\\n').map(l => l.trim()).filter(l => l.length > 0);\n\n  const extract = (regex, source) => {\n    const match = source.match(regex);\n    return match ? match[1].trim() : null;\n  };\n\n  const cleanGarbage = (rawText) => {\n    let cleaned = rawText;\n    cleaned = cleaned.replace(/\\[https?:\\/\\/[^\\]]+\\]/g, '');\n    const navTerms = /Home|Opdrachten|Professionals|Zzp’ers|Leveranciers|Opdrachtgevers|Over ons|Werken bij|Diensten|Verzekeringen|Kennis|CAO wijziging|Wet DBA|Nieuws|Webinars|Contact|FAQ|Inschrijven|Login|Inloggen|Stel een vraag|Reageer op deze opdracht/gi;\n    \n    return cleaned.split('\\n')\n      .filter(line => !navTerms.test(line.trim()))\n      .filter(line => line.trim().length > 0)\n      .join('\\n');\n  };\n\n  const fullyCleanedText = cleanGarbage(text);\n\n  const extractSection = (startLabel, endLabel, source) => {\n    const regex = new RegExp(`(?:^|\\\\n)(?:${startLabel})[^\\\\n]*\\\\s*(?:\\\\n|$)([\\\\s\\\\S]*?)(?=(?:^|\\\\n)(?:${endLabel})|$)`, 'i');\n    const match = source.match(regex);\n    if (match && match[1]) {\n      return match[1].trim();\n    }\n    return null;\n  };\n\n  // ========== FALLBACK VOOR KNOCK-OUTCRITERIA (INCLUSIEF TARIEF) ==========\n  const extractKnockOutMetFallback = (source) => {\n    // Eerst proberen met standaard extractie\n    let result = extractSection(\"Vereisten / knock-outcriteria\", \"Gunningscriteria\", source);\n    if (result && result.length > 20) return result;\n    \n    // Fallback 1: zoek naar \"Uurtarief maximaal € XXX\"\n    const tariefMatch = source.match(/Uurtarief maximaal\\s*€\\s*(\\d+(?:[,-]\\d+)?)/i);\n    if (tariefMatch) {\n      return `3. Uurtarief maximaal € ${tariefMatch[1]} exclusief btw`;\n    }\n    \n    // Fallback 2: zoek naar de hele knock-out sectie met variabele schrijfwijze\n    const knockoutMatch = source.match(/Vereisten\\s*\\/\\s*knock-outcriteria[\\s\\S]*?(?=Gunningscriteria|Competenties|$)/i);\n    if (knockoutMatch && knockoutMatch[0].length > 50) {\n      return knockoutMatch[0].replace(/^Vereisten\\s*\\/\\s*knock-outcriteria\\s*/i, '').trim();\n    }\n    \n    // Fallback 3: zoek naar genummerde vereisten (1., 2., 3., etc.)\n    const genummerdeMatch = source.match(/(?:^|\\n)(?:\\d+\\.\\s.*?(?:\\n|$)){3,}/i);\n    if (genummerdeMatch && genummerdeMatch[0].includes('uur') && genummerdeMatch[0].includes('€')) {\n      return genummerdeMatch[0].trim();\n    }\n    \n    return \"\";\n  };\n\n  // ========== FALLBACK FUNCTIE VOOR WERKZAAMHEDEN ==========\n  const extractWerkzaamhedenMetFallback = (source) => {\n    let result = extractSection(\"Projecten en Werkzaamheden\", \"Vereisten\", source);\n    if (result && result.length > 50) return result;\n    \n    const watGaJeDoenMatch = source.match(/Wat ga je doen\\?[\\s]*([\\s\\S]*?)(?=(?:Vereisten|Vereisten \\/ knock-outcriteria|Competenties|$))/i);\n    if (watGaJeDoenMatch && watGaJeDoenMatch[1].trim().length > 50) {\n      return watGaJeDoenMatch[1].trim();\n    }\n    \n    const concreetMatch = source.match(/Wat je concreet gaat doen, is:[\\s]*([\\s\\S]*?)(?=(?:Vereisten|Vereisten \\/ knock-outcriteria|Competenties|$))/i);\n    if (concreetMatch && concreetMatch[1].trim().length > 50) {\n      return concreetMatch[1].trim();\n    }\n    \n    const verantwoordelijkMatch = source.match(/Je bent verantwoordelijk voor[\\s]*([\\s\\S]*?)(?=(?:Vereisten|Vereisten \\/ knock-outcriteria|Competenties|$))/i);\n    if (verantwoordelijkMatch && verantwoordelijkMatch[1].trim().length > 50) {\n      return verantwoordelijkMatch[1].trim();\n    }\n    \n    return \"\";\n  };\n  \n  // ========== FALLBACK FUNCTIE VOOR ORGANISATIE ==========\n  const extractOrganisatieMetFallback = (source) => {\n    let result = extractSection(\"Organisatie\", \"Opdracht\", source);\n    if (result && result.length > 30 && !result.includes(\"Stap\")) return result;\n    \n    const wieZijnWijMatch = source.match(/Wie zijn wij[\\s]*([\\s\\S]*?)(?=(?:Opdracht|Wat ga je doen|Vereisten|$))/i);\n    if (wieZijnWijMatch && wieZijnWijMatch[1].trim().length > 30) {\n      let orgText = wieZijnWijMatch[1].trim();\n      orgText = orgText.split(/\\n\\s*\\n/)[0];\n      if (!orgText.includes(\"Stap\")) return orgText;\n    }\n    \n    return \"\";\n  };\n  \n  // ========== FALLBACK FUNCTIE VOOR OPDRACHT ==========\n  const extractOpdrachtMetFallback = (source) => {\n    let result = extractSection(\"Opdracht\", \"Projecten en Werkzaamheden|Wat ga je doen\", source);\n    if (result && result.length > 30 && !result.includes(\"Stap\")) return result;\n    \n    const afdelingMatch = source.match(/Afdeling[\\s]*([\\s\\S]*?)(?=(?:Opdracht|Wat ga je doen|Vereisten|$))/i);\n    if (afdelingMatch && afdelingMatch[1].trim().length > 30) {\n      let afdelingText = afdelingMatch[1].trim();\n      afdelingText = afdelingText.split(/\\n\\s*\\n/)[0];\n      if (!afdelingText.includes(\"Stap\")) return afdelingText;\n    }\n    \n    return \"\";\n  };\n\n  const functieschaal = extractSection(\"Functieschaal|Schaal\", \"Fee Flextender|Benodigd aantal|CV-eisen\", text) || \"Niet vermeld\";\n  const feeFlextender = extractSection(\"Fee Flextender\", \"Benodigd aantal|CV-eisen|Planning\", text) || \"Niet vermeld\";\n\n  // GEBRUIK DE NIEUWE FUNCTIES\n  const knockOutCriteria = extractKnockOutMetFallback(text);\n  const org = extractOrganisatieMetFallback(fullyCleanedText);\n  const opdracht = extractOpdrachtMetFallback(fullyCleanedText);\n  const werkzaamheden = extractWerkzaamhedenMetFallback(fullyCleanedText);\n  \n  let aantalProfessionals = null;\n  const benodigdIndex = text.search(/Benodigd aantal professionals/i);\n  if (benodigdIndex !== -1) {\n    const substring = text.substring(benodigdIndex, benodigdIndex + 100);\n    const getalMatch = substring.match(/(\\d+)/);\n    if (getalMatch) {\n      aantalProfessionals = parseInt(getalMatch[1]);\n    }\n  }\n  \n  // Bepaal of er een tarief is gevonden (voor de logging/debug)\n  const heeftTarief = knockOutCriteria.includes('€') && knockOutCriteria.match(/\\d+/) !== null;\n  \n  const aiText = `ORGANISATIE:\\n${org}\\n\\nOPDRACHT:\\n${opdracht}\\n\\nWERKZAAMHEDEN & RESULTATEN:\\n${werkzaamheden}\\n\\nVEREISTEN / KNOCK-OUTCRITERIA:\\n${knockOutCriteria}\\n\\nTARIEF INFO:\\n${functieschaal}\\n\\nFLEXTENDER FEE:\\n${feeFlextender}`;\n\n  output.push({\n    json: {\n      title: item.json.title || lines[0],\n      locatie: item.json.locatie || lines[1],\n      details: {\n        aanvraagnummer: extract(/Aanvraagnummer\\s+(\\d+)/, text),\n        duur: extract(/Duur\\s+(.*?)\\n/, text),\n        opties_verlenging: extract(/Opties verlenging\\s+(.*?)\\n/, text),\n        uren_per_week: extract(/Uren per week\\s+(.*?)\\n/, text),\n        das_opdracht: extract(/DAS opdracht\\s+(.*?)\\n/, text),\n        start: extract(/Start\\s+(.*?)\\n/, text),\n        opleidingsniveau: extract(/Opleidingsniveau\\s+(.*?)\\n/, text),\n        regio: extract(/Regio\\s+(.*?)\\n/, text),\n        einde_inschrijfdatum: extract(/Einde inschrijfdatum\\s+(.*?)(?:\\s+agenda|$)/, text)\n      },\n      secties: {\n        aantal_professionals: aantalProfessionals,\n        vereisten: knockOutCriteria || null,\n        gunningscriteria: extractSection(\"Gunningscriteria\", \"Geef in het cv duidelijk aan|Competenties\", text),\n        competenties: extractSection(\"Competenties\", \"Beoordeling|Benodigd aantal\", text),\n        cv_eisen: extractSection(\"(?:CV-eisen|Offerte eisen)\", \"Werkdagen|Planning|Overige informatie\", text),\n        planning: extractSection(\"Planning\", \"Overige informatie|Meer informatie\", text),\n        Functieschaal: functieschaal,\n        Fee_Flextender: feeFlextender,\n        heeft_tarief: heeftTarief\n      },\n      formatted_text_voor_ai: aiText.trim()\n    }\n  });\n}\n\nreturn output;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        576,
+        64
+      ],
+      "id": "93f890df-37a4-4722-86ef-d7e502415d86",
+      "name": "Clean Text + Details"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Ca4LVO4q1MnAH2aA",
+          "mode": "list",
+          "cachedResultName": "consultants",
+          "cachedResultUrl": "/projects/2KiFcKNLK1JyaklJ/datatables/Ca4LVO4q1MnAH2aA"
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        688,
+        672
+      ],
+      "id": "c7a32e85-5096-408a-8942-f9a277ef7b93",
+      "name": "Get Consultants"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        1008
+      ],
+      "id": "043dfb90-ef17-402a-b044-cdedeaf47115",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=this is the incoming assignment:\nthe assignment:\n{{ $('Clean Text + Details').item.json.secties.vereisten }}\n{{ $('Clean Text + Details').item.json.secties.competenties }}\n{{ $('Clean Text + Details').item.json.secties.planning }}\n{{ $('Clean Text + Details').item.json.formatted_text_voor_ai }}",
+        "options": {
+          "systemMessage": "=You are a strategic matchmaker. You will be provided with a list of available experts and a specific assignment.\n\nSTEP 1: Analyze the Assignment\nDetermine the 'Core Discipline' of the assignment. Is it:\n\nExternally oriented (Environment, citizens, stakeholders)?\n\nPeople-oriented (Culture, behavior, coaching, team)?\n\nProcess-oriented (Strategy, finance, structure, contracts)?\n\nSTEP 2: Review the Experts\nReview the list of available Captains below.\n{{ $json.data.map(k => `CAPTAIN: ${k.Naam} EXPERTISE: ${k.Expertise}`).join(' --- ') }}\n\nSectors in which they excel:\n{{ $json.data.map(k => `CAPTAIN: ${k.Naam} EXPERTISE: ${k.Expertise}`).join(' --- ') }}\n\nAnd if necessary, keywords:\n{{ $json.data.map(k => 'CAPTAIN: ${k.Naam}Keywords: ${k.Keywords}').join('\\n\\n---\\n\\n') }}\n\nSTEP 3: Scoring (Internal Logic)\nCalculate the match based on the following weighting:\n\nSector Match (50 points): Does the expert have experience in the specific sector (e.g., Green, Infra, or Spatial)? Proximity counts: 'Spatial development' is a direct neighbor of 'Green/Landscape'.\n\nDiscipline Match (30 points): Does the expertise (e.g., environmental management vs. organizational consultancy) align with the nature of the assignment?\n\nRole Match (20 points): Does the requested seniority or specific tasks (e.g., participation or coaching) align?\n\nSTEP 4: The Match\nSelect the expert with the highest total score. Note: Substantive sector experience (Step 3.1) must carry more weight than general process skills.\n\nOutput Format in English (Strict JSON):\nJSON\n{\n  \"chosen_captain\": \"Name\",\n  \"match_score\": \"0-100\",\n  \"argumentation\": \"Explain in 2 sentences why this specific person's expertise is the best match for the discipline of this assignment.\",\n  \"focus_points\": \"What is the most important point of attention?\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -496,
+        1008
+      ],
+      "id": "fde0b03f-0116-485b-bb22-a1444ae7569c",
+      "name": "Find right consultant"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "addUpdate",
+        "itemId": "={{ $('Create an item in a board\\'s group').item.json.id }}",
+        "value": "=link"
+      },
+      "type": "n8n-nodes-base.mondayCom",
+      "typeVersion": 1,
+      "position": [
+        208,
+        1008
+      ],
+      "id": "29232a15-9641-4ce0-bf01-08ceef743ecc",
+      "name": "Add an update to an item",
+      "credentials": {
+        "mondayComApi": {
+          "id": "ji3snyIAdNQN5ZFf",
+          "name": "Monday.com account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Inkomende mails": {
+      "main": [
+        [
+          {
+            "node": "Extract Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Data": {
+      "main": [
+        [
+          {
+            "node": "HTML -> Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML -> Text": {
+      "main": [
+        [
+          {
+            "node": "Cleaning Text + Search Link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Job Offer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML -> Text2": {
+      "main": [
+        [
+          {
+            "node": "Clean Text + Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Check hourly rate",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Check hourly rate",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Scoring",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Check Strategic/Autonomy",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Scoring",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "Get Consultants",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Scoring": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Check Strategic/Autonomy",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Find right consultant",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Create an item in a board's group",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an item in a board's group": {
+      "main": [
+        [
+          {
+            "node": "Add an update to an item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check hourly rate": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Strategic/Autonomy": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleaning Text + Search Link": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Job Offer": {
+      "main": [
+        [
+          {
+            "node": "HTML -> Text2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Text + Details": {
+      "main": [
+        [
+          {
+            "node": "Check hourly rate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Consultants": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Find right consultant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find right consultant": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add an update to an item": {
+      "main": [
+        [
+          {
+            "node": "Create a row3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "versionId": "e713b4a8-887c-49de-9a8c-4ee021dbb311",
+  "activeVersionId": null,
+  "versionCounter": 346,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-05-12T02:22:26.186Z",
+      "createdAt": "2026-05-12T02:22:26.186Z",
+      "role": "workflow:owner",
+      "workflowId": "SFOtlDfpLhwqIgDk",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": null
+}
