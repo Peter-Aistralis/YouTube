@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-01T09:24:49.158Z",
+  "updatedAt": "2026-06-02T08:45:00.957Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
@@ -1250,14 +1250,15 @@
     "executionOrder": "v1",
     "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false,
-    "errorWorkflow": "r1hEZ8InOj91e2BD"
+    "errorWorkflow": "r1hEZ8InOj91e2BD",
+    "binaryMode": "separate"
   },
   "meta": {
     "templateCredsSetupCompleted": true
   },
   "versionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
   "activeVersionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
-  "versionCounter": 191,
+  "versionCounter": 229,
   "triggerCount": 1,
   "shared": [
     {
@@ -2536,6 +2537,22 @@
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-02T08:45:01.135Z",
+        "id": 550,
+        "workflowId": "2wGj4UwRo2mb42YJ",
+        "versionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
+        "event": "deactivated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      },
+      {
+        "createdAt": "2026-06-02T08:45:01.238Z",
+        "id": 551,
+        "workflowId": "2wGj4UwRo2mb42YJ",
+        "versionId": "179b79b7-b6c4-471b-a065-390588e5f2c5",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      },
       {
         "createdAt": "2026-04-01T09:25:04.531Z",
         "id": 495,
