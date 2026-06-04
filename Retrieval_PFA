@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2025-12-02T07:44:22.284Z",
+  "updatedAt": "2026-06-04T06:28:40.659Z",
   "createdAt": "2025-11-29T10:39:21.513Z",
   "id": "XQIdg6eU1ro02cH4",
   "name": "Retrieval_PFA",
   "description": null,
-  "active": false,
+  "active": true,
   "isArchived": false,
   "nodes": [
     {
@@ -52,7 +52,7 @@
       "typeVersion": 1.3,
       "position": [
         224,
-        208
+        240
       ],
       "id": "7fc2e74f-6e27-49a3-8782-1da54ae2c452",
       "name": "OpenAI Chat Model",
@@ -77,12 +77,15 @@
       ],
       "id": "ba7c9195-2a9c-4ab2-bc0d-908c6ee8236f",
       "name": "Execute a SQL query",
+      "alwaysOutputData": true,
+      "retryOnFail": true,
       "credentials": {
         "postgres": {
           "id": "9pcH5g5b0VbgRNEu",
           "name": "Postgres account 2"
         }
-      }
+      },
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {
@@ -92,8 +95,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        688,
-        0
+        704,
+        -16
       ],
       "id": "a9529b32-5d45-44e9-999e-95ccaaa52ae4",
       "name": "Aggregate"
@@ -115,8 +118,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        848,
-        0
+        864,
+        -16
       ],
       "id": "9cf21aae-b094-4a5d-9fca-7f047c98a171",
       "name": "Edit Fields"
@@ -164,6 +167,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -180,23 +190,15 @@
     }
   },
   "settings": {
-    "executionOrder": "v1"
+    "executionOrder": "v1",
+    "binaryMode": "separate"
   },
-  "staticData": null,
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "pinData": {
-    "When Executed by Another Workflow": [
-      {
-        "json": {
-          "query": "What healthy stuff did I buy the last 10 days?"
-        }
-      }
-    ]
-  },
-  "versionId": "6d310405-dafe-4626-846d-0a79c600bd05",
-  "versionCounter": 33,
+  "versionId": "56a37664-32ad-4092-a4fc-5a431ed4d9db",
+  "activeVersionId": "50c42638-29ad-46aa-89f0-7b82ac9bb555",
+  "versionCounter": 109,
   "triggerCount": 0,
   "shared": [
     {
@@ -213,45 +215,7 @@
         "type": "personal",
         "icon": null,
         "description": null,
-        "projectRelations": [
-          {
-            "updatedAt": "2025-07-05T04:34:00.267Z",
-            "createdAt": "2025-07-05T04:34:00.267Z",
-            "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094",
-            "projectId": "2KiFcKNLK1JyaklJ",
-            "user": {
-              "updatedAt": "2025-12-14T00:00:41.353Z",
-              "createdAt": "2025-07-05T04:33:38.764Z",
-              "id": "8790342e-b65e-4ef9-99ec-48a531aa0094",
-              "email": "peterjawel@gmail.com",
-              "firstName": "peter",
-              "lastName": "aistralis",
-              "personalizationAnswers": {
-                "version": "v4",
-                "personalization_survey_submitted_at": "2025-07-05T04:35:25.871Z",
-                "personalization_survey_n8n_version": "1.100.1",
-                "companySize": "<20",
-                "companyType": "saas",
-                "role": "business-owner",
-                "reportedSource": "youtube"
-              },
-              "settings": {
-                "userActivated": true,
-                "easyAIWorkflowOnboarded": true,
-                "firstSuccessfulWorkflowId": "FAkXhJwuAslD2JDu",
-                "userActivatedAt": 1751716484498,
-                "npsSurvey": {
-                  "responded": true,
-                  "lastShownAt": 1753381963375
-                }
-              },
-              "disabled": false,
-              "mfaEnabled": false,
-              "lastActiveAt": "2025-12-13",
-              "isPending": false
-            }
-          }
-        ]
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
     }
   ],
@@ -262,5 +226,208 @@
       "id": "94UYKbs3nzwYCJqO",
       "name": "YouTube"
     }
-  ]
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-06-04T06:19:59.999Z",
+    "createdAt": "2026-06-04T06:19:49.371Z",
+    "versionId": "50c42638-29ad-46aa-89f0-7b82ac9bb555",
+    "workflowId": "XQIdg6eU1ro02cH4",
+    "nodes": [
+      {
+        "parameters": {
+          "inputSource": "passthrough"
+        },
+        "type": "n8n-nodes-base.executeWorkflowTrigger",
+        "typeVersion": 1.1,
+        "position": [
+          32,
+          0
+        ],
+        "id": "1103b150-aeeb-4b67-b21b-c1e0ceaa5ea1",
+        "name": "When Executed by Another Workflow"
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.query }}",
+          "options": {
+            "systemMessage": "=You are an expert PostgreSQL Query Generator.\nYour ONLY task is to convert the user’s question into a single valid PostgreSQL SELECT query.\n\n1. DATABASE SCHEMA\n\nYou may use ONLY these tables + columns:\n\ntransactions (t)\nid, date, description, total_amount, payment_method, created_at\n\ntransaction_items (ti)\nid, item_name, location, quantity, item_total, unit_price, transaction_id, category_id\n\ncategories (c)\nid, name, type, budget_amount, parent_category_id\n\nitem_categories (ic)\nid, item_keyword, subcategory, category_id\n\nknowledge_base (kb)\nid, location, type, item_name, unit_price\n\n2. GLOBAL RULES\n\nA. Output format\nOutput ONLY the raw SQL query text. NO markdown, NO backticks, NO comments, NO explanation. Exactly one SELECT statement.\nCRITICAL: The entire query MUST be on a single line. NEVER use newline characters (\\n) or carriage returns (\\r).\n\nB. Date handling\nToday’s date = {{ $now }}. Use CURRENT_DATE (not a literal string).\nExample: last 7 days → t.date >= CURRENT_DATE - INTERVAL '7 days'\n\nC. Aggregation Rules (CRITICAL)\nWhen the user asks for a numerical value, you must select the correct column for aggregation:\n\n1.  Price/Cost (\"How much\"):\n    * **If filtering by a specific item or category, ALWAYS use the item cost: ti.item_total.**\n    * **If asking for a total transaction sum (e.g., \"yesterday\"), ALWAYS use the transaction cost: t.total_amount.**\n    * **The format MUST be:** COALESCE(ROUND(SUM(<column>)::numeric, 2), 0.00)\n\n2.  Quantity (\"How many\"):\n    * **If asking for \"how many\" of an item, ALWAYS aggregate the quantity column: ti.quantity.**\n    * **The format MUST be:** COALESCE(ROUND(SUM(ti.quantity)::numeric, 2), 0.00)\n\n3.  No other format, no decimals lost.\n\nD. Choosing the correct table and Joins\n\n1) Spending totals (e.g., “how much did I spend today?”): Always use ONLY the transactions (t) table.\n2) Item queries (e.g., “what did I buy today?”): Must return all ti rows. Correct join pattern: SELECT ti.* FROM transaction_items ti JOIN transactions t ON ti.transaction_id = t.id WHERE <filter>\n3) **Category Queries (MUST JOIN):** To filter by category name or type, you **MUST** join **transaction_items (ti)** directly to **categories (c)** using **ti.category_id = c.id**.\n4) **Minimizing Joins (CRITICAL):** Only include necessary tables. If the query filters directly on ti.item_name (e.g., 'marlboro'), DO NOT join to item_categories (ic) or categories (c).\n5) Price lookup / unit price: Join knowledge_base ONLY if the user directly asks for price information of an item.\n\nE. Interpretation rules\n\n1. If user asks “what did I buy today / yesterday / this week” → Return all ti rows associated with transactions in that date range. Never return only 1 row.\n2. If user asks “show me my transactions” → Return rows from transactions table.\n3. If user asks “list everything I bought this month” → Use transaction_items with date filter on transactions.\n4. **If user asks about 'smoking' or 'smoke': Filter by c.name ILIKE 'tobacco'.**\n5. **If user asks about 'unhealthy' spending: Filter by c.type ILIKE 'unhealthy'.**\n\nF. Ranking Queries (CRITICAL)\nWhen the user asks \"where did I spend the most/least money?\" or \"show me my top X spending categories/items\":\n\n1.  **Grouping Column Definition:**\n    * **If the question asks \"WHERE\" (Location):** The grouping column **MUST** be **`ti.location`**. **You MUST NOT join to the 'categories' table in this case.**\n    * **If the question asks \"WHICH CATEGORY/ITEM\":** The grouping column is **`c.name`** (for category) or **`ti.item_name`** (for item).\n\n2.  **SELECT/Aggregation:** Must SELECT the grouping column and use `ti.item_total` for spending: COALESCE(ROUND(SUM(ti.item_total)::numeric, 2), 0.00) AS total_spent.\n\n3.  **Grouping:** Use `GROUP BY` on the selected grouping column.\n\n4.  **Ordering/Limiting:** Use `ORDER BY total_spent DESC` (for 'most') or `ASC` (for 'least') and `LIMIT 1` (or the number X).\n\nG. Filtering by Category/Item Name (CRITICAL)\nWhen asked for specific categories (e.g., 'what alcohol', 'how much fruit'), you **MUST** join the `categories` table (`c`). The filtering condition **MUST** be applied to the **`c.name`** column for categories, or `ti.item_name` for specific items. The condition is always a simple equality check: `WHERE c.name = '[CATEGORY_NAME]'`.\n\nH. Item Search Syntax\nWhen filtering by `ti.item_name` (e.g., for 'padel' or 'beer'), you **MUST** use the **`ILIKE` operator with wildcards (`%`)** around the item name for partial matching (e.g., `WHERE ti.item_name ILIKE '%padel%'`).\n\nI. Synonym Mapping (CRITICAL)\nWhen the user asks about **'cigarettes', 'smokes', or 'cigs'**, you **MUST** replace the filter condition to use the exact item name: `ti.item_name = 'marlboro'`.\n\nJ. Price Queries (Cheapest/Expensive) (CRITICAL)\nWhen asked for the 'cheapest' or 'most expensive' price, you **MUST** select the **unit price** using an aggregate function (`MIN` or `MAX`).\n* **Cheapest:** Use `MIN(ti.unit_price)` AS `cheapest_price`. Order by `cheapest_price ASC`.\n* **Most Expensive:** Use `MAX(ti.unit_price)` AS `most_expensive_price`. Order by `most_expensive_price DESC`.\n* **DO NOT** use `ti.item_total` or `t.total_amount` for these queries.\n\n\n\n\n\n\nK. Date/Time Queries ('When'): When the user asks \"when did I buy/do X,\" the SELECT clause MUST include the transaction date from the transactions table (t.date) or the transaction creation time (t.created_at) alongside the transaction details.\n\n3. FALLBACK RULES\n\nIf the question contains spending amounts but ALSO contains a question → always treat as a read query.\n\nDo not refuse queries.\nIf something is unclear, return the broadest reasonable SELECT.\n\n4. USER QUESTION\n{{ $json.query }}"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3,
+        "position": [
+          224,
+          0
+        ],
+        "id": "d5c5b30d-902e-465b-a099-cd1ad4750549",
+        "name": "AI Agent"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "value": "gpt-4o-mini",
+            "mode": "list",
+            "cachedResultName": "gpt-4o-mini"
+          },
+          "builtInTools": {},
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.3,
+        "position": [
+          176,
+          240
+        ],
+        "id": "7fc2e74f-6e27-49a3-8782-1da54ae2c452",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "TVzP9p8nOtsqZFLa",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "{{ $json.output }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          512,
+          0
+        ],
+        "id": "ba7c9195-2a9c-4ab2-bc0d-908c6ee8236f",
+        "name": "Execute a SQL query",
+        "alwaysOutputData": true,
+        "retryOnFail": true,
+        "credentials": {
+          "postgres": {
+            "id": "9pcH5g5b0VbgRNEu",
+            "name": "Postgres account 2"
+          }
+        },
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "aggregate": "aggregateAllItemData",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.aggregate",
+        "typeVersion": 1,
+        "position": [
+          720,
+          -32
+        ],
+        "id": "a9529b32-5d45-44e9-999e-95ccaaa52ae4",
+        "name": "Aggregate"
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "900970c4-7e44-43c9-aa37-f4474b60698e",
+                "name": "response",
+                "value": "={{ $json.data }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          864,
+          -32
+        ],
+        "id": "9cf21aae-b094-4a5d-9fca-7f047c98a171",
+        "name": "Edit Fields"
+      }
+    ],
+    "connections": {
+      "When Executed by Another Workflow": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Aggregate",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Aggregate": {
+        "main": [
+          [
+            {
+              "node": "Edit Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "peter aistralis",
+    "name": "Version 50c42638",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-04T06:19:59.991Z",
+        "id": 555,
+        "workflowId": "XQIdg6eU1ro02cH4",
+        "versionId": "50c42638-29ad-46aa-89f0-7b82ac9bb555",
+        "event": "activated",
+        "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    ]
+  }
 }
