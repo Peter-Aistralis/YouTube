@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-05T10:39:05.222Z",
+  "updatedAt": "2026-08-28T16:59:17.364Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
@@ -463,7 +463,7 @@
         },
         "folderId": {
           "__rl": true,
-          "value": "=https://drive.google.com/drive/u/0/folders/1SDMuJ-oFxW1laCNTpvFMb2t5Gd2ofLhn",
+          "value": "https://drive.google.com/drive/u/0/folders/1SDMuJ-oFxW1laCNTpvFMb2t5Gd2ofLhn",
           "mode": "url"
         },
         "options": {}
@@ -478,8 +478,8 @@
       "name": "Upload file1",
       "credentials": {
         "googleDriveOAuth2Api": {
-          "id": "VcFFZkWlXOO43tdB",
-          "name": "Google Drive account"
+          "id": "NWUCua83MqPAIJF7",
+          "name": "Google Drive account 2"
         }
       }
     },
@@ -899,6 +899,36 @@
         208
       ],
       "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "name": "={{ $('n8n2').item.json.name }}",
+        "driveId": {
+          "__rl": true,
+          "value": "1HmBSAtGgcZLSbO2BxikQbvbzAcZzY7u9",
+          "mode": "id"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "=https://drive.google.com/drive/u/0/folders/1SDMuJ-oFxW1laCNTpvFMb2t5Gd2ofLhn",
+          "mode": "url"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1168,
+        -128
+      ],
+      "id": "21ce5145-1723-420b-a6f1-524831d0a13b",
+      "name": "Upload file2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "VcFFZkWlXOO43tdB",
+          "name": "Google Drive account"
+        }
+      }
     }
   ],
   "connections": {
@@ -1259,9 +1289,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "36a696a2-cc33-4e10-b341-86156ec4d66c",
+  "versionId": "d87b59a6-4704-4560-978c-4db144ae3f2d",
   "activeVersionId": "50a048f3-e41f-4f99-929d-81027f009512",
-  "versionCounter": 255,
+  "versionCounter": 259,
   "triggerCount": 1,
   "shared": [
     {
