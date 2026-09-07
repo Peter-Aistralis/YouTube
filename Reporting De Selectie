@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-08-31T02:04:55.016Z",
+  "updatedAt": "2026-09-07T04:32:41.597Z",
   "createdAt": "2026-08-24T03:03:45.092Z",
   "id": "nmm5NvqOGWWovDzd",
   "name": "Reporting De Selectie",
@@ -2213,6 +2213,478 @@
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "497f1c62-f75b-4a46-b0f7-80fb80e5aa27",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "NO GO -",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        256,
+        432
+      ],
+      "id": "d536bd96-9bed-410d-b02b-b1964ab78422",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 99719987,
+          "mode": "list",
+          "cachedResultName": "Goedgekeurd",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=99719987"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.id }}",
+            "created_at": "={{ $json.created_at }}",
+            "flextender_id": "={{ $json.tender_id }}",
+            "link": "={{ $('Append row in sheet3').item.json.tender_id }}",
+            "title": "={{ $json.title }}",
+            "status": "={{ $json.status }}",
+            "FTE's": "={{ $('Get many rows2').item.json['FTE\\'s'] }}",
+            "verloning": "={{ $json.verloning }}",
+            "fit": "={{ $json.fit }}",
+            "fun": "={{ $json.fun }}",
+            "winstkans": "={{ $json.winstkans }}",
+            "win": "={{ $json.win }}",
+            "inspanning": "={{ $('Get many rows2').item.json.inspnning }}",
+            "fit analyse": "={{ $json['fit analyse'] }}",
+            "fun analyse": "={{ $json['fun analyse'] }}",
+            "winstkans analyse": "={{ $json['winstkans analyse'] }}",
+            "win analyse": "={{ $json['win analyse'] }}",
+            "risico": "={{ $('Get many rows2').item.json.risico }}",
+            "achterliggende vraag": "={{ $('Get many rows2').item.json['achterliggende vraag'] }}",
+            "alternatief voorstel": "={{ $json['alternatief voorstel'] }}",
+            "vervolgstappem": "={{ $('Get many rows2').item.json.vervolgstappem }}",
+            "samenvatting": "={{ $json.samenvatting }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "flextender_id",
+              "displayName": "flextender_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FTE's",
+              "displayName": "FTE's",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "verloning",
+              "displayName": "verloning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit",
+              "displayName": "fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun",
+              "displayName": "fun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans",
+              "displayName": "winstkans",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win",
+              "displayName": "win",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inspanning",
+              "displayName": "inspanning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit analyse",
+              "displayName": "fit analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun analyse",
+              "displayName": "fun analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans analyse",
+              "displayName": "winstkans analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win analyse",
+              "displayName": "win analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risico",
+              "displayName": "risico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "achterliggende vraag",
+              "displayName": "achterliggende vraag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "alternatief voorstel",
+              "displayName": "alternatief voorstel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "toegang tot klant",
+              "displayName": "toegang tot klant",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "vervolgstappem",
+              "displayName": "vervolgstappem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden autonomue",
+              "displayName": "reden autonomue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden inhoud",
+              "displayName": "reden inhoud",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden classificatie",
+              "displayName": "reden classificatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analyze",
+              "displayName": "analyze",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        336
+      ],
+      "id": "7d62d099-d5bc-49e3-83b2-cea43d77b6a1",
+      "name": "Append row in sheet7",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 927839197,
+          "mode": "list",
+          "cachedResultName": "Kapitein",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=927839197"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "created_at": "={{ $json.created_at }}",
+            "flextender_id": "={{ $json.flextender_id }}",
+            "title": "={{ $json.title }}",
+            "Kapitein": "={{ $('Get many rows2').item.json.kapitein }}",
+            "Score": "={{ $('Get many rows2').item.json['score kapitein'] }}",
+            "Argumentatie": "={{ $('Get many rows2').item.json['reden kapitein'] }}",
+            "samenvatting": "={{ $('Get many rows2').item.json.samenvatting }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "flextender_id",
+              "displayName": "flextender_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Kapitein",
+              "displayName": "Kapitein",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Argumentatie",
+              "displayName": "Argumentatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        656,
+        336
+      ],
+      "id": "f1f824d8-fc45-4110-9263-4360a8cc99f9",
+      "name": "Append row in sheet8",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
     }
   ],
   "connections": {
@@ -2220,7 +2692,7 @@
       "main": [
         [
           {
-            "node": "Get many rows3",
+            "node": "Get many rows",
             "type": "main",
             "index": 0
           }
@@ -2325,6 +2797,39 @@
           }
         ]
       ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet7": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet3": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -2334,9 +2839,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "de8ab372-a92d-47fa-a8f1-8aed886aa2d2",
+  "versionId": "7e613000-9b95-43f4-878f-0fa4f7a58b71",
   "activeVersionId": null,
-  "versionCounter": 96,
+  "versionCounter": 130,
   "triggerCount": 0,
   "shared": [
     {
