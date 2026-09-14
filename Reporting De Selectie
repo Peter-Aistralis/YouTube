@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-07T04:32:41.597Z",
+  "updatedAt": "2026-09-14T03:10:34.737Z",
   "createdAt": "2026-08-24T03:03:45.092Z",
   "id": "nmm5NvqOGWWovDzd",
   "name": "Reporting De Selectie",
@@ -100,23 +100,12 @@
             "samenvatting": "={{ $json.samenvatting }}",
             "reden autonomue": "={{ $json['reden autonomue'] }}",
             "reden inhoud": "={{ $json['reden inhoud'] }}",
-            "reden classificatie": "={{ $json['reden classificatie'] }}",
-            "id": "={{ $json.id }}"
+            "reden classificatie": "={{ $json['reden classificatie'] }}"
           },
           "matchingColumns": [
             "id"
           ],
           "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
             {
               "id": "created_at",
               "displayName": "created_at",
@@ -506,7 +495,6 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.id }}",
             "created_at": "={{ $json.created_at }}",
             "flextender_id": "={{ $json.flextender_id }}",
             "link": "={{ $json.link }}",
@@ -534,16 +522,6 @@
             "id"
           ],
           "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
             {
               "id": "created_at",
               "displayName": "created_at",
@@ -994,7 +972,6 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.id }}",
             "created_at": "={{ $json.created_at }}",
             "tender_id": "={{ $json.tender_id }}",
             "title": "={{ $json.title }}",
@@ -1029,15 +1006,6 @@
             "id"
           ],
           "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
             {
               "id": "created_at",
               "displayName": "created_at",
@@ -1396,7 +1364,6 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.id }}",
             "created_at": "={{ $json.created_at }}",
             "circle8_id": "={{ $json.link.split('/').pop() }}",
             "link": "={{ $json.link }}",
@@ -1431,15 +1398,6 @@
             "id"
           ],
           "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true
-            },
             {
               "id": "created_at",
               "displayName": "created_at",
@@ -1795,7 +1753,6 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.id }}",
             "created_at": "={{ $json.created_at }}",
             "flextender_id": "={{ $json.circle8_id }}",
             "link": "={{ $json.link }}",
@@ -1823,16 +1780,6 @@
             "id"
           ],
           "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
             {
               "id": "created_at",
               "displayName": "created_at",
@@ -2267,7 +2214,6 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "id": "={{ $json.id }}",
             "created_at": "={{ $json.created_at }}",
             "flextender_id": "={{ $json.tender_id }}",
             "link": "={{ $('Append row in sheet3').item.json.tender_id }}",
@@ -2294,16 +2240,6 @@
             "id"
           ],
           "schema": [
-            {
-              "id": "id",
-              "displayName": "id",
-              "required": false,
-              "defaultMatch": true,
-              "display": true,
-              "type": "string",
-              "canBeUsedToMatch": true,
-              "removed": false
-            },
             {
               "id": "created_at",
               "displayName": "created_at",
@@ -2692,7 +2628,7 @@
       "main": [
         [
           {
-            "node": "Get many rows",
+            "node": "Get many rows3",
             "type": "main",
             "index": 0
           }
@@ -2839,9 +2775,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "7e613000-9b95-43f4-878f-0fa4f7a58b71",
+  "versionId": "5db4d397-f3df-4257-88e0-89ebfd3f18ae",
   "activeVersionId": null,
-  "versionCounter": 130,
+  "versionCounter": 136,
   "triggerCount": 0,
   "shared": [
     {
