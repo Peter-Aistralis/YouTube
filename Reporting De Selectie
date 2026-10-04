@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-21T01:53:09.861Z",
+  "updatedAt": "2026-10-04T17:02:03.663Z",
   "createdAt": "2026-08-24T03:03:45.092Z",
   "id": "nmm5NvqOGWWovDzd",
   "name": "Reporting De Selectie",
@@ -13,46 +13,10 @@
       "typeVersion": 1,
       "position": [
         -1024,
-        176
+        128
       ],
       "id": "53116a5c-59d9-4c46-ad86-96554f61ba78",
       "name": "When clicking ‘Execute workflow’"
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "tableId": "Flextender",
-        "returnAll": true,
-        "matchType": "allFilters",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "created_at",
-              "condition": "gt",
-              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
-            },
-            {
-              "keyName": "created_at",
-              "condition": "lt",
-              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        -448,
-        176
-      ],
-      "id": "2701b5b0-1af2-4a92-ab2b-244f095af8c0",
-      "name": "Get many rows",
-      "credentials": {
-        "supabaseApi": {
-          "id": "orNtP20rwWnXYa7K",
-          "name": "Supabase Aistralis Rafal"
-        }
-      }
     },
     {
       "parameters": {
@@ -394,8 +358,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -272,
-        176
+        -576,
+        -256
       ],
       "id": "9cdd869b-e3d8-4ab5-94c0-2fd911a9bdea",
       "name": "Append row in sheet",
@@ -403,42 +367,6 @@
         "googleSheetsOAuth2Api": {
           "id": "XkUcr0YLOP2CkVg1",
           "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "tableId": "Flextender",
-        "returnAll": true,
-        "matchType": "allFilters",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "created_at",
-              "condition": "gt",
-              "keyValue": "={{ $now.minus({ days: 7 }).startOf('day').toISO() }}"
-            },
-            {
-              "keyName": "created_at",
-              "condition": "lt",
-              "keyValue": "={{ $now.startOf('day').toISO() }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        -624,
-        -32
-      ],
-      "id": "3e4137a3-e0bd-4e84-90ad-3a9b97eea41d",
-      "name": "Get many rows1",
-      "credentials": {
-        "supabaseApi": {
-          "id": "uR11DW6nxElpCIXq",
-          "name": "Supabase Aistralis"
         }
       }
     },
@@ -454,7 +382,7 @@
           "conditions": [
             {
               "id": "497f1c62-f75b-4a46-b0f7-80fb80e5aa27",
-              "leftValue": "={{ $('Get many rows').item.json.status }}",
+              "leftValue": "={{ $('Flextender').item.json.status }}",
               "rightValue": "NO GO -",
               "operator": {
                 "type": "string",
@@ -469,8 +397,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -64,
-        176
+        -352,
+        -256
       ],
       "id": "4e489ef0-17e1-4969-9667-13a47dae3edd",
       "name": "If"
@@ -765,8 +693,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        144,
-        80
+        -128,
+        -256
       ],
       "id": "cce89371-3d09-4123-9b86-f3f15434fa54",
       "name": "Append row in sheet1",
@@ -797,14 +725,14 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "created_at": "={{ $('Get many rows').item.json.created_at }}",
-            "flextender_id": "={{ $('Get many rows').item.json.flextender_id }}",
-            "link": "={{ $('Get many rows').item.json.link }}",
-            "title": "={{ $('Get many rows').item.json.title }}",
-            "Kapitein": "={{ $('Get many rows').item.json.kapitein }}",
-            "Score": "={{ $('Get many rows').item.json['score kapitein'] }}",
-            "Argumentatie": "={{ $('Get many rows').item.json['reden kapitein'] }}",
-            "samenvatting": "={{ $('Get many rows').item.json.samenvatting }}"
+            "created_at": "={{ $('Flextender').item.json.created_at }}",
+            "flextender_id": "={{ $('Flextender').item.json.flextender_id }}",
+            "link": "={{ $('Flextender').item.json.link }}",
+            "title": "={{ $('Flextender').item.json.title }}",
+            "Kapitein": "={{ $('Flextender').item.json.kapitein }}",
+            "Score": "={{ $('Flextender').item.json['score kapitein'] }}",
+            "Argumentatie": "={{ $('Flextender').item.json['reden kapitein'] }}",
+            "samenvatting": "={{ $('Flextender').item.json.samenvatting }}"
           },
           "matchingColumns": [
             "id"
@@ -891,8 +819,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        352,
-        80
+        96,
+        -256
       ],
       "id": "3867d8c5-b913-4920-a319-b777bc2fa566",
       "name": "Append row in sheet2",
@@ -900,55 +828,6 @@
         "googleSheetsOAuth2Api": {
           "id": "XkUcr0YLOP2CkVg1",
           "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "const { chromium } = require(\"playwright-core\");\n\n(async () => {\n\nconst browser = await chromium.connectOverCDP(\n\"wss://production-sfo.browserless.io/?token=2UrNpyQbZgIq32Xa15f97a82fd9f1484be2906ff63bbf179e&profile=De_Selectie-Mercell_V3&proxy=residential&proxyCountry=nl\"\n);\n\n\nconst context = browser.contexts()[0];\nconst pages = context.pages();\nconst page = pages[0];\n\n\n// =============================================\n// VARIABLES\n// =============================================\n\nlet bearerToken = null;\n\n\n// =============================================\n// NAVIGATION DEBUG\n// =============================================\n\npage.on(\"framenavigated\", frame => {\n\n    const url = frame.url();\n\n    console.log(\"\\n🌍 FRAME NAVIGATION:\");\n    console.log(url);\n\n\n    if (\n        url.includes(\"logon\") ||\n        url.includes(\"callback\") ||\n        url.includes(\"authorize\")\n    ) {\n\n        console.log(\"🔥 IMPORTANT AUTH NAVIGATION\");\n        console.log(url);\n\n    }\n\n});\n\n\n\n// =============================================\n// REQUEST MONITOR\n// =============================================\n\npage.on(\"request\", request => {\n\n    const url = request.url();\n\n    const headers = request.headers();\n\n\n    // Debug Mercell traffic\n\n    if (\n        url.includes(\"identity.s2c.mercell.com\") ||\n        url.includes(\"s2c.mercell.com\")\n    ) {\n\n        console.log(\"\\n➡️ REQUEST\");\n        console.log(request.method(), url);\n\n    }\n\n\n    // Capture bearer\n\n    if (\n        url.includes(\"api.s2c.mercell.com\") &&\n        (\n            request.resourceType() === \"xhr\" ||\n            request.resourceType() === \"fetch\"\n        )\n    ) {\n\n        console.log(\"\\n📡 API REQUEST\");\n        console.log(url);\n\n\n        if (headers.authorization) {\n\n            console.log(\"🔑 AUTH HEADER FOUND\");\n\n            if (\n                headers.authorization.startsWith(\"Bearer \")\n            ) {\n\n                bearerToken =\n                    headers.authorization.replace(\n                        \"Bearer \",\n                        \"\"\n                    );\n\n                console.log(\"✅ BEARER CAPTURED\");\n\n            }\n\n        }\n\n    }\n\n});\n\n\n\n// =============================================\n// RESPONSE DEBUG\n// =============================================\n\npage.on(\"response\", async response => {\n\n    const url = response.url();\n\n\n    if (\n        url.includes(\"identity.s2c.mercell.com\") ||\n        url.includes(\"s2c.mercell.com\")\n    ) {\n\n        console.log(\"\\n⬅️ RESPONSE\");\n        console.log(\n            response.status(),\n            url\n        );\n\n\n        const location =\n            response.headers()[\"location\"];\n\n\n        if (location) {\n\n            console.log(\"↪ REDIRECT:\");\n            console.log(location);\n\n        }\n\n    }\n\n});\n\n\n\n// =============================================\n// OPEN MERCELL\n// =============================================\n\nconsole.log(\"\\n==============================\");\nconsole.log(\"Opening Mercell...\");\nconsole.log(\"==============================\");\n\n\nawait page.goto(\n    \"https://s2c.mercell.com\",\n    {\n        waitUntil:\"domcontentloaded\",\n        timeout:60000\n    }\n);\n\n\nconsole.log(\"\\nCurrent URL:\");\nconsole.log(page.url());\n\n\n\n// =============================================\n// EMAIL STEP\n// =============================================\n\nconsole.log(\"\\nEntering email...\");\n\n\nawait page.waitForSelector(\n    \"#Username\",\n    {\n        timeout:15000\n    }\n);\n\n\nawait page.fill(\n    \"#Username\",\n    \"14@de-selectie.nl\"\n);\n\n\n// Trigger password step\n\nawait page.keyboard.press(\"Enter\");\n\n\nconsole.log(\n    \"Waiting for password...\"\n);\n\n\n\n// =============================================\n// PASSWORD STEP\n// =============================================\n\nawait page.waitForSelector(\n    \"#Password\",\n    {\n        timeout:20000\n    }\n);\n\n\nconsole.log(\n    \"Password field found\"\n);\n\n\nawait page.fill(\n    \"#Password\",\n    \"@Wijzijn14!\"\n);\n\n\n\n// =============================================\n// LOGIN\n// =============================================\n\nconsole.log(\"\\nClicking login...\");\n\n\nawait page.locator(\n    \"#loginBtn\"\n)\n.waitFor({\n    state:\"visible\",\n    timeout:10000\n});\n\n\nawait page.locator(\n    \"#loginBtn\"\n)\n.click({\n    force:true\n});\n\n\nconsole.log(\n    \"Login clicked\"\n);\n\n\n\n// =============================================\n// WAIT FOR APP\n// =============================================\n\n\nconsole.log(\n    \"Waiting for Mercell application...\"\n);\n\n\nawait page.waitForTimeout(\n    60000\n);\n\n\n\nconsole.log(\"\\nFinal URL:\");\nconsole.log(page.url());\n\n\n\n// =============================================\n// SCREENSHOT\n// =============================================\n\n\nawait page.screenshot({\n    path:\"after-login.png\",\n    fullPage:true\n});\n\n\nconsole.log(\n    \"Screenshot saved\"\n);\n\n\n\n// =============================================\n// SAVE SESSION\n// =============================================\n\n\nawait context.storageState({\n    path:\"mercell-session.json\"\n});\n\n\nconsole.log(\n    \"Storage state saved\"\n);\n\n\n\n// =============================================\n// WAIT FOR TOKEN\n// =============================================\n\n\nconsole.log(\n    \"\\nWaiting extra for API calls...\"\n);\n\n\nawait page.waitForTimeout(\n    30000\n);\n\n\n\n// =============================================\n// RESULT\n// =============================================\n\n\nconsole.log(\"\\n==============================\");\nconsole.log(\"BEARER TOKEN\");\nconsole.log(\"==============================\");\n\n\nconsole.log(\n    bearerToken\n);\n\n\nconsole.log(\"==============================\");\n\n\nawait browser.close();\n\n\n})();"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -816,
-        -16
-      ],
-      "id": "f4a3443e-b715-4f52-a12d-14663bace174",
-      "name": "Code in JavaScript"
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "tableId": "Mercell",
-        "returnAll": true,
-        "matchType": "allFilters",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "created_at",
-              "condition": "gt",
-              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
-            },
-            {
-              "keyName": "created_at",
-              "condition": "lt",
-              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        -480,
-        432
-      ],
-      "id": "67b4e94c-7070-4afc-a250-01a87816c1c9",
-      "name": "Get many rows2",
-      "credentials": {
-        "supabaseApi": {
-          "id": "orNtP20rwWnXYa7K",
-          "name": "Supabase Aistralis Rafal"
         }
       }
     },
@@ -1296,8 +1175,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -208,
-        432
+        -576,
+        -64
       ],
       "id": "d07287db-fc85-4afb-b54b-d9caccc29802",
       "name": "Append row in sheet3",
@@ -1305,42 +1184,6 @@
         "googleSheetsOAuth2Api": {
           "id": "XkUcr0YLOP2CkVg1",
           "name": "Google Sheets account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "operation": "getAll",
-        "tableId": "Circle8",
-        "returnAll": true,
-        "matchType": "allFilters",
-        "filters": {
-          "conditions": [
-            {
-              "keyName": "created_at",
-              "condition": "gt",
-              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
-            },
-            {
-              "keyName": "created_at",
-              "condition": "lt",
-              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
-            }
-          ]
-        }
-      },
-      "type": "n8n-nodes-base.supabase",
-      "typeVersion": 1,
-      "position": [
-        -480,
-        688
-      ],
-      "id": "3bcd2cd4-3994-48d1-b181-942b21d3550d",
-      "name": "Get many rows3",
-      "credentials": {
-        "supabaseApi": {
-          "id": "orNtP20rwWnXYa7K",
-          "name": "Supabase Aistralis Rafal"
         }
       }
     },
@@ -1688,8 +1531,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -304,
-        688
+        -576,
+        128
       ],
       "id": "17e7f64d-1e98-423f-a488-de9290d04bca",
       "name": "Append row in sheet4",
@@ -1712,7 +1555,7 @@
           "conditions": [
             {
               "id": "497f1c62-f75b-4a46-b0f7-80fb80e5aa27",
-              "leftValue": "={{ $('Get many rows3').item.json.status }}",
+              "leftValue": "={{ $('Circle8').item.json.status }}",
               "rightValue": "NO GO -",
               "operator": {
                 "type": "string",
@@ -1727,8 +1570,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -80,
-        688
+        -352,
+        128
       ],
       "id": "23afa918-a5c2-4fb1-8ab9-48a502672ed8",
       "name": "If1"
@@ -1758,7 +1601,7 @@
             "link": "={{ $json.link }}",
             "title": "={{ $json.title }}",
             "status": "={{ $json.status }}",
-            "FTE's": "={{ $('Get many rows3').item.json['FTE\\'s'] }}",
+            "FTE's": "={{ $('Circle8').item.json['FTE\\'s'] }}",
             "verloning": "={{ $json.verloning }}",
             "fit": "={{ $json.fit }}",
             "fun": "={{ $json.fun }}",
@@ -2023,8 +1866,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        112,
-        592
+        -128,
+        128
       ],
       "id": "8da8b45f-378a-43e6-90ec-1b0825d5260a",
       "name": "Append row in sheet5",
@@ -2055,14 +1898,14 @@
         "columns": {
           "mappingMode": "defineBelow",
           "value": {
-            "created_at": "={{ $('Get many rows3').item.json.created_at }}",
+            "created_at": "={{ $('Circle8').item.json.created_at }}",
             "flextender_id": "={{ $json.flextender_id }}",
-            "link": "={{ $('Get many rows3').item.json.link }}",
-            "title": "={{ $('Get many rows3').item.json.title }}",
-            "Kapitein": "={{ $('Get many rows3').item.json.kapitein }}",
-            "Score": "={{ $('Get many rows3').item.json['score kapitein'] }}",
-            "Argumentatie": "={{ $('Get many rows3').item.json['reden kapitein'] }}",
-            "samenvatting": "={{ $('Get many rows3').item.json.samenvatting }}"
+            "link": "={{ $('Circle8').item.json.link }}",
+            "title": "={{ $('Circle8').item.json.title }}",
+            "Kapitein": "={{ $('Circle8').item.json.kapitein }}",
+            "Score": "={{ $('Circle8').item.json['score kapitein'] }}",
+            "Argumentatie": "={{ $('Circle8').item.json['reden kapitein'] }}",
+            "samenvatting": "={{ $('Circle8').item.json.samenvatting }}"
           },
           "matchingColumns": [
             "id"
@@ -2149,8 +1992,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        320,
-        592
+        96,
+        128
       ],
       "id": "7ce700df-c8b9-4c93-84c9-3c70baac52e1",
       "name": "Append row in sheet6",
@@ -2188,8 +2031,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        256,
-        432
+        -352,
+        -64
       ],
       "id": "d536bd96-9bed-410d-b02b-b1964ab78422",
       "name": "If2"
@@ -2219,21 +2062,21 @@
             "link": "={{ $('Append row in sheet3').item.json.tender_id }}",
             "title": "={{ $json.title }}",
             "status": "={{ $json.status }}",
-            "FTE's": "={{ $('Get many rows2').item.json['FTE\\'s'] }}",
+            "FTE's": "={{ $('Mercell').item.json['FTE\\'s'] }}",
             "verloning": "={{ $json.verloning }}",
             "fit": "={{ $json.fit }}",
             "fun": "={{ $json.fun }}",
             "winstkans": "={{ $json.winstkans }}",
             "win": "={{ $json.win }}",
-            "inspanning": "={{ $('Get many rows2').item.json.inspnning }}",
+            "inspanning": "={{ $('Mercell').item.json.inspnning }}",
             "fit analyse": "={{ $json['fit analyse'] }}",
             "fun analyse": "={{ $json['fun analyse'] }}",
             "winstkans analyse": "={{ $json['winstkans analyse'] }}",
             "win analyse": "={{ $json['win analyse'] }}",
-            "risico": "={{ $('Get many rows2').item.json.risico }}",
-            "achterliggende vraag": "={{ $('Get many rows2').item.json['achterliggende vraag'] }}",
+            "risico": "={{ $('Mercell').item.json.risico }}",
+            "achterliggende vraag": "={{ $('Mercell').item.json['achterliggende vraag'] }}",
             "alternatief voorstel": "={{ $json['alternatief voorstel'] }}",
-            "vervolgstappem": "={{ $('Get many rows2').item.json.vervolgstappem }}",
+            "vervolgstappem": "={{ $('Mercell').item.json.vervolgstappem }}",
             "samenvatting": "={{ $json.samenvatting }}"
           },
           "matchingColumns": [
@@ -2484,8 +2327,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        448,
-        336
+        -128,
+        -64
       ],
       "id": "7d62d099-d5bc-49e3-83b2-cea43d77b6a1",
       "name": "Append row in sheet7",
@@ -2519,10 +2362,10 @@
             "created_at": "={{ $json.created_at }}",
             "flextender_id": "={{ $json.flextender_id }}",
             "title": "={{ $json.title }}",
-            "Kapitein": "={{ $('Get many rows2').item.json.kapitein }}",
-            "Score": "={{ $('Get many rows2').item.json['score kapitein'] }}",
-            "Argumentatie": "={{ $('Get many rows2').item.json['reden kapitein'] }}",
-            "samenvatting": "={{ $('Get many rows2').item.json.samenvatting }}"
+            "Kapitein": "={{ $('Mercell').item.json.kapitein }}",
+            "Score": "={{ $('Mercell').item.json['score kapitein'] }}",
+            "Argumentatie": "={{ $('Mercell').item.json['reden kapitein'] }}",
+            "samenvatting": "={{ $('Mercell').item.json.samenvatting }}"
           },
           "matchingColumns": [
             "id"
@@ -2610,11 +2453,1822 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        656,
-        336
+        96,
+        -64
       ],
       "id": "f1f824d8-fc45-4110-9263-4360a8cc99f9",
       "name": "Append row in sheet8",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Circle8",
+        "returnAll": true,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
+            },
+            {
+              "keyName": "created_at",
+              "condition": "lt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        128
+      ],
+      "id": "3bcd2cd4-3994-48d1-b181-942b21d3550d",
+      "name": "Circle8",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Mercell",
+        "returnAll": true,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
+            },
+            {
+              "keyName": "created_at",
+              "condition": "lt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -64
+      ],
+      "id": "67b4e94c-7070-4afc-a250-01a87816c1c9",
+      "name": "Mercell",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Flextender",
+        "returnAll": true,
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
+            },
+            {
+              "keyName": "created_at",
+              "condition": "lt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        -256
+      ],
+      "id": "2701b5b0-1af2-4a92-ab2b-244f095af8c0",
+      "name": "Flextender",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1157941434,
+          "mode": "list",
+          "cachedResultName": "NS",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=1157941434"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.tender_id }}",
+            "created_at": "={{ $json.created_at }}",
+            "link": "={{ $json.link }}",
+            "title": "={{ $json.title }}",
+            "status": "={{ $json.status }}",
+            "analyze": "={{ $json.analyze }}",
+            "FTE's": "={{ $json['FTE\\'s'] }}",
+            "verloning": "={{ parseFloat($json.verloning.toFixed(1)) }}",
+            "fit": "={{ $json.fit }}",
+            "fun": "={{ $json.fun }}",
+            "winstkans": "={{ $json.winstkans }}",
+            "win": "={{ $json.win }}",
+            "inspnning": "={{ $json.inspnning }}",
+            "fit analyse": "={{ $json['fit analyse'] }}",
+            "fun analyse": "={{ $json['fun analyse'] }}",
+            "winstkans analyse": "={{ $json['winstkans analyse'] }}",
+            "win analyse": "={{ $json['win analyse'] }}",
+            "risico": "={{ $json.risico }}",
+            "team_suggestie": "={{ $json.conclusie }}",
+            "vervolgstappen": "={{ $json.vervolgstappen }}",
+            "details": "={{ $json.details }}",
+            "achterliggende vraag": "={{ $json['achterliggende vraag'] }}",
+            "alternatief voorstel": "={{ $json['alternatief voorstel'] }}",
+            "toegang tot klant": "={{ $json['toegang tot klant'] }}",
+            "vervolgstappem": "={{ $json.vervolgstappem }}",
+            "team suggestie": "={{ $json['team suggestie'] }}",
+            "reden classificatie": "={{ $json['reden classificatie'] }}",
+            "reden inhoud": "={{ $json['reden inhoud'] }}",
+            "reden autonomue": "={{ $json['reden autonomue'] }}",
+            "samenvatting": "={{ $json.samenvatting }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analyze",
+              "displayName": "analyze",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FTE's",
+              "displayName": "FTE's",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "verloning",
+              "displayName": "verloning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit",
+              "displayName": "fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun",
+              "displayName": "fun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans",
+              "displayName": "winstkans",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win",
+              "displayName": "win",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inspnning",
+              "displayName": "inspnning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit analyse",
+              "displayName": "fit analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun analyse",
+              "displayName": "fun analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans analyse",
+              "displayName": "winstkans analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win analyse",
+              "displayName": "win analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risico",
+              "displayName": "risico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "conclusie",
+              "displayName": "conclusie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "team_suggestie",
+              "displayName": "team_suggestie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vervolgstappen",
+              "displayName": "vervolgstappen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "details",
+              "displayName": "details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "achterliggende vraag",
+              "displayName": "achterliggende vraag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "alternatief voorstel",
+              "displayName": "alternatief voorstel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "toegang tot klant",
+              "displayName": "toegang tot klant",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "team suggestie",
+              "displayName": "team suggestie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vervolgstappem",
+              "displayName": "vervolgstappem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden autonomue",
+              "displayName": "reden autonomue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden inhoud",
+              "displayName": "reden inhoud",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden classificatie",
+              "displayName": "reden classificatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -576,
+        320
+      ],
+      "id": "74d75686-bd1b-4935-9eba-d97e467d0f3f",
+      "name": "Append row in sheet9",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "ns",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
+            },
+            {
+              "keyName": "created_at",
+              "condition": "lt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        320
+      ],
+      "id": "153e3560-667c-4c5c-a2da-9ed7e7daec68",
+      "name": "NS",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1321844741,
+          "mode": "list",
+          "cachedResultName": "WiNB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=1321844741"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ $json.tender_id }}",
+            "created_at": "={{ $json.created_at }}",
+            "link": "={{ $json.link }}",
+            "title": "={{ $json.title }}",
+            "status": "={{ $json.status }}",
+            "analyze": "={{ $json.analyze }}",
+            "FTE's": "={{ $json['FTE\\'s'] }}",
+            "verloning": "={{ $json.verloning }}",
+            "fit": "={{ $json.fit }}",
+            "fun": "={{ $json.fun }}",
+            "winstkans": "={{ $json.winstkans }}",
+            "win": "={{ $json.win }}",
+            "inspnning": "={{ $json.inspnning }}",
+            "fit analyse": "={{ $json['fit analyse'] }}",
+            "fun analyse": "={{ $json['fun analyse'] }}",
+            "winstkans analyse": "={{ $json['winstkans analyse'] }}",
+            "win analyse": "={{ $json['fun analyse'] }}",
+            "risico": "={{ $json.risico }}",
+            "conclusie": "={{ $json.conclusie }}",
+            "team_suggestie": "={{ $json['team suggestie'] }}",
+            "vervolgstappen": "={{ $json.vervolgstappem }}",
+            "details": "={{ $json.details }}",
+            "achterliggende vraag": "={{ $json['achterliggende vraag'] }}",
+            "alternatief voorstel": "={{ $json['alternatief voorstel'] }}",
+            "toegang tot klant": "={{ $json['toegang tot klant'] }}",
+            "team suggestie": "={{ $json['team suggestie'] }}",
+            "vervolgstappem": "={{ $json.vervolgstappem }}",
+            "samenvatting": "={{ $json.samenvatting }}",
+            "reden autonomue": "={{ $json['reden autonomue'] }}",
+            "reden inhoud": "={{ $json['reden inhoud'] }}",
+            "reden classificatie": "={{ $json['reden classificatie'] }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analyze",
+              "displayName": "analyze",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FTE's",
+              "displayName": "FTE's",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "verloning",
+              "displayName": "verloning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit",
+              "displayName": "fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun",
+              "displayName": "fun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans",
+              "displayName": "winstkans",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win",
+              "displayName": "win",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inspnning",
+              "displayName": "inspnning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit analyse",
+              "displayName": "fit analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun analyse",
+              "displayName": "fun analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans analyse",
+              "displayName": "winstkans analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win analyse",
+              "displayName": "win analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risico",
+              "displayName": "risico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "conclusie",
+              "displayName": "conclusie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "team_suggestie",
+              "displayName": "team_suggestie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vervolgstappen",
+              "displayName": "vervolgstappen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "details",
+              "displayName": "details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "achterliggende vraag",
+              "displayName": "achterliggende vraag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "alternatief voorstel",
+              "displayName": "alternatief voorstel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "toegang tot klant",
+              "displayName": "toegang tot klant",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "team suggestie",
+              "displayName": "team suggestie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vervolgstappem",
+              "displayName": "vervolgstappem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden autonomue",
+              "displayName": "reden autonomue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden inhoud",
+              "displayName": "reden inhoud",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden classificatie",
+              "displayName": "reden classificatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -560,
+        512
+      ],
+      "id": "177f040c-58c5-4bfb-999f-b71b3283a68c",
+      "name": "Append row in sheet10",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "Werkeninnoordbrabat",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "created_at",
+              "condition": "gt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').minus({ weeks: 1 }).startOf('week').toISO() }}"
+            },
+            {
+              "keyName": "created_at",
+              "condition": "lt",
+              "keyValue": "={{ $now.setZone('Europe/Amsterdam').startOf('week').toISO() }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        512
+      ],
+      "id": "dc909ae8-2dac-460a-9536-73cd7833567c",
+      "name": "WiNB",
+      "credentials": {
+        "supabaseApi": {
+          "id": "orNtP20rwWnXYa7K",
+          "name": "Supabase Aistralis Rafal"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "497f1c62-f75b-4a46-b0f7-80fb80e5aa27",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "NO GO -",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -336,
+        320
+      ],
+      "id": "8ee96b0b-7c86-45fc-a4ea-f580d2eeba62",
+      "name": "If3"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 99719987,
+          "mode": "list",
+          "cachedResultName": "Goedgekeurd",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=99719987"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "created_at": "={{ $json.created_at }}",
+            "flextender_id": "={{ $json.circle8_id }}",
+            "link": "={{ $json.link }}",
+            "title": "={{ $json.title }}",
+            "status": "={{ $json.status }}",
+            "FTE's": "={{ $('Append row in sheet9').item.json['FTE\\'s'] }}",
+            "verloning": "={{ $json.verloning }}",
+            "fit": "={{ $json.fit }}",
+            "fun": "={{ $json.fun }}",
+            "winstkans": "={{ $json.winstkans }}",
+            "win": "={{ $json.win }}",
+            "inspanning": "={{ $json.inspnning }}",
+            "fit analyse": "={{ $json['fit analyse'] }}",
+            "fun analyse": "={{ $json['fun analyse'] }}",
+            "winstkans analyse": "={{ $json['winstkans analyse'] }}",
+            "win analyse": "={{ $json['win analyse'] }}",
+            "risico": "={{ $json.risico }}",
+            "achterliggende vraag": "={{ $json['achterliggende vraag'] }}",
+            "alternatief voorstel": "={{ $json['alternatief voorstel'] }}",
+            "toegang tot klant": "={{ $json['toegang tot klant'] }}",
+            "vervolgstappem": "={{ $json.vervolgstappen }}",
+            "samenvatting": "={{ $json.samenvatting }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "flextender_id",
+              "displayName": "flextender_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FTE's",
+              "displayName": "FTE's",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "verloning",
+              "displayName": "verloning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit",
+              "displayName": "fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun",
+              "displayName": "fun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans",
+              "displayName": "winstkans",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win",
+              "displayName": "win",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inspanning",
+              "displayName": "inspanning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit analyse",
+              "displayName": "fit analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun analyse",
+              "displayName": "fun analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans analyse",
+              "displayName": "winstkans analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win analyse",
+              "displayName": "win analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risico",
+              "displayName": "risico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "achterliggende vraag",
+              "displayName": "achterliggende vraag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "alternatief voorstel",
+              "displayName": "alternatief voorstel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "toegang tot klant",
+              "displayName": "toegang tot klant",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vervolgstappem",
+              "displayName": "vervolgstappem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden autonomue",
+              "displayName": "reden autonomue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden inhoud",
+              "displayName": "reden inhoud",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden classificatie",
+              "displayName": "reden classificatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analyze",
+              "displayName": "analyze",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        320
+      ],
+      "id": "ebdc4de4-c96b-4609-af6e-70a6f850223e",
+      "name": "Append row in sheet11",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 927839197,
+          "mode": "list",
+          "cachedResultName": "Kapitein",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=927839197"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "created_at": "={{ $('Circle8').item.json.created_at }}",
+            "flextender_id": "={{ $json.flextender_id }}",
+            "link": "={{ $('Circle8').item.json.link }}",
+            "title": "={{ $('Circle8').item.json.title }}",
+            "Kapitein": "={{ $('Circle8').item.json.kapitein }}",
+            "Score": "={{ $('Circle8').item.json['score kapitein'] }}",
+            "Argumentatie": "={{ $('Circle8').item.json['reden kapitein'] }}",
+            "samenvatting": "={{ $('Circle8').item.json.samenvatting }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "flextender_id",
+              "displayName": "flextender_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Kapitein",
+              "displayName": "Kapitein",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Argumentatie",
+              "displayName": "Argumentatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        320
+      ],
+      "id": "0e2ca904-7b18-49dd-9064-f5ad5e7854e0",
+      "name": "Append row in sheet12",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "497f1c62-f75b-4a46-b0f7-80fb80e5aa27",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "NO GO -",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -336,
+        512
+      ],
+      "id": "735285c6-eb45-4a3a-8305-eaacb06ce865",
+      "name": "If4"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 99719987,
+          "mode": "list",
+          "cachedResultName": "Goedgekeurd",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=99719987"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "created_at": "={{ $json.created_at }}",
+            "flextender_id": "={{ $json.circle8_id }}",
+            "link": "={{ $json.link }}",
+            "title": "={{ $json.title }}",
+            "status": "={{ $json.status }}",
+            "FTE's": "={{ $('Circle8').item.json['FTE\\'s'] }}",
+            "verloning": "={{ $json.verloning }}",
+            "fit": "={{ $json.fit }}",
+            "fun": "={{ $json.fun }}",
+            "winstkans": "={{ $json.winstkans }}",
+            "win": "={{ $json.win }}",
+            "inspanning": "={{ $json.inspnning }}",
+            "fit analyse": "={{ $json['fit analyse'] }}",
+            "fun analyse": "={{ $json['fun analyse'] }}",
+            "winstkans analyse": "={{ $json['winstkans analyse'] }}",
+            "win analyse": "={{ $json['win analyse'] }}",
+            "risico": "={{ $json.risico }}",
+            "achterliggende vraag": "={{ $json['achterliggende vraag'] }}",
+            "alternatief voorstel": "={{ $json['alternatief voorstel'] }}",
+            "toegang tot klant": "={{ $json['toegang tot klant'] }}",
+            "vervolgstappem": "={{ $json.vervolgstappen }}",
+            "samenvatting": "={{ $json.samenvatting }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "flextender_id",
+              "displayName": "flextender_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FTE's",
+              "displayName": "FTE's",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "verloning",
+              "displayName": "verloning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit",
+              "displayName": "fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun",
+              "displayName": "fun",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans",
+              "displayName": "winstkans",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win",
+              "displayName": "win",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "inspanning",
+              "displayName": "inspanning",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fit analyse",
+              "displayName": "fit analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fun analyse",
+              "displayName": "fun analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "winstkans analyse",
+              "displayName": "winstkans analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "win analyse",
+              "displayName": "win analyse",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "risico",
+              "displayName": "risico",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "achterliggende vraag",
+              "displayName": "achterliggende vraag",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "alternatief voorstel",
+              "displayName": "alternatief voorstel",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "toegang tot klant",
+              "displayName": "toegang tot klant",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vervolgstappem",
+              "displayName": "vervolgstappem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden autonomue",
+              "displayName": "reden autonomue",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden inhoud",
+              "displayName": "reden inhoud",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "reden classificatie",
+              "displayName": "reden classificatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "analyze",
+              "displayName": "analyze",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -112,
+        512
+      ],
+      "id": "4fa1a6e0-510f-40e1-a559-3a37692d85af",
+      "name": "Append row in sheet13",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s",
+          "mode": "list",
+          "cachedResultName": "Weekly Update",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 927839197,
+          "mode": "list",
+          "cachedResultName": "Kapitein",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BfpJFf9kfHdgJIgzhW-QWDFpU4Grk7SXQxatZrlcC5s/edit#gid=927839197"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "created_at": "={{ $('Circle8').item.json.created_at }}",
+            "flextender_id": "={{ $json.flextender_id }}",
+            "link": "={{ $('Circle8').item.json.link }}",
+            "title": "={{ $('Circle8').item.json.title }}",
+            "Kapitein": "={{ $('Circle8').item.json.kapitein }}",
+            "Score": "={{ $('Circle8').item.json['score kapitein'] }}",
+            "Argumentatie": "={{ $('Circle8').item.json['reden kapitein'] }}",
+            "samenvatting": "={{ $('Circle8').item.json.samenvatting }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "flextender_id",
+              "displayName": "flextender_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Kapitein",
+              "displayName": "Kapitein",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Score",
+              "displayName": "Score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Argumentatie",
+              "displayName": "Argumentatie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "samenvatting",
+              "displayName": "samenvatting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        112,
+        512
+      ],
+      "id": "0a57949e-4f04-46c4-90d8-c70bd2e60f99",
+      "name": "Append row in sheet14",
       "credentials": {
         "googleSheetsOAuth2Api": {
           "id": "XkUcr0YLOP2CkVg1",
@@ -2628,28 +4282,27 @@
       "main": [
         [
           {
-            "node": "Get many rows",
+            "node": "Flextender",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Get many rows2",
+            "node": "Mercell",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Get many rows3",
+            "node": "Circle8",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many rows": {
-      "main": [
-        [
+          },
           {
-            "node": "Append row in sheet",
+            "node": "NS",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "WiNB",
             "type": "main",
             "index": 0
           }
@@ -2683,28 +4336,6 @@
         [
           {
             "node": "Append row in sheet2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many rows2": {
-      "main": [
-        [
-          {
-            "node": "Append row in sheet3",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Get many rows3": {
-      "main": [
-        [
-          {
-            "node": "Append row in sheet4",
             "type": "main",
             "index": 0
           }
@@ -2776,6 +4407,127 @@
           }
         ]
       ]
+    },
+    "Circle8": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mercell": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flextender": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NS": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WiNB": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If3": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet11": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet9": {
+      "main": [
+        [
+          {
+            "node": "If3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If4": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet13": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet14",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet10": {
+      "main": [
+        [
+          {
+            "node": "If4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -2785,9 +4537,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "85518062-c27f-494c-9b88-5fec1f2accb5",
+  "versionId": "c8666f3b-8c8a-458a-bb35-3fb40e11dfdf",
   "activeVersionId": null,
-  "versionCounter": 136,
+  "versionCounter": 278,
   "triggerCount": 0,
   "shared": [
     {
