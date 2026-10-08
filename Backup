@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-25T04:58:33.081Z",
+  "updatedAt": "2026-10-08T05:28:31.204Z",
   "createdAt": "2025-07-05T05:27:31.126Z",
   "id": "2wGj4UwRo2mb42YJ",
   "name": "Backup",
@@ -1290,7 +1290,7 @@
     "templateCredsSetupCompleted": true
   },
   "versionId": "5fb19fd0-492c-45d6-ae5e-3feefbf05b02",
-  "activeVersionId": "50a048f3-e41f-4f99-929d-81027f009512",
+  "activeVersionId": "5fb19fd0-492c-45d6-ae5e-3feefbf05b02",
   "versionCounter": 262,
   "triggerCount": 1,
   "shared": [
@@ -1321,9 +1321,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-07-07T04:22:22.640Z",
-    "createdAt": "2026-07-07T04:22:19.599Z",
-    "versionId": "50a048f3-e41f-4f99-929d-81027f009512",
+    "updatedAt": "2026-10-08T05:30:14.112Z",
+    "createdAt": "2026-09-14T18:45:23.109Z",
+    "versionId": "5fb19fd0-492c-45d6-ae5e-3feefbf05b02",
     "workflowId": "2wGj4UwRo2mb42YJ",
     "nodes": [
       {
@@ -1782,7 +1782,7 @@
           },
           "folderId": {
             "__rl": true,
-            "value": "https://drive.google.com/drive/u/0/folders/1SDMuJ-oFxW1laCNTpvFMb2t5Gd2ofLhnhttps://drive.google.com/drive/u/0/folders/1SDMuJ-oFxW1laCNTpvFMb2t5Gd2ofLhn",
+            "value": "https://drive.google.com/drive/u/0/folders/1SDMuJ-oFxW1laCNTpvFMb2t5Gd2ofLhn",
             "mode": "url"
           },
           "options": {}
@@ -1797,8 +1797,8 @@
         "name": "Upload file1",
         "credentials": {
           "googleDriveOAuth2Api": {
-            "id": "VcFFZkWlXOO43tdB",
-            "name": "Google Drive account"
+            "id": "NWUCua83MqPAIJF7",
+            "name": "Google Drive account 2"
           }
         }
       },
@@ -2218,6 +2218,36 @@
           208
         ],
         "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "name": "={{ $('n8n2').item.json.name }}",
+          "driveId": {
+            "__rl": true,
+            "value": "1HmBSAtGgcZLSbO2BxikQbvbzAcZzY7u9",
+            "mode": "id"
+          },
+          "folderId": {
+            "__rl": true,
+            "value": "=https://drive.google.com/drive/u/0/folders/1SDMuJ-oFxW1laCNTpvFMb2t5Gd2ofLhn",
+            "mode": "url"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleDrive",
+        "typeVersion": 3,
+        "position": [
+          -1168,
+          -128
+        ],
+        "id": "21ce5145-1723-420b-a6f1-524831d0a13b",
+        "name": "Upload file2",
+        "credentials": {
+          "googleDriveOAuth2Api": {
+            "id": "VcFFZkWlXOO43tdB",
+            "name": "Google Drive account"
+          }
+        }
       }
     ],
     "connections": {
@@ -2567,15 +2597,15 @@
       }
     },
     "authors": "peter aistralis",
-    "name": "Version 50a048f3",
+    "name": "Version 5fb19fd0",
     "description": "",
     "autosaved": true,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-07-07T04:22:22.630Z",
-        "id": 673,
+        "createdAt": "2026-10-08T05:30:14.040Z",
+        "id": 772,
         "workflowId": "2wGj4UwRo2mb42YJ",
-        "versionId": "50a048f3-e41f-4f99-929d-81027f009512",
+        "versionId": "5fb19fd0-492c-45d6-ae5e-3feefbf05b02",
         "event": "activated",
         "userId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
       }
