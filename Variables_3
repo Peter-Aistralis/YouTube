@@ -1,0 +1,411 @@
+{
+  "updatedAt": "2026-10-10T11:53:05.808Z",
+  "createdAt": "2026-10-10T09:45:26.611Z",
+  "id": "Z2X8xJTp7yE0EE1l",
+  "name": "Variables_3",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -112
+      ],
+      "id": "0a6bba0c-8f27-4a04-ada0-73497c290e5c",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        528,
+        -112
+      ],
+      "id": "1b66ecf4-3812-4454-9b45-55f9cdffeb0a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Fp5kQvQ0Dx7qfrMmPNMDmpt3ab6EYt4GY0InSDpvQEs",
+          "mode": "list",
+          "cachedResultName": "N8N Variables",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fp5kQvQ0Dx7qfrMmPNMDmpt3ab6EYt4GY0InSDpvQEs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fp5kQvQ0Dx7qfrMmPNMDmpt3ab6EYt4GY0InSDpvQEs/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        320,
+        -112
+      ],
+      "id": "e065ff53-6cb7-44f5-81b7-ec574a9f1be4",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1024,
+        -96
+      ],
+      "id": "e38feb2e-7e1e-4a92-b57a-712e9764f565",
+      "name": "Wait",
+      "webhookId": "dd90c0bf-f3c1-4fe9-b9b3-ff02ceaa59f9"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38785139-3efa-494a-b7d3-5afb5a0ebbf2",
+              "name": "accumulated",
+              "value": "={{ $json.previously +  $('Loop Over Items').item.json.Name || $('Loop Over Items').first().json.Name}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1312,
+        -96
+      ],
+      "id": "7f4992ad-f95e-424d-ac47-a2b48441386e",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "87766cbc-73c1-4e40-af7a-6d84c1efd0dd",
+              "name": "variable",
+              "value": 35,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        112,
+        -112
+      ],
+      "id": "65b31038-7c38-4c52-a22a-1deedf53684b",
+      "name": "variable declaration"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1Fp5kQvQ0Dx7qfrMmPNMDmpt3ab6EYt4GY0InSDpvQEs",
+          "mode": "list",
+          "cachedResultName": "N8N Variables",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fp5kQvQ0Dx7qfrMmPNMDmpt3ab6EYt4GY0InSDpvQEs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Fp5kQvQ0Dx7qfrMmPNMDmpt3ab6EYt4GY0InSDpvQEs/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('Loop Over Items').item.json.Name }}",
+            "Variable in Loop": "={{ $json.variable }}"
+          },
+          "matchingColumns": [
+            "Name"
+          ],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Fixed variable",
+              "displayName": "Fixed variable",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Variable in Loop",
+              "displayName": "Variable in Loop",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Accumulated",
+              "displayName": "Accumulated",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1584,
+        320
+      ],
+      "id": "7bfa730f-85d3-4c94-8152-3da734e5afe8",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XkUcr0YLOP2CkVg1",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1307ad66-7cfe-4e87-af3c-0f8d7d96a61b",
+              "name": "=previously",
+              "value": "={{  $runIndex === 0  ?\n\"\"  : $('Edit Fields2').first().json.accumulated }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        -240
+      ],
+      "id": "53d27278-8597-4261-b578-50dd1ab0c058",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "cc561c21-9c13-4aac-82f0-6793ca43cfc5",
+              "name": "previously",
+              "value": "={{ $('Edit Fields2').isExecuted ? \n$('Edit Fields2').first().json.accumulated \n: \n\"\" }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        -96
+      ],
+      "id": "c7ed64f0-b10b-4c59-9fac-11958ce96b1c",
+      "name": "Alternative"
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "variable declaration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Alternative",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "variable declaration": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Alternative": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "meta": null,
+  "versionId": "14c89e62-0ec7-4cc6-b339-12e3c7506694",
+  "activeVersionId": null,
+  "versionCounter": 258,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-10-10T09:45:26.611Z",
+      "createdAt": "2026-10-10T09:45:26.611Z",
+      "role": "workflow:owner",
+      "workflowId": "Z2X8xJTp7yE0EE1l",
+      "projectId": "2KiFcKNLK1JyaklJ",
+      "project": {
+        "updatedAt": "2025-07-05T04:35:03.731Z",
+        "createdAt": "2025-07-05T04:34:00.267Z",
+        "id": "2KiFcKNLK1JyaklJ",
+        "name": "peter aistralis <peterjawel@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "8790342e-b65e-4ef9-99ec-48a531aa0094"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2025-07-05T05:27:25.021Z",
+      "createdAt": "2025-07-05T05:27:25.021Z",
+      "id": "94UYKbs3nzwYCJqO",
+      "name": "YouTube"
+    }
+  ],
+  "activeVersion": null
+}
