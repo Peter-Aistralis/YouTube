@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T09:41:40.803Z",
+  "updatedAt": "2026-10-12T08:32:44.056Z",
   "createdAt": "2026-10-10T08:43:51.055Z",
   "id": "PuLHNBdH9hkhcZnS",
   "name": "Variables_2",
@@ -12,7 +12,7 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -352,
+        -176,
         0
       ],
       "id": "dc3beab6-50f6-4848-a675-c4b8b0fe1a6d",
@@ -25,7 +25,7 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        256,
+        464,
         0
       ],
       "id": "8059785f-5509-412b-b649-9f97ae2a4c95",
@@ -38,7 +38,7 @@
             {
               "id": "fb0fe118-e382-44fd-ab8f-7e4456c2bf1c",
               "name": "variable",
-              "value": "={{ $runIndex === 0 \n   ? $('variable declaration').first().json.variable\n   : $('Edit Fields2').first().json.variable }}",
+              "value": "={{ $('Edit Fields2').isExecuted \n   ? $('Edit Fields2').first().json.variable\n   :  $('variable declaration').item.json.variable }}",
               "type": "number"
             }
           ]
@@ -48,7 +48,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        464,
+        672,
         16
       ],
       "id": "5f374c8c-580f-4d55-9a4b-258b2f6aacee",
@@ -75,7 +75,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        48,
+        208,
         0
       ],
       "id": "73b8f5ca-2d26-4705-88cf-12b6eae5dfab",
@@ -94,7 +94,7 @@
       "type": "n8n-nodes-base.wait",
       "typeVersion": 1.1,
       "position": [
-        688,
+        896,
         16
       ],
       "id": "176ee8ae-7fa3-4fd8-a4ba-33a0136753d3",
@@ -118,7 +118,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        928,
+        1136,
         16
       ],
       "id": "bcae112d-f16f-4462-99fe-d1280d2482fa",
@@ -131,7 +131,7 @@
             {
               "id": "87766cbc-73c1-4e40-af7a-6d84c1efd0dd",
               "name": "variable",
-              "value": 35,
+              "value": 42,
               "type": "number"
             }
           ]
@@ -141,7 +141,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -160,
+        16,
         0
       ],
       "id": "5178a5c1-7a3a-4afc-ad12-52fa18d1fdba",
@@ -201,7 +201,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": false
             },
             {
               "id": "Accumulated",
@@ -233,7 +234,7 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1136,
+        1344,
         16
       ],
       "id": "fbf47614-3434-46cc-b515-b5fdeb001504",
@@ -344,9 +345,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "00ed552c-1b78-4522-bea7-86450238c4c7",
+  "versionId": "50a9913b-40c7-4df1-bc75-b71d0e2520e5",
   "activeVersionId": null,
-  "versionCounter": 65,
+  "versionCounter": 102,
   "triggerCount": 0,
   "shared": [
     {
