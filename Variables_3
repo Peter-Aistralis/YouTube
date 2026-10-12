@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T11:53:05.808Z",
+  "updatedAt": "2026-10-12T08:35:14.627Z",
   "createdAt": "2026-10-10T09:45:26.611Z",
   "id": "Z2X8xJTp7yE0EE1l",
   "name": "Variables_3",
@@ -85,7 +85,7 @@
             {
               "id": "38785139-3efa-494a-b7d3-5afb5a0ebbf2",
               "name": "accumulated",
-              "value": "={{ $json.previously +  $('Loop Over Items').item.json.Name || $('Loop Over Items').first().json.Name}}",
+              "value": "={{ $json.previously +  $('Loop Over Items').item.json.Name}}",
               "type": "string"
             }
           ]
@@ -145,7 +145,7 @@
           "mappingMode": "defineBelow",
           "value": {
             "Name": "={{ $('Loop Over Items').item.json.Name }}",
-            "Variable in Loop": "={{ $json.variable }}"
+            "Accumulated": "={{ $json.accumulated }}"
           },
           "matchingColumns": [
             "Name"
@@ -178,7 +178,8 @@
               "defaultMatch": false,
               "display": true,
               "type": "string",
-              "canBeUsedToMatch": true
+              "canBeUsedToMatch": true,
+              "removed": true
             },
             {
               "id": "Accumulated",
@@ -188,7 +189,7 @@
               "display": true,
               "type": "string",
               "canBeUsedToMatch": true,
-              "removed": true
+              "removed": false
             },
             {
               "id": "row_number",
@@ -210,8 +211,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1584,
-        320
+        1552,
+        -96
       ],
       "id": "7bfa730f-85d3-4c94-8152-3da734e5afe8",
       "name": "Update row in sheet",
@@ -240,33 +241,10 @@
       "typeVersion": 3.4,
       "position": [
         784,
-        -240
+        -96
       ],
       "id": "53d27278-8597-4261-b578-50dd1ab0c058",
       "name": "Edit Fields3"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
-              "id": "cc561c21-9c13-4aac-82f0-6793ca43cfc5",
-              "name": "previously",
-              "value": "={{ $('Edit Fields2').isExecuted ? \n$('Edit Fields2').first().json.accumulated \n: \n\"\" }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        768,
-        -96
-      ],
-      "id": "c7ed64f0-b10b-4c59-9fac-11958ce96b1c",
-      "name": "Alternative"
     }
   ],
   "connections": {
@@ -286,7 +264,7 @@
         [],
         [
           {
-            "node": "Alternative",
+            "node": "Edit Fields3",
             "type": "main",
             "index": 0
           }
@@ -319,7 +297,7 @@
       "main": [
         [
           {
-            "node": "Loop Over Items",
+            "node": "Update row in sheet",
             "type": "main",
             "index": 0
           }
@@ -358,17 +336,6 @@
           }
         ]
       ]
-    },
-    "Alternative": {
-      "main": [
-        [
-          {
-            "node": "Wait",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
     }
   },
   "settings": {
@@ -376,9 +343,9 @@
     "binaryMode": "separate"
   },
   "meta": null,
-  "versionId": "14c89e62-0ec7-4cc6-b339-12e3c7506694",
+  "versionId": "6bd4ced9-1f73-45f6-b4f4-75edbe729ef0",
   "activeVersionId": null,
-  "versionCounter": 258,
+  "versionCounter": 266,
   "triggerCount": 0,
   "shared": [
     {
