@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-15T01:32:27.848Z",
+  "updatedAt": "2026-10-16T15:19:03.089Z",
   "createdAt": "2026-10-14T19:29:09.930Z",
   "id": "1IhNg8mZK96WJAcz",
   "name": "LLM",
@@ -12,7 +12,7 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
+        -432,
         0
       ],
       "id": "12ce8c94-7d7e-45bb-b06f-0da5ee77f4fb",
@@ -32,8 +32,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        128,
-        208
+        96,
+        352
       ],
       "id": "cbfdb58c-6089-4e95-b756-783ab2f243e4",
       "name": "OpenAI Chat Model",
@@ -47,7 +47,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "you are a cute helpful asistant called Riri and you respond in a very funny way and i want you to give me the  abbreviation of bitcoin",
+        "text": "=je taak bestaat uit het analyseren van teksten\n\n1.\n\ninput: {{ $json.text }}\n\n- Indien er er maximum uurbedrag vermeld is, dan output je dit bedrag als 'gain' en ga door naar stap 2!\n\n- Indien er enkel een schaal gegeven wordt, dan bekijk je het nummer van de schaal en geef er een bedrag aan volgens volgende criteria:\nschaal 8 -> 80\nschaal 9 -> 90\nschaal 10 -> 105\nschaal 11 -> 115\nschaal 12 -> 135 \nschaal 13 -> 148\nschaal 14 -> 160\nen output dit als 'gain'\n\nAls je nergens een maximum uurloon vindt, of er is geen schaal opgegeven, dan is 'gain' gelijk aan 9999. Maar enkel en alleen in het geval er geen maximum uurloon of schaal gevonden is\n\n2. haal uit {{ $json.secties.Fee_Flextender }} hoeveel euro fee er gevraagd wordt per uur en ouput deze als 'fee'.\nals er geen 'fee' is, dan output je 0\n\n3. als er een komma gebruikt wordt in een getal, verander dit in een punt (voorbeeld: 12,34 wordt)\n4. **LET OP:** Als er een maximum uurtarief staat dat lager is dan de schaalindicatie, \ngebruik dan het maximum uurtarief. De schaal is een indicatie, het maximum is bindend.\n\nOutput uitsluitend de rauwe JSON. Begin direct met { en eindig met }. Gebruik geen markdown formatting (dus geen ```json), geen verklarende tekst en geen omhullende objecten.\n\n{\n\"uurloon\": 12345,\n\"fee\": 12.34\n}",
         "messages": {
           "messageValues": []
         },
@@ -56,11 +56,26 @@
       "type": "@n8n/n8n-nodes-langchain.chainLlm",
       "typeVersion": 1.9,
       "position": [
-        208,
-        0
+        240,
+        176
       ],
       "id": "5d006d1c-eee3-4ed2-91d7-247fc61e655e",
       "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=je taak bestaat uit het analyseren van teksten\n\n1.\n\ninput: {{ $json.text }}\n\n- Indien er er maximum uurbedrag vermeld is, dan output je dit bedrag als 'gain' en ga door naar stap 2!\n\n- Indien er enkel een schaal gegeven wordt, dan bekijk je het nummer van de schaal en geef er een bedrag aan volgens volgende criteria:\nschaal 8 -> 80\nschaal 9 -> 90\nschaal 10 -> 105\nschaal 11 -> 115\nschaal 12 -> 135 \nschaal 13 -> 148\nschaal 14 -> 160\nen output dit als 'gain'\n\nAls je nergens een maximum uurloon vindt, of er is geen schaal opgegeven, dan is 'gain' gelijk aan 9999. Maar enkel en alleen in het geval er geen maximum uurloon of schaal gevonden is\n\n2. haal uit {{ $json.secties.Fee_Flextender }} hoeveel euro fee er gevraagd wordt per uur en ouput deze als 'fee'.\nals er geen 'fee' is, dan output je 0\n\n3. als er een komma gebruikt wordt in een getal, verander dit in een punt (voorbeeld: 12,34 wordt)\n4. **LET OP:** Als er een maximum uurtarief staat dat lager is dan de schaalindicatie, \ngebruik dan het maximum uurtarief. De schaal is een indicatie, het maximum is bindend.\n\nOutput uitsluitend de rauwe JSON. Begin direct met { en eindig met }. Gebruik geen markdown formatting (dus geen ```json), geen verklarende tekst en geen omhullende objecten.\n\n{\n\"uurloon\": 12345,\n\"fee\": 12.34\n}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        96,
+        -16
+      ],
+      "id": "8740dc20-f6d1-4b43-8cee-8aece326bab3",
+      "name": "AI Agent"
     }
   ],
   "connections": {
@@ -82,6 +97,11 @@
             "node": "Basic LLM Chain",
             "type": "ai_languageModel",
             "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
           }
         ]
       ]
@@ -94,9 +114,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "f2769774-74d6-420f-a0ab-b92aecdcba91",
+  "versionId": "0dacd656-b7df-4da8-846f-ba33a091c987",
   "activeVersionId": null,
-  "versionCounter": 23,
+  "versionCounter": 55,
   "triggerCount": 0,
   "shared": [
     {
