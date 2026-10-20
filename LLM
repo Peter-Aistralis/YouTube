@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-16T15:19:03.089Z",
+  "updatedAt": "2026-10-20T10:25:18.826Z",
   "createdAt": "2026-10-14T19:29:09.930Z",
   "id": "1IhNg8mZK96WJAcz",
   "name": "LLM",
@@ -8,14 +8,32 @@
   "isArchived": false,
   "nodes": [
     {
+      "parameters": {
+        "promptType": "define",
+        "text": "=what is the abbreviation of bitcoin and what is the current price?",
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -144,
+        -288
+      ],
+      "id": "d92bfc21-23a1-41fb-a332-3412f4cc7670",
+      "name": "Basic LLM Chain"
+    },
+    {
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -432,
-        0
+        -384,
+        48
       ],
-      "id": "12ce8c94-7d7e-45bb-b06f-0da5ee77f4fb",
+      "id": "00733f15-1266-4731-93c0-b64535c4a53c",
       "name": "When clicking ‘Execute workflow’"
     },
     {
@@ -32,10 +50,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.3,
       "position": [
-        96,
-        352
+        -80,
+        256
       ],
-      "id": "cbfdb58c-6089-4e95-b756-783ab2f243e4",
+      "id": "3c8ab1f6-9e48-4d56-807f-decdabdf0667",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -46,64 +64,114 @@
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "=je taak bestaat uit het analyseren van teksten\n\n1.\n\ninput: {{ $json.text }}\n\n- Indien er er maximum uurbedrag vermeld is, dan output je dit bedrag als 'gain' en ga door naar stap 2!\n\n- Indien er enkel een schaal gegeven wordt, dan bekijk je het nummer van de schaal en geef er een bedrag aan volgens volgende criteria:\nschaal 8 -> 80\nschaal 9 -> 90\nschaal 10 -> 105\nschaal 11 -> 115\nschaal 12 -> 135 \nschaal 13 -> 148\nschaal 14 -> 160\nen output dit als 'gain'\n\nAls je nergens een maximum uurloon vindt, of er is geen schaal opgegeven, dan is 'gain' gelijk aan 9999. Maar enkel en alleen in het geval er geen maximum uurloon of schaal gevonden is\n\n2. haal uit {{ $json.secties.Fee_Flextender }} hoeveel euro fee er gevraagd wordt per uur en ouput deze als 'fee'.\nals er geen 'fee' is, dan output je 0\n\n3. als er een komma gebruikt wordt in een getal, verander dit in een punt (voorbeeld: 12,34 wordt)\n4. **LET OP:** Als er een maximum uurtarief staat dat lager is dan de schaalindicatie, \ngebruik dan het maximum uurtarief. De schaal is een indicatie, het maximum is bindend.\n\nOutput uitsluitend de rauwe JSON. Begin direct met { en eindig met }. Gebruik geen markdown formatting (dus geen ```json), geen verklarende tekst en geen omhullende objecten.\n\n{\n\"uurloon\": 12345,\n\"fee\": 12.34\n}",
-        "messages": {
-          "messageValues": []
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3ed8d4d3-a5be-492c-9382-ea5bc736db1f",
+              "name": "text",
+              "value": "={{ $json.output.salary }}",
+              "type": "string"
+            }
+          ]
         },
-        "batching": {}
+        "options": {}
       },
-      "type": "@n8n/n8n-nodes-langchain.chainLlm",
-      "typeVersion": 1.9,
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
-        240,
-        176
+        496,
+        48
       ],
-      "id": "5d006d1c-eee3-4ed2-91d7-247fc61e655e",
-      "name": "Basic LLM Chain"
+      "id": "cae8f74b-931f-47fb-832a-df21ec31eca4",
+      "name": "Edit Fields1"
     },
     {
       "parameters": {
-        "promptType": "define",
-        "text": "=je taak bestaat uit het analyseren van teksten\n\n1.\n\ninput: {{ $json.text }}\n\n- Indien er er maximum uurbedrag vermeld is, dan output je dit bedrag als 'gain' en ga door naar stap 2!\n\n- Indien er enkel een schaal gegeven wordt, dan bekijk je het nummer van de schaal en geef er een bedrag aan volgens volgende criteria:\nschaal 8 -> 80\nschaal 9 -> 90\nschaal 10 -> 105\nschaal 11 -> 115\nschaal 12 -> 135 \nschaal 13 -> 148\nschaal 14 -> 160\nen output dit als 'gain'\n\nAls je nergens een maximum uurloon vindt, of er is geen schaal opgegeven, dan is 'gain' gelijk aan 9999. Maar enkel en alleen in het geval er geen maximum uurloon of schaal gevonden is\n\n2. haal uit {{ $json.secties.Fee_Flextender }} hoeveel euro fee er gevraagd wordt per uur en ouput deze als 'fee'.\nals er geen 'fee' is, dan output je 0\n\n3. als er een komma gebruikt wordt in een getal, verander dit in een punt (voorbeeld: 12,34 wordt)\n4. **LET OP:** Als er een maximum uurtarief staat dat lager is dan de schaalindicatie, \ngebruik dan het maximum uurtarief. De schaal is een indicatie, het maximum is bindend.\n\nOutput uitsluitend de rauwe JSON. Begin direct met { en eindig met }. Gebruik geen markdown formatting (dus geen ```json), geen verklarende tekst en geen omhullende objecten.\n\n{\n\"uurloon\": 12345,\n\"fee\": 12.34\n}",
+        "jsonSchemaExample": "{ \"salary\": 12345 }"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        288,
+        256
+      ],
+      "id": "1e1ece9c-9569-40f3-9afa-aa8c8a881d8e",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "toolDescription": "this tool gives you the current price of a cryptocurrency. The input needs to be the symbol/abbreviation of the cryptocurrency",
+        "url": "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "symbol",
+              "value": "={{ $fromAI('symbol', 'The cryptocurrency ticker symbol') }}"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-CMC_PRO_API_KEY",
+              "value": "=22aa918aa1424fa9bb053e9ec273e9f7"
+            },
+            {
+              "name": "Accepts",
+              "value": "application/json"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -144,
+        96
+      ],
+      "id": "5cfe5f98-b5b7-402a-9041-19672074d515",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        96,
-        -16
+        176,
+        -288
       ],
-      "id": "8740dc20-f6d1-4b43-8cee-8aece326bab3",
+      "id": "9f9ee5f0-6de4-45d3-a891-3a8d416ea4cf",
       "name": "AI Agent"
     }
   ],
   "connections": {
+    "Basic LLM Chain": {
+      "main": [
+        []
+      ]
+    },
     "When clicking ‘Execute workflow’": {
       "main": [
-        [
-          {
-            "node": "Basic LLM Chain",
-            "type": "main",
-            "index": 0
-          }
-        ]
+        []
       ]
     },
     "OpenAI Chat Model": {
       "ai_languageModel": [
-        [
-          {
-            "node": "Basic LLM Chain",
-            "type": "ai_languageModel",
-            "index": 0
-          },
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
+        []
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        []
       ]
     }
   },
@@ -114,9 +182,9 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "versionId": "0dacd656-b7df-4da8-846f-ba33a091c987",
+  "versionId": "8f9a46e6-7773-4aec-8338-f04aaaaf7225",
   "activeVersionId": null,
-  "versionCounter": 55,
+  "versionCounter": 173,
   "triggerCount": 0,
   "shared": [
     {
